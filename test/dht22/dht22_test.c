@@ -1,7 +1,8 @@
 /*
- *  dht.c:
+ *  dht22_test.c:
  *	read temperature and humidity from DHT11 or DHT22 sensor
  *	from http://www.uugear.com/portfolio/read-dht1122-temperature-humidity-sensor-from-raspberry-pi/
+ *  how to build: gcc dht22_test.c -lwiringPi
  */
 #include <wiringPi.h>
 #include <stdio.h>
