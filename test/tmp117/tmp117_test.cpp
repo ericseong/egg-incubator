@@ -21,7 +21,8 @@ int main() {
 	cout << "Init result: " << fd << endl;
 
 	cout << "Read result: " << endl;
-	for( int i = 0 ; i < 60 ; i++ ) {
+	for( ; ; ) {
+	//for( int i = 0 ; i < 60 ; i++ ) {
 		short data = wiringPiI2CReadReg16( fd, TMP117_TEMP_RESULT );
 		if( data == -1 ) {
 			cout << "Read failed." << endl;

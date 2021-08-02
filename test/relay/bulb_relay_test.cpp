@@ -19,10 +19,10 @@ int main() {
 	while( 1 ) {
 		cout << "bulb relay off" << endl;
 		digitalWrite( RELAY_BULB_PIN, LOW );
-		delay( 3000 ); // 1 sec
+		delay( 10000 ); // 1 sec
 		cout << "bulb relay on" << endl;
 		digitalWrite( RELAY_BULB_PIN, HIGH );
-		delay( 3000 );
+		delay( 10000 );
 	}
 
 	return 0;
