@@ -6,7 +6,7 @@
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 
-#include "../../../SparkFun_TMP117_Arduino_Library/src/SparkFun_TMP117_Registers.h"
+#include "../../third_party/SparkFun_TMP117_Arduino_Library/src/SparkFun_TMP117_Registers.h"
 
 using namespace std;
 
