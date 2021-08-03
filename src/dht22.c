@@ -7,6 +7,7 @@
 #include <wiringPi.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdio.h>
 #define MAX_TIMINGS	85
 #define DHT_PIN		3	/* GPIO-22 */
 
@@ -79,7 +80,7 @@ int dht22_get_data( float *temp, float *humid ) {
 
 	}else  {
 		ret = -1;
-		clog << "Data from dht22 is not good." << endl;
+		fprintf( stdout, "Data from dht22 is not good.\n" );
 	}
 
 	return ret;

@@ -5,6 +5,10 @@
 
 using namespace std;
 
+extern "C" {
+	extern int dht22_get_data( float *temp, float *humid );
+}
+
 void Dht22TempSensor::init() {
 	initialized = true;
 	return;

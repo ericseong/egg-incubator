@@ -7,6 +7,7 @@
 
 class Tmp117TempSensor : public TempSensor {
 	bool initialized;
+	int deviceFd;
 public: 
 	Tmp117TempSensor() : initialized(false) {}
 	~Tmp117TempSensor() { initialized = false; }

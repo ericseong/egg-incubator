@@ -2,11 +2,12 @@
 // Tmp117TempSensor.cpp
 // how to build: -lwiringPi is required
 
+#include <cstring>
 #include <iostream>
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include "Tmp117TempSensor.h"
-#include "../../third_party/SparkFun_TMP117_Arduino_Library/src/SparkFun_TMP117_Registers.h"
+#include "../third_party/SparkFun_TMP117_Arduino_Library/src/SparkFun_TMP117_Registers.h"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ void Tmp117TempSensor::init() {
 	}
 
 	initialized = true;
+	deviceFd = fd;
 	return;
 };
 
@@ -37,19 +39,19 @@ int Tmp117TempSensor::get( float *data ) {
 		// FIXME!
 	}
 
-	short raw_data = wiringPiI2CReadReg16( fd, TMP117_TEMP_RESULT );
-	if( raw_data == -1 ) {
+	short rawData = wiringPiI2CReadReg16( deviceFd, TMP117_TEMP_RESULT );
+	if( rawData == -1 ) {
 		clog << "i2c read failed." << endl;
 		ret = -1;
 		// FIXME!
 	}
 
-	short data = SWAP_BYTE(raw_data);
+	short d = SWAP_BYTE(rawData);
 	float temp;
-	if( data & 0x8000 ) { // negative degrees
-		temp = -256.0 + ( data & 0x7fff ) * TEMP_RES;
+	if( d & 0x8000 ) { // negative degrees
+		temp = -256.0 + ( d & 0x7fff ) * TEMP_RES;
 	} else {
-		temp = data * TEMP_RES;
+		temp = d * TEMP_RES;
 	}
 
 	*data = temp;
