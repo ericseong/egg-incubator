@@ -1,0 +1,8 @@
+s1: start date (ex. 1 == 1st day)
+s2: end date
+t1: temperature low limit in celcius
+t2: temperature high limit
+h1: humidity low limit in % 
+h2: humidity high limit
+af: air flow in %
+ro: rolling interval in sececonds
