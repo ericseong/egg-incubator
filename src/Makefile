@@ -1,11 +1,12 @@
 OUT_DIR = build
 TARGET = $(OUT_DIR)/a.out
 
-C++ = c++
+C++ = g++
+C = gcc
 RM = rm -f
 SED = sed
 MAKEDEPEND = $(C++) -MM # generate dependency without mentioning system header directories
-CFLAGS =
+CPPFLAGS = -Wall -std=c++14
 LDFLAGS = -lpthread -lwiringPi
 
 SRCS = $(wildcard *.cpp)
