@@ -3,9 +3,9 @@
 #ifndef __DHT22HUMIDSENSOR_H__
 #define __DHT22HUMIDSENSOR_H__ 
 
-#include "HumidSensor.h"
+#include "Sensor.h"
 
-class Dht22HumidSensor : public HumidSensor {
+class Dht22HumidSensor : public Sensor {
 	bool initialized;
 public:
 	Dht22HumidSensor() : initialized(false) {}

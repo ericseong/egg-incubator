@@ -3,9 +3,9 @@
 #ifndef __DHT22TEMPSENSOR_H__
 #define __DHT22TEMPSENSOR_H__ 
 
-#include "TempSensor.h"
+#include "Sensor.h"
 
-class Dht22TempSensor : public TempSensor {
+class Dht22TempSensor : public Sensor {
 	bool initialized;
 
 public: 

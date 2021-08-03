@@ -3,9 +3,9 @@
 #ifndef __TMP117TEMPSENSOR_H__
 #define __TMP117TEMPSENSOR_H__ 
 
-#include "TempSensor.h"
+#include "Sensor.h"
 
-class Tmp117TempSensor : public TempSensor {
+class Tmp117TempSensor : public Sensor {
 	bool initialized;
 	int deviceFd;
 public: 
