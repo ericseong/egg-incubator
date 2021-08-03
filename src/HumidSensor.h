@@ -6,7 +6,7 @@
 class HumidSensor {
 
 public:
-	virtual ~HumidSensor();
+	virtual ~HumidSensor() {}
 	virtual void init() = 0;
 	virtual int get( float *data ) = 0;
 };

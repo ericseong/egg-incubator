@@ -3,9 +3,10 @@
 #include "Dht22HumidSensor.h"
 using namespace std;
 
-extern "C" {
-	extern int dht22_get_data( float *temp, float *humid );
-}
+//extern "C" {
+//	extern int dht22_get_data( float *temp, float *humid );
+//}
+extern int dht22_get_data( float *temp, float *humid );
 
 void Dht22HumidSensor::init() {
 	initialized = true;

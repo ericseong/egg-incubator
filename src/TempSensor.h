@@ -6,7 +6,7 @@
 class TempSensor {
 
 public:
-	virtual ~TempSensor();
+	virtual ~TempSensor() {}
 	virtual void init() = 0; 
 	virtual int get( float *data ) = 0;
 };

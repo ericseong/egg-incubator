@@ -2,7 +2,6 @@ OUT_DIR = build
 TARGET = $(OUT_DIR)/a.out
 
 C++ = g++
-C = gcc
 RM = rm -f
 SED = sed
 MAKEDEPEND = $(C++) -MM # generate dependency without mentioning system header directories
@@ -16,22 +15,22 @@ OBJS = $(addprefix $(OUT_DIR)/, $(SRCS:.cpp=.o))
 all: $(TARGET)
 
 clean:
-  $(RM) *.o ~* *.bak
-  $(RM) $(OUT_DIR)/*
+	$(RM) *.o ~* *.bak
+	$(RM) $(OUT_DIR)/*
 
 $(TARGET) : $(OBJS)
-  $(C++) $(LDFLAGS) $^ -o $@
+	$(C++) $(LDFLAGS) $^ -o $@
 
 $(OUT_DIR)/%.o : $(OUT_DIR)/%.d
-  $(C++) -c $(CFLAGS) $*.cpp -o $@
+	$(C++) -c $(CFLAGS) $*.cpp -o $@
 
 DEPS = $(addprefix $(OUT_DIR)/, $(SRCS:.cpp=.d))
 
 $(OUT_DIR)/%.d : %.cpp
-  @set -e; $(RM) $@; \
-  $(MAKEDEPEND) $(CFLAGS) $< > $@.$$$$; \
-  $(SED) 's/^/$(OUT_DIR)\//g' < $@.$$$$ > $@; \
-  $(RM) $@.$$$$
+	@set -e; $(RM) $@; \
+	$(MAKEDEPEND) $(CFLAGS) $< > $@.$$$$; \
+	$(SED) 's/^/$(OUT_DIR)\//g' < $@.$$$$ > $@; \
+	$(RM) $@.$$$$
 
 # do not delete!
 -include $(DEPS)
