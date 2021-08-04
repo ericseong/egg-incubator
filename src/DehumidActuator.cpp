@@ -1,63 +1,65 @@
-// AirFlowActuator.cpp
+// DehumidActuator.cpp
 //
 
 #include <wiringPi.h>
 #include <softPwm.h>
 #include "Gpio.h"
-#include "AirFlowActuator.h"
+#include "DehumidActuator.h"
 
 using namespace std;
 
-void AirFlowActuator::init() {
+void DehumidActuator::init() {
 	if( _initialized )
 		return;
 
 	Gpio& gpio = Gpio::getInstance();
 	gpio.init();
 
-	if( softPwmCreate( PWMFAN1_PIN, PWM_RANGE1, PWM_RANGE1 ) )
+	if( softPwmCreate( PWMFAN2_PIN, PWM_RANGE2, PWM_RANGE2 ) )
 		cerr << "softPwmCreate() failed." << endl;
 	else
 		_initialized = true;
 
 	return;
 }
-void AirFlowActuator::start() {
+
+void DehumidActuator::start() {
 	if( !_initialized )
 		return;
 	
-	_level = ( LEVEL_50 / ON * PWM_RANGE1 ) % PWM_RANGE1;
-	if( softPwmWrite( PWMFAN1_PIN, (PWM_RANGE1 - _level) ) )
+	_level = ( ON / ON * PWM_RANGE2 ) % PWM_RANGE2;
+	if( softPwmWrite( PWMFAN2_PIN, ( PWM_RANGE2 - _level ) ) )
 		cerr << "softPwmWrite() failed." << endl;
 
 	delay(1);
 	return;
 }	
 
-void AirFlowActuator::start( level_t level ) {
+void DehumidActuator::start( level_t level ) {
 	if( !_initialized )
 		return;
 
-	_level = ( level / ON * PWM_RANGE1 ) % PWM_RANGE1;
-	if( softPwmWrite( PWMFAN1_PIN, ( PWM_RANGE1 - _level ) ) )
-		cerr << "softPwmWrite() failed." << endl;
-
-	delay(1);
-	return;
-}
-void AirFlowActuator::stop() {
-	if( !_initialized )
-		return;
-
-	_level = ( OFF / ON * PWM_RANGE1 ) % PWM_RANGE1;
-	if( softPwmWrite( PWMFAN1_PIN, ( PWM_RANGE1 - _level ) ) )
+	_level = ( level / ON * PWM_RANGE2 ) % PWM_RANGE2; 
+	if( softPwmWrite( PWMFAN2_PIN, ( PWM_RANGE2 - _level ) ) )
 		cerr << "softPwmWrite() failed." << endl;
 
 	delay(1);
 	return;
 }
 
-level_t AirFlowActuator::get() {
+void DehumidActuator::stop() {
+	if( !_initialized )
+		return;
+
+	_level = ( OFF / ON * PWM_RANGE2 ) % PWM_RANGE2;;
+	if( softPwmWrite( PWMFAN2_PIN, ( PWM_RANGE2 - _level ) ) )
+		cerr << "softPwmWrite() failed." << endl;
+
+	delay(1);
+	return;
+}
+
+level_t DehumidActuator::get() {
 	if( !_initialized ) 
 		return INVALID
 

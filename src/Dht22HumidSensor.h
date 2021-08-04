@@ -6,10 +6,11 @@
 #include "Sensor.h"
 
 class Dht22HumidSensor : public Sensor {
-	bool initialized;
+	bool _initialized;
+
 public:
-	Dht22HumidSensor() : initialized(false) {}
-	~Dht22HumidSensor() { initialized = false; }
+	Dht22HumidSensor() : _initialized(false) {}
+	~Dht22HumidSensor() { _initialized = false; }
 	void init();
 	int get( float *data );
 };
