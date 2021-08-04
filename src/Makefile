@@ -22,13 +22,13 @@ $(TARGET) : $(OBJS)
 	$(C++) $(LDFLAGS) $^ -o $@
 
 $(OUT_DIR)/%.o : $(OUT_DIR)/%.d
-	$(C++) -c $(CFLAGS) $*.cpp -o $@
+	$(C++) -c $(CPPFLAGS) $*.cpp -o $@
 
 DEPS = $(addprefix $(OUT_DIR)/, $(SRCS:.cpp=.d))
 
 $(OUT_DIR)/%.d : %.cpp
 	@set -e; $(RM) $@; \
-	$(MAKEDEPEND) $(CFLAGS) $< > $@.$$$$; \
+	$(MAKEDEPEND) $(CPPFLAGS) $< > $@.$$$$; \
 	$(SED) 's/^/$(OUT_DIR)\//g' < $@.$$$$ > $@; \
 	$(RM) $@.$$$$
 

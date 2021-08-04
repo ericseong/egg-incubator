@@ -2,6 +2,7 @@
 
 #ifndef __GPIO_H__
 #define __GPIO_H__ 
+#include "Singleton.h"
 
 // gpio pin numbering by wiringPi configuration 
 #define PWMFAN1_PIN 					26 /* GPIO-12 */
@@ -16,15 +17,13 @@
  * RTC module
  */
 
-template<typename T> class Singleton;
-
 class Gpio : public Singleton<Gpio> {
 	bool initialized;
 
 public:
 	Gpio() : initialized(false) {}
 	~Gpio() { initialized = false; }
-	init()
+	void init();
 };
 
 #endif

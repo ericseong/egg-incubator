@@ -16,7 +16,7 @@ public:
 	void start();
 	void stop();
 	level_t get();
-}
+};
 
 #endif
 

@@ -24,7 +24,7 @@ void RollerActuator::start() {
 		return;
 	
 	digitalWrite( RELAY_MOTOR_PIN, HIGH );
-	_level = ON;
+	_level = LEVEL_ON;
 	delay(1);
 	return;
 }	
@@ -34,14 +34,14 @@ void RollerActuator::stop() {
 		return;
 
 	digitalWrite( RELAY_MOTOR_PIN, LOW );
-	_level = OFF;
+	_level = LEVEL_OFF;
 	delay(1);
 	return;
 }
 
 level_t RollerActuator::get() {
 	if( !_initialized ) 
-		return INVALID
+		return LEVEL_INVALID;
 
 	return _level;
 } 

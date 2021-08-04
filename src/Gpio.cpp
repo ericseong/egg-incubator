@@ -7,7 +7,10 @@
 // gpio.init();
 
 #include <iostream>
+#include <wiringPi.h>
 #include "Gpio.h"
+
+using namespace std;
 
 void Gpio::init() {
 	if( initialized )

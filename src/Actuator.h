@@ -3,20 +3,11 @@
 #ifndef __ACTUATOR_H__
 #define __ACTUATOR_H__
 
-enum level_t {
-	OFF = 0,
-	LEVEL_10 = 10,
-	LEVEL_20 = 20,
-	LEVEL_30 = 30,
-	LEVEL_40 = 40,
-	LEVEL_50 = 50,
-	LEVEL_60 = 60,
-	LEVEL_70 = 70,
-	LEVEL_80 = 80,
-	LEVEL_90 = 90,
-	ON = 100,
-	INVALID = 0xffffffff
-};
+#define LEVEL_ON 100
+#define LEVEL_50 100
+#define LEVEL_OFF 0
+#define LEVEL_INVALID 0xffffffff 
+typedef unsigned level_t;
 
 class Actuator {
 public:

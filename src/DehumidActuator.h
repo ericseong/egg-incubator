@@ -17,7 +17,7 @@ public:
 	void start( level_t level );
 	void stop();
 	level_t get();
-}
+};
 
 #endif
 
