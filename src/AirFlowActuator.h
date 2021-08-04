@@ -6,16 +6,17 @@
 #include "Actuator.h"
 
 class AirFlowActuator : public Actuator {
-	ActStatus status;
+	bool initialized;
+	level_t _level;
 	
 public:
-	void set( ActStatus status );
-	ActStatus get();
+	AirFlowActuator() : initialized(false) {}
+	virtual ~AirFlowActuator() { initialized = false; }
+	void init();
 	void start();
-	void startHigh();
-	void startMid();
-	void startLow();
+	void start( level_t level );
 	void stop();
+	level_t get();
 }
 
 #endif

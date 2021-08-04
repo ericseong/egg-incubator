@@ -18,6 +18,9 @@ using namespace std;
 void Tmp117TempSensor::init() {
   int fd;
 
+	if( initialized )
+		return;
+
   fd = wiringPiI2CSetup(I2CADDR_TMP117);
 	if( fd == -1 ) {
 		cerr << "Can't open I2C device!" << endl;
@@ -35,15 +38,13 @@ int Tmp117TempSensor::get( float *data ) {
 
 	if( !initialized ) {
 		cerr << "Can't access i2c device before init()." << endl;
-		ret = -1;
-		// FIXME!
+		return -1;
 	}
 
 	short rawData = wiringPiI2CReadReg16( deviceFd, TMP117_TEMP_RESULT );
 	if( rawData == -1 ) {
 		clog << "i2c read failed." << endl;
-		ret = -1;
-		// FIXME!
+		return -1;
 	}
 
 	short d = SWAP_BYTE(rawData);

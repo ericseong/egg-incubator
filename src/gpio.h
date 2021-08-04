@@ -1,4 +1,4 @@
-// gpio pin configuration for rpi zero
+// Gpio.h 
 
 #ifndef __GPIO_H__
 #define __GPIO_H__ 
@@ -9,6 +9,23 @@
 #define RELAY_BULB_PIN 				21 /* GPIO-5 */
 #define RELAY_HUMIDIFIER_PIN 	22 /* GPIO-6 */
 #define RELAY_MOTOR_PIN 			27 /* GPIO-16 */
+
+/** TODO! Make sure that gpio pins used is not duplicately used in any of the following extension boards
+ * USB/Ethernet b/d 
+ * lcd HAT 
+ * RTC module
+ */
+
+template<typename T> class Singleton;
+
+class Gpio : public Singleton<Gpio> {
+	bool initialized;
+
+public:
+	Gpio() : initialized(false) {}
+	~Gpio() { initialized = false; }
+	init()
+};
 
 #endif
 
