@@ -1,5 +1,7 @@
+# This project is WIP!!!
+
 # Overview
-egg-incubator program.
+egg-incubator program. incubator.service will continuously monitor and control the environment. In case the service is not looping for some reasons, incubator-watchdog.service shall recover the session by rebooting the device. 
 
 # Install and run 
 
@@ -17,9 +19,10 @@ The following libraries has been installed during this project
 * WiringPi (requires to install from source)
 * i2c-tools
 
-Some useful info.
-* i2c address for TMP117: 0x48
-* i2c address for RTC module: 0x68 
-
+# Documents
+* Schematic is at doc/schematic.svg
+* SW design is at doc/sw_design.png 
+* Doxygen format document is at doc/doxygen
+ 
 // EOF
 
