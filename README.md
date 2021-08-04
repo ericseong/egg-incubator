@@ -18,6 +18,7 @@ The following libraries has been installed during this project
 * Git
 * WiringPi (requires to install from source)
 * i2c-tools
+* libjsoncpp-dev
 
 # Documents
 * Schematic is at doc/schematic.svg

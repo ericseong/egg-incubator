@@ -4,7 +4,7 @@
 #define __ACTUATOR_H__
 
 #define LEVEL_ON 100
-#define LEVEL_50 100
+#define LEVEL_50 50 
 #define LEVEL_OFF 0
 #define LEVEL_INVALID 0xffffffff 
 typedef unsigned level_t;
