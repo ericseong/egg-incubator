@@ -12,6 +12,13 @@
 #include "HeatActuator.h"
 #include "RollerActuator.h"
 
+// for signal handler
+#include <atomic>
+#include <chrono>
+#include <thread>
+#include <signal.h>
+#include <unistd.h>
+
 class Incubator : public Singleton<Incubator> {
 	Env &env;
 	Sensor *_pTempSensor;
@@ -25,7 +32,12 @@ class Incubator : public Singleton<Incubator> {
 public:
 	Incubator() {}
 	virtual ~Incubator() {}
-	void BreakableLoop() const;
+	void breakableLoop() const;
+
+	// for signal handling
+	static volatile sig_atomic_t do_break;
+	static atomic<bool> break_requested;
+	static void signalHandler( int signum );
 };
 
 #endif

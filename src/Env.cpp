@@ -4,7 +4,6 @@
 #include <fstream>
 #include "Env.h"
 
-const string cfgFileName( "config.json" );
 const string phaseNames[NUM_PHASES] = {
 	"warming-up",
 	"incubating",
@@ -86,7 +85,8 @@ void Env::_obj2Config( const Json::Value& session, config_t& cfg ) const {
 	return;
 }
 
-int Env::getConfig( config_t& cfg ) {
+// Get config to _cfg
+int Env::_readFromConfig() {
 	string text;
 
 	// read config file to a string
@@ -101,13 +101,35 @@ int Env::getConfig( config_t& cfg ) {
 	_str2Obj( text, obj ); 
 
 	// get config structure from the json obj
-	_obj2Config( obj["session"], cfg );
+	_obj2Config( obj["session"], _cfg );
 
 	return 0;
 }
 
+// get _cfg
+int Env::getConfig( config_t& cfg ) const {
+	if( !initialized ) {
+		cerr << "getConfig() failed.\n";
+		return -1;
+	}
+	cfg = _cfg;	
+	return 0;
+}
+
 // TODO!
-int Env::setConfig( config_t& cfg ) {
+// write _cfg to back to cfg file
+int Env::setConfig( const string cfgFileName ) const {
+	return 0;
+}
+
+int setUp( const string cfgFileName ) {
+	if( !initialized ) {
+		if( _getConfig() ) {
+			cerr << "_getConfig failed.\n";
+			return -1;
+		}
+	}
+
 	return 0;
 }
 

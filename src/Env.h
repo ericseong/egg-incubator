@@ -34,6 +34,7 @@ typedef struct _config {
 } config_t;
 
 class Env : public Singleton<Env> {
+	bool initialized;
 	string _text;
 	config_t _config;
 	int _readCfgFile( string& text ) const;
@@ -41,10 +42,13 @@ class Env : public Singleton<Env> {
 	void _objByPhaseName( const Json::Value& phases, const string& phaseName, Json::Value& objPhase ) const;
 	void _obj2Phase( const Json::Value& objPhase, phase_t& ph ) const;
 	void _obj2Config( const Json::Value& session, config_t& cfg ) const;
+	int _getConfig();
 public:
+	Env() : initialized(false) {}
 	virtual ~Env() {}
-	int getConfig( config_t& cfg );
-	int setConfig( config_t& cfg );
+	int setUp( const string cfgFileName );
+	int getConfig( config_t& cfg ) const;
+	int setConfig( const string cfgFileName ) const;
 };
 
 #endif
