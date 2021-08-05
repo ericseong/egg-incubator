@@ -35,7 +35,7 @@ int Incubator::_init() {
 	env = Env::getInstance();
 
 	if( env.setUp( cfgFileName ) ) {
-		cerr << env.setUp() failed.\n";
+		cerr << "env.setUp() failed.\n";
 		return -1;
 	}
 	
