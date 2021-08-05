@@ -16,27 +16,28 @@
 #include <atomic>
 #include <chrono>
 #include <thread>
+#include <cassert>
 #include <signal.h>
 #include <unistd.h>
 
 class Incubator : public Singleton<Incubator> {
-	Env &env;
+	Env *_env;
 	Sensor *_pTempSensor;
 	Sensor *_pHumidSensor;
 	Actuator *_pAirFlowActuator;
 	Actuator *_pDehumidActuator;
 	Actuator *_pHeatActuator;
 	Actuator *_pRollerActuator;
-	void _init();
-	void _deinit();
+	int _init();
+	int _deinit();
 public:
-	Incubator() {}
-	virtual ~Incubator() {}
+	Incubator();
+	virtual ~Incubator();
 	void breakableLoop() const;
 
 	// for signal handling
-	static volatile sig_atomic_t do_break;
-	static atomic<bool> break_requested;
+	static volatile sig_atomic_t doBreak;
+	static atomic<bool> breakRequested;
 	static void signalHandler( int signum );
 };
 

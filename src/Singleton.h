@@ -1,5 +1,8 @@
 // Singleton.h
 
+#ifndef __SINGLETON_H__
+#define __SINGLETON_H__
+ 
 template<typename T> class Singleton {
 private:
 	Singleton(const Singleton&) = delete;
@@ -13,5 +16,6 @@ public:
 	}
 };
 
+#endif
 // EOF
 

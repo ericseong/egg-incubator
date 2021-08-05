@@ -6,7 +6,7 @@
 #ifndef __ENV_H__
 #define __ENV_H__
 
-#include <json/json.h>
+#include <jsoncpp/json/json.h>
 #include <string>
 #include "Singleton.h"
 
@@ -34,19 +34,19 @@ typedef struct _config {
 } config_t;
 
 class Env : public Singleton<Env> {
-	bool initialized;
+	bool _initialized;
 	string _text;
 	config_t _config;
-	int _readCfgFile( string& text ) const;
+	int	_readConfig( const string& cfgFile );
+	int _readFromCfgFile( const string& cfgFile );
 	void _str2Obj( const string& str, Json::Value& obj ) const;
 	void _objByPhaseName( const Json::Value& phases, const string& phaseName, Json::Value& objPhase ) const;
 	void _obj2Phase( const Json::Value& objPhase, phase_t& ph ) const;
 	void _obj2Config( const Json::Value& session, config_t& cfg ) const;
-	int _getConfig();
 public:
-	Env() : initialized(false) {}
+	Env() : _initialized(false) {}
 	virtual ~Env() {}
-	int setUp( const string cfgFileName );
+	int setUp( const string& cfgFileName );
 	int getConfig( config_t& cfg ) const;
 	int setConfig( const string cfgFileName ) const;
 };

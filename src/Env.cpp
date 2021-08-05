@@ -1,7 +1,9 @@
 // Env.cpp
 
+#include <cstring>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include "Env.h"
 
 const string phaseNames[NUM_PHASES] = {
@@ -12,7 +14,7 @@ const string phaseNames[NUM_PHASES] = {
 };
 
 // read cfg file into text string
-int Env::_readCfgFile( string& text ) const {
+int Env::_readFromCfgFile( const string& cfgFileName ) {
 
   ifstream ifs( cfgFileName.c_str() );
   stringstream buf;
@@ -20,8 +22,8 @@ int Env::_readCfgFile( string& text ) const {
   buf << ifs.rdbuf();
 	ifs.close();
 
-  text = buf.str();
-  clog << text << endl;
+  _text = buf.str();
+  clog << _text << endl;
 	
 	return 0;
 }
@@ -85,12 +87,11 @@ void Env::_obj2Config( const Json::Value& session, config_t& cfg ) const {
 	return;
 }
 
-// Get config to _cfg
-int Env::_readFromConfig() {
-	string text;
+// Get config to _config 
+int Env::_readConfig( const string& cfgFile ) {
 
 	// read config file to a string
-	if( _readCfgFile( text ) ) {
+	if( _readFromCfgFile( cfgFile ) ) {
 		cerr << "Can't read from cfg file." << endl;
 		cerr << strerror( errno ) << endl;	
 		return -1;
@@ -98,38 +99,39 @@ int Env::_readFromConfig() {
 
 	// convert string to json obj
 	Json::Value obj;
-	_str2Obj( text, obj ); 
+	_str2Obj( _text, obj ); 
 
 	// get config structure from the json obj
-	_obj2Config( obj["session"], _cfg );
+	_obj2Config( obj["session"], _config );
 
 	return 0;
 }
 
-// get _cfg
+// get _config
 int Env::getConfig( config_t& cfg ) const {
-	if( !initialized ) {
+	if( !_initialized ) {
 		cerr << "getConfig() failed.\n";
 		return -1;
 	}
-	cfg = _cfg;	
+	cfg = _config;	
 	return 0;
 }
 
 // TODO!
-// write _cfg to back to cfg file
+// write _config to back to cfg file
 int Env::setConfig( const string cfgFileName ) const {
 	return 0;
 }
 
-int setUp( const string cfgFileName ) {
-	if( !initialized ) {
-		if( _getConfig() ) {
-			cerr << "_getConfig failed.\n";
+int Env::setUp( const string& cfgFileName ) {
+	if( !_initialized ) {
+		if( _readConfig( cfgFileName ) ) {
+			cerr << "_readConfig() failed.\n";
 			return -1;
 		}
 	}
 
+	_initialized = true;
 	return 0;
 }
 

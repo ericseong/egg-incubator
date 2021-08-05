@@ -11,7 +11,7 @@
 using namespace std;
 
 // my signal handler to break from monitoring loop
-static void Incubator::signalHandler( int signum ) {
+void Incubator::signalHandler( int signum ) {
 
 	if( signum == SIGTERM ) {
 		Incubator::doBreak = 1;
@@ -32,10 +32,10 @@ const string cfgFileName( "config.json" );
 int Incubator::_init() {
 
 	// read config file
-	env = Env::getInstance();
+	_env = &Env::getInstance();
 
-	if( env.setUp( cfgFileName ) ) {
-		cerr << "env.setUp() failed.\n";
+	if( _env->setUp( cfgFileName ) ) {
+		cerr << "_env->setUp() failed.\n";
 		return -1;
 	}
 	
@@ -55,9 +55,9 @@ int Incubator::_init() {
 	sigaction( SIGTERM, &action, NULL );
 	sigaction( SIGUSR1, &action, NULL );
 
-	Incubator::do_break = 0;
-	Incubator::break_requested = false; //std::atomic is safe, as long as it's lock-free
-	assert( break_requested.is_lock_free() );
+	Incubator::doBreak = 0;
+	Incubator::breakRequested = false; //std::atomic is safe, as long as it's lock-free
+	assert( breakRequested.is_lock_free() );
 
 	clog << "Incubator initialized.\n";
 	return 0;
@@ -92,7 +92,7 @@ Incubator::~Incubator() {
 
 void Incubator::breakableLoop() const {
 
-	while( !do_break && !break_requested.load() ) {
+	while( !doBreak && !breakRequested.load() ) {
 		// TODO! DO THE THINGS HERE!
 	
 		std::this_thread::sleep_for( std::chrono::seconds(1) );

@@ -6,7 +6,7 @@ RM = rm -f
 SED = sed
 MAKEDEPEND = $(C++) -MM # generate dependency without mentioning system header directories
 CPPFLAGS = -Wall -std=c++14
-LDFLAGS = -lpthread -lwiringPi
+LDFLAGS = -lpthread -lwiringPi -ljsoncpp
 
 SRCS = $(wildcard *.cpp)
 
