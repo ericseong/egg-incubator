@@ -13,6 +13,7 @@ public:
 	AirFlowActuator() : _initialized(false) {}
 	virtual ~AirFlowActuator() { _initialized = false; }
 	void init();
+	void deinit();
 	void start();
 	void start( level_t level );
 	void stop();

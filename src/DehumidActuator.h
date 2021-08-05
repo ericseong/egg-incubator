@@ -13,6 +13,7 @@ public:
 	DehumidActuator() : _initialized(false) {}
 	virtual ~DehumidActuator() { _initialized = false; }
 	void init();
+	void deinit();
 	void start();
 	void start( level_t level );
 	void stop();

@@ -24,6 +24,11 @@ void DehumidActuator::init() {
 	return;
 }
 
+void DehumidActuator::deinit() {
+	stop();
+	return;
+}
+
 void DehumidActuator::start() {
 	if( !_initialized )
 		return;

@@ -46,7 +46,7 @@ void Env::_str2Obj( const string& str, Json::Value& obj ) const {
 void Env::_objByPhaseName( const Json::Value& phases, const string& phaseName, Json::Value& objPhase ) const {
   for( const Json::Value& phase : phases ) {
     if( phase["name"].asString() == phaseName ) {
-      clog << phaseName << ": is found!" << endl;
+      clog << phaseName << " is found!" << endl;
       objPhase = phase;
     }
   }
@@ -90,7 +90,7 @@ int Env::getConfig( config_t& cfg ) {
 	string text;
 
 	// read config file to a string
-	if( !_readCfgFile( text ) ) {
+	if( _readCfgFile( text ) ) {
 		cerr << "Can't read from cfg file." << endl;
 		cerr << strerror( errno ) << endl;	
 		return -1;

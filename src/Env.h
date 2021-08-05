@@ -18,10 +18,10 @@ typedef struct _phase {
 	string name;
 	unsigned startDate;
 	unsigned endDate;
-	unsigned tempLowerLimit;
-	unsigned tempHigherLimit;
-	unsigned humidLowerLimit;
-	unsigned humidHigherLimit;
+	float tempLowerLimit;
+	float tempHigherLimit;
+	float humidLowerLimit;
+	float humidHigherLimit;
 	unsigned airFlowLevel;
 	unsigned rollInterval;
 } phase_t;

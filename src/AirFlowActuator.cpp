@@ -25,6 +25,12 @@ void AirFlowActuator::init() {
 
 	return;
 }
+
+void AirFlowActuator::deinit() {
+	stop();
+	return;
+}
+
 void AirFlowActuator::start() {
 	if( !_initialized )
 		return;

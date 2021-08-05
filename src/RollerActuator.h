@@ -13,6 +13,7 @@ public:
 	RollerActuator() : _initialized(false) {}
 	virtual ~RollerActuator() { _initialized = false; }
 	void init();
+	void deinit();
 	void start();
 	void stop();
 	level_t get();
