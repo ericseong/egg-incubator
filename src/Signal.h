@@ -1,6 +1,6 @@
 // Signal.h
 
-#ifdef __SIGNAL_H__
+#ifndef __SIGNAL_H__
 #define __SIGNAL_H__
 
 #include <atomic>
@@ -15,9 +15,9 @@ class Signal {
 public:
 	// atomic variables for comm. between signal handler and a process
   static volatile sig_atomic_t atomicSigTerm;
-  static atomic<bool> atomicSigTerm_;
+  static std::atomic<bool> atomicSigTerm_;
   static volatile sig_atomic_t atomicSigUsr1;
-  static atomic<bool> atomicSigUsr1_;
+  static std::atomic<bool> atomicSigUsr1_;
 
 	// signal handler
   static void signalHandler( int signum );

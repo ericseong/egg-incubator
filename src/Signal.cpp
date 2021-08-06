@@ -34,7 +34,7 @@ void Signal::signalHandler( int signum ) {
   exit( signum );
 }
 
-void Signal::Signal() {
+Signal::Signal() {
   struct sigaction action;
   action.sa_handler = Signal::signalHandler;
   sigemptyset( &action.sa_mask );

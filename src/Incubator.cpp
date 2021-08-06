@@ -5,27 +5,35 @@
 
 #include <unistd.h>
 #include <iostream>
-#include "Env.h"
 #include "Incubator.h"
+#include "Tmp117TempSensor.h"
+#include "Dht22HumidSensor.h"
+#include "AirFlowActuator.h"
+#include "DehumidActuator.h"
+#include "HeatActuator.h"
+#include "RollerActuator.h"
 
 using namespace std;
 
 const string cfgFileName( "config.json" );
 
-int Incubator::_init() {
+void Incubator::init() {
+
+	if( _initialized )
+		return;
 
 	// init Env singleton
-	_env = &Env::getInstance();
-	if( !_env->setUp( cfgFileName ) ) {
-		cerr << "_env->setUp() failed.\n";
-		return -1;
+	_pEnv = &Env::getInstance();
+	if( !_pEnv->setUp( cfgFileName ) ) {
+		cerr << "_pEnv->setUp() failed.\n";
+		return;
 	}
 
 	// init SesssionTime singleton
-	_stime = &SessionTime::getInstance();
-	if( !_stime->init() ) {
-		cerr << "_stime->init() failed!.\n";
-		return -1;
+	_pStime = &SessionTime::getInstance();
+	if( !_pStime->init() ) {
+		cerr << "_pStime->init() failed!.\n";
+		return;
 	}
 	
 	// create instances for sensors and actuators
@@ -37,10 +45,14 @@ int Incubator::_init() {
 	_pRollerActuator =	new RollerActuator;
 
 	clog << "Incubator initialized.\n";
-	return 0;
+	_initialized = true;
+	return;
 }
 
-int Incubator::_deinit() {
+void Incubator::deinit() {
+	if( !_initialized )
+		return;
+
 	if( _pTempSensor )
 		delete _pTempSensor;
 	if( _pHumidSensor )
@@ -54,33 +66,37 @@ int Incubator::_deinit() {
 	if( _pRollerActuator )
 		delete _pRollerActuator;
 
-	_stime.deinit();
+	_pStime->deinit();
 
+	// stop all actuators! 
+	_pAirFlowActuator->stop();
+	_pDehumidActuator->stop();
+	_pHeatActuator->stop();
+	_pRollerActuator->stop();
+	
 	clog << "Incubator deinitialized.\n";
-	return 0;
+	_initialized = false;
+	return;
 }
 
-Incubator::Incubator() {
-	_init();
+void Incubator::_singleShot() {
+	return;
 }
 
-Incubator::~Incubator() {
-	_deinit();
-}
+void Incubator::mainProc() const {
 
-void Incubator::SingleShot() {
-}
+	while( !Signal::isSignaledTerm() ) {
 
-void Incubator::MainProc() const {
+		if( Signal::isSignaledUsr1() ) {
+			_pStime->deinit();
+			_pStime->init();
+		}
 
-	while( !Signal::isSignaledTerm ) {
 		// TODO! DO THE THINGS HERE!
 	
 		std::this_thread::sleep_for( std::chrono::seconds(1) );
 	}
 
-	// TODO! stop all actuators! 
-	
 	clog << "Incubator shutting down.\n";
 	return;
 }
@@ -90,8 +106,9 @@ int main() {
 	// create singleton incubator instance
 	Incubator& inc  = Incubator::getInstance();
 
-	// let's go
-	inc.MainProc();
+	inc.init();
+	inc.mainProc();
+	inc.deinit();
 
 	return 0;
 }
