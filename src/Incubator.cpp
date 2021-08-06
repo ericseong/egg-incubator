@@ -14,11 +14,17 @@ const string cfgFileName( "config.json" );
 
 int Incubator::_init() {
 
-	// read config file
+	// init Env singleton
 	_env = &Env::getInstance();
-
-	if( _env->setUp( cfgFileName ) ) {
+	if( !_env->setUp( cfgFileName ) ) {
 		cerr << "_env->setUp() failed.\n";
+		return -1;
+	}
+
+	// init SesssionTime singleton
+	_stime = &SessionTime::getInstance();
+	if( !_stime->init() ) {
+		cerr << "_stime->init() failed!.\n";
 		return -1;
 	}
 	
@@ -48,7 +54,8 @@ int Incubator::_deinit() {
 	if( _pRollerActuator )
 		delete _pRollerActuator;
 
-	// TODO! write _cfg into config file?
+	_stime.deinit();
+
 	clog << "Incubator deinitialized.\n";
 	return 0;
 }

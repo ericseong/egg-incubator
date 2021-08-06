@@ -24,6 +24,7 @@
 class Incubator : public Singleton<Incubator> {
 	Signal _sig;
 	Env *_env;
+	SessionTime *_stime;
 	Sensor *_pTempSensor;
 	Sensor *_pHumidSensor;
 	Actuator *_pAirFlowActuator;
