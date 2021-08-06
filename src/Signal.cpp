@@ -2,6 +2,11 @@
 
 #include "Signal.h"
 
+volatile sig_atomic_t Signal::atomicSigTerm{0};
+std::atomic<bool> Signal::atomicSigTerm_{false};
+volatile sig_atomic_t Signal::atomicSigUsr1{0};
+std::atomic<bool> Signal::atomicSigUsr1_{false};
+
 bool Signal::isSignaledTerm() {
 	if( Signal::atomicSigTerm || Signal::atomicSigTerm_.load() ) {
 		return true;
