@@ -35,7 +35,7 @@ class Incubator : public Singleton<Incubator> {
 public:
 	Incubator();
 	virtual ~Incubator();
-	void breakableLoop() const;
+	void MainProc() const;
 };
 
 #endif

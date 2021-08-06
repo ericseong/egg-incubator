@@ -87,7 +87,7 @@ void Env::_obj2Config( const Json::Value& session, config_t& cfg ) const {
 	return;
 }
 
-// Get config to _config 
+// Read from config file, parse json objects and store to _config 
 int Env::_readConfig( const string& cfgFile ) {
 
 	// read config file to a string
@@ -107,7 +107,7 @@ int Env::_readConfig( const string& cfgFile ) {
 	return 0;
 }
 
-// get _config
+// Simply get confit_t structure from object variable _config 
 int Env::getConfig( config_t& cfg ) const {
 	if( !_initialized ) {
 		cerr << "getConfig() failed.\n";
@@ -123,6 +123,7 @@ int Env::setConfig( const string cfgFileName ) const {
 	return 0;
 }
 
+// Read from config file, parse json objects and store to _config 
 int Env::setUp( const string& cfgFileName ) {
 	if( !_initialized ) {
 		if( _readConfig( cfgFileName ) ) {

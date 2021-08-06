@@ -61,9 +61,12 @@ Incubator::~Incubator() {
 	_deinit();
 }
 
-void Incubator::breakableLoop() const {
+void Incubator::SingleShot() {
+}
 
-	while( !Signal::doBreak && !Signal::breakRequested.load() ) {
+void Incubator::MainProc() const {
+
+	while( !Signal::isSignaledTerm ) {
 		// TODO! DO THE THINGS HERE!
 	
 		std::this_thread::sleep_for( std::chrono::seconds(1) );
@@ -81,7 +84,7 @@ int main() {
 	Incubator& inc  = Incubator::getInstance();
 
 	// let's go
-	inc.breakableLoop();
+	inc.MainProc();
 
 	return 0;
 }
