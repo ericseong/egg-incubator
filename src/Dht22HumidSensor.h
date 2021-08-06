@@ -12,6 +12,7 @@ public:
 	Dht22HumidSensor() : _initialized(false) {}
 	~Dht22HumidSensor() { _initialized = false; }
 	void init();
+	void deinit();
 	int get( float *data );
 };
 

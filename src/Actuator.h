@@ -13,6 +13,7 @@ class Actuator {
 public:
 	virtual ~Actuator() {}
 	virtual void init() = 0;
+	virtual void deinit() = 0;
 	virtual level_t get() = 0;
 	virtual void start() = 0;
 	virtual void stop() = 0;

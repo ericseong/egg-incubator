@@ -54,9 +54,20 @@ Signal::Signal() {
   Signal::atomicSigUsr1 = 0;
   Signal::atomicSigUsr1_ = false; //std::atomic is safe, as long as it's lock-free
   assert( atomicSigUsr1_.is_lock_free() );
+
+	return;
 }
 
-Signal::~Signal() {}
+Signal::~Signal() {
+	struct sigaction action;
+	action.sa_handler = SIG_DFL; // restore default handler 
+  sigemptyset( &action.sa_mask );
+  action.sa_flags = 0;
+  sigaction( SIGTERM, &action, NULL );
+  sigaction( SIGUSR1, &action, NULL );
+
+	return;
+}
 
 // EOF
 

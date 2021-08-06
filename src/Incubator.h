@@ -18,7 +18,7 @@
 
 class Incubator : public Singleton<Incubator> {
 	bool _initialized;
-	Signal _sig;
+	Signal *_pSig;
 	Env *_pEnv;
 	SessionTime *_pStime;
 	Sensor *_pTempSensor;

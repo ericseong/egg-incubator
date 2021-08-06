@@ -12,6 +12,7 @@ public:
 	Tmp117TempSensor() : initialized(false) {}
 	~Tmp117TempSensor() { initialized = false; }
 	void init();
+	void deinit();
 	int get( float *data );
 };
 

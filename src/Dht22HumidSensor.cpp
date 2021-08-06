@@ -17,6 +17,14 @@ void Dht22HumidSensor::init() {
 	return;
 }
 
+void Dht22HumidSensor::deinit() {
+	if( !_initialized )
+		return;
+
+	_initialized = false;
+	return;
+}
+
 int Dht22HumidSensor::get( float *data ) {
 	int ret = 0;
 	float temp, humid;

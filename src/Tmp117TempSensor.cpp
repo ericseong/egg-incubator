@@ -2,6 +2,7 @@
 // Tmp117TempSensor.cpp
 // how to build: -lwiringPi is required
 
+#include <unistd.h>
 #include <cstring>
 #include <iostream>
 #include <wiringPi.h>
@@ -32,6 +33,15 @@ void Tmp117TempSensor::init() {
 	deviceFd = fd;
 	return;
 };
+
+void Tmp117TempSensor::deinit() {
+	if( !initialized )
+		return;
+
+	close( deviceFd );
+	initialized = false;
+	return;
+}
 
 int Tmp117TempSensor::get( float *data ) {
 	int ret = 0;
