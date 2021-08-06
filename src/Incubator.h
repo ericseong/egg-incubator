@@ -1,4 +1,4 @@
-// Incubator.h
+/ Incubator.h
 
 #ifndef __INCUBATOR_H__
 #define __INCUBATOR_H__
@@ -21,6 +21,7 @@
 #include <unistd.h>
 
 class Incubator : public Singleton<Incubator> {
+	Signal _sig;
 	Env *_env;
 	Sensor *_pTempSensor;
 	Sensor *_pHumidSensor;
@@ -34,11 +35,6 @@ public:
 	Incubator();
 	virtual ~Incubator();
 	void breakableLoop() const;
-
-	// for signal handling
-	static volatile sig_atomic_t doBreak;
-	static atomic<bool> breakRequested;
-	static void signalHandler( int signum );
 };
 
 #endif

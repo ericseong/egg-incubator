@@ -10,23 +10,6 @@
 
 using namespace std;
 
-// my signal handler to break from monitoring loop
-void Incubator::signalHandler( int signum ) {
-
-	if( signum == SIGTERM ) {
-		Incubator::doBreak = 1;
-		Incubator::breakRequested = true;
-	}
-	if( signum == SIGUSR1 ) {
-		// TODO!!
-	}
-
-	const char str[] = "Signal received!\n";
-	write( STDERR_FILENO, str, sizeof(str)-1 ); // write is signal safe!
-	
-	exit( signum );
-}
-
 const string cfgFileName( "config.json" );
 
 int Incubator::_init() {
@@ -46,18 +29,6 @@ int Incubator::_init() {
 	_pDehumidActuator =	new DehumidActuator;
 	_pHeatActuator =		new HeatActuator;
 	_pRollerActuator =	new RollerActuator;
-
-	// for signal handling
-	struct sigaction action;
-	action.sa_handler = Incubator::signalHandler;
-	sigemptyset( &action.sa_mask );
-	action.sa_flags = 0;
-	sigaction( SIGTERM, &action, NULL );
-	sigaction( SIGUSR1, &action, NULL );
-
-	Incubator::doBreak = 0;
-	Incubator::breakRequested = false; //std::atomic is safe, as long as it's lock-free
-	assert( breakRequested.is_lock_free() );
 
 	clog << "Incubator initialized.\n";
 	return 0;
@@ -92,7 +63,7 @@ Incubator::~Incubator() {
 
 void Incubator::breakableLoop() const {
 
-	while( !doBreak && !breakRequested.load() ) {
+	while( !Signal::doBreak && !Signal::breakRequested.load() ) {
 		// TODO! DO THE THINGS HERE!
 	
 		std::this_thread::sleep_for( std::chrono::seconds(1) );
