@@ -3,6 +3,7 @@
 #ifndef __INCUBATOR_H__
 #define __INCUBATOR_H__
 
+#include "Signal.h"
 #include "Singleton.h"
 #include "Dht22HumidSensor.h"
 #include "Dht22TempSensor.h"
