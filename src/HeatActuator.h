@@ -7,16 +7,16 @@
 
 class HeatActuator : public Actuator {
 	bool _initialized;
-	unsigned _level;
+	//unsigned _level;
 	
 public:
 	HeatActuator() : _initialized(false) {}
 	virtual ~HeatActuator() { _initialized = false; }
 	void init();
 	void deinit();
-	void start();
-	void stop();
-	level_t get();
+	void on();
+	void off();
+	//level_t get();
 };
 
 #endif

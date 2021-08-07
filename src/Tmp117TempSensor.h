@@ -13,7 +13,7 @@ public:
 	~Tmp117TempSensor() { _initialized = false; }
 	void init();
 	void deinit();
-	int get( float *data ) const;
+	int get( float& data ) const;
 };
 
 #endif

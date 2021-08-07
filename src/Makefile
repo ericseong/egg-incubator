@@ -4,8 +4,10 @@ TARGET = $(OUT_DIR)/a.out
 C++ = g++
 RM = rm -f
 SED = sed
-MAKEDEPEND = $(C++) -MM # generate dependency without mentioning system header directories
-CPPFLAGS = -Wall -std=c++14
+#MAKEDEPEND = $(C++) -M
+# generate dependency without mentioning system header directories
+MAKEDEPEND = $(C++) -MM
+CPPFLAGS = -g -Wall -std=c++14
 LDFLAGS = -lpthread -lwiringPi -ljsoncpp
 
 SRCS = $(wildcard *.cpp)

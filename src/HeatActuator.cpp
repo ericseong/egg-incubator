@@ -20,38 +20,38 @@ void HeatActuator::init() {
 }
 
 void HeatActuator::deinit() {
-	stop();
+	off();
 	return;
 }
 
-void HeatActuator::start() {
+void HeatActuator::on() {
 	if( !_initialized )
 		return;
 	
 	digitalWrite( RELAY_BULB_PIN, HIGH );
-	_level = LEVEL_ON;
+	//_level = LEVEL_ON;
 
 	delay(1);
 	return;
 }	
 
-void HeatActuator::stop() {
+void HeatActuator::off() {
 	if( !_initialized )
 		return;
 
 	digitalWrite( RELAY_BULB_PIN, LOW );
-	_level = LEVEL_OFF;
+	//_level = LEVEL_OFF;
 
 	delay(1);
 	return;
 }
 
-level_t HeatActuator::get() {
-	if( !_initialized ) 
-		return LEVEL_INVALID;
+//level_t HeatActuator::get() {
+//	if( !_initialized ) 
+//		return LEVEL_INVALID;
 
-	return _level;
-} 
+//	return _level;
+//} 
 
 // EOF
 

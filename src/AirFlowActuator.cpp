@@ -27,11 +27,11 @@ void AirFlowActuator::init() {
 }
 
 void AirFlowActuator::deinit() {
-	stop();
+	off();
 	return;
 }
 
-void AirFlowActuator::start() {
+void AirFlowActuator::on() {
 	if( !_initialized )
 		return;
 	
@@ -52,7 +52,7 @@ void AirFlowActuator::start( level_t level ) {
 	delay(1);
 	return;
 }
-void AirFlowActuator::stop() {
+void AirFlowActuator::off() {
 	if( !_initialized )
 		return;
 

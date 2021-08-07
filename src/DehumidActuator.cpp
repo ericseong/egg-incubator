@@ -25,11 +25,11 @@ void DehumidActuator::init() {
 }
 
 void DehumidActuator::deinit() {
-	stop();
+	off();
 	return;
 }
 
-void DehumidActuator::start() {
+void DehumidActuator::on() {
 	if( !_initialized )
 		return;
 	
@@ -51,7 +51,7 @@ void DehumidActuator::start( level_t level ) {
 	return;
 }
 
-void DehumidActuator::stop() {
+void DehumidActuator::off() {
 	if( !_initialized )
 		return;
 

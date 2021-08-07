@@ -88,14 +88,15 @@ void Env::_obj2Config( const Json::Value& session, config_t& cfg ) const {
 	return;
 }
 
-// convert cfg to forms of formulas_t 
-void Env::_cfg2Formulas( config_t& cfg, formulas_t& forms ) const {
+// convert cfg to forms of vector<formula_t> 
+void Env::_cfg2Formulas( config_t& cfg, std::vector<formula_t>& forms ) const {
 	bool found;
 	unsigned day = 0;
 
 	while( day < cfg.days ) {
 		found = false;
-		for( int p =  0 ; p < MAX_PHASES ; p++ ) {
+		int p;
+		for( p =  0 ; p < NUM_PHASES ; p++ ) {
 			if( cfg.phases[p].header.startDate == day ) {
 				found = true;
 				break; // found	
@@ -106,7 +107,7 @@ void Env::_cfg2Formulas( config_t& cfg, formulas_t& forms ) const {
 			return;
 		}
 		while( day <= cfg.phases[p].header.endDate ) {
-			forms[day].pushback( cfg.phases[p].body );
+			forms.push_back( cfg.phases[p].body );
 			++day;
 		}
 	}
@@ -131,17 +132,18 @@ int Env::_readConfig( const string& cfgFile ) {
 	_obj2Config( obj["session"], _config );
 
 	// get formula per day
-	_cfg2Formulas( _config, _formulars );
+	_cfg2Formulas( _config, _formulas );
 	
 	// for debug
 	clog << "_formulas: \n";
-	for( int d ; d < _config.days ; d++ ) {
-		clog << "day " << d << ": " << "TL: " << _formulas[d].tempLowerLimit << ", "; 
-		clog << "day " << d << ": " << "TH: " << _formulas[d].tempHigherLimit << ", "; 
-		clog << "day " << d << ": " << "HL: " << _formulas[d].humidLowerLimit << ", "; 
-		clog << "day " << d << ": " << "HH: " << _formulas[d].humidHigherLimit << ", "; 
-		clog << "day " << d << ": " << "AF: " << _formulas[d].airFlowLevel\n << ", "; 
-		clog << "day " << d << ": " << "RI: " << _formulas[d].rollInterval\n << endl; 
+	for( unsigned d = 0 ; d < _config.days ; d++ ) {
+		clog << "day " << d << ": ";
+		clog << "TL: " << _formulas[d].tempLowerLimit << ", "; 
+		clog << "TH: " << _formulas[d].tempHigherLimit << ", "; 
+		clog << "HL: " << _formulas[d].humidLowerLimit << ", "; 
+		clog << "HH: " << _formulas[d].humidHigherLimit << ", "; 
+		clog << "AF: " << _formulas[d].airFlowLevel << ", "; 
+		clog << "RI: " << _formulas[d].rollInterval << endl; 
 	}
 
 	return 0;

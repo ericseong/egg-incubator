@@ -3,9 +3,7 @@
 #ifndef __SENSOR_H__
 #define __SENSOR_H__
 
-class Sensor {
-
-public:
+struct Sensor {
 	virtual ~Sensor() {}
 	virtual void init() = 0; 
 	virtual void deinit() = 0; 
