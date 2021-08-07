@@ -19,7 +19,7 @@ using namespace std;
 void Tmp117TempSensor::init() {
   int fd;
 
-	if( initialized )
+	if( _initialized )
 		return;
 
   fd = wiringPiI2CSetup(I2CADDR_TMP117);
@@ -29,24 +29,24 @@ void Tmp117TempSensor::init() {
 		return; // FIXME!
 	}
 
-	initialized = true;
+	_initialized = true;
 	deviceFd = fd;
 	return;
 };
 
 void Tmp117TempSensor::deinit() {
-	if( !initialized )
+	if( !_initialized )
 		return;
 
 	close( deviceFd );
-	initialized = false;
+	_initialized = false;
 	return;
 }
 
-int Tmp117TempSensor::get( float *data ) {
+int Tmp117TempSensor::get( float& data ) const {
 	int ret = 0;
 
-	if( !initialized ) {
+	if( !_initialized ) {
 		cerr << "Can't access i2c device before init()." << endl;
 		return -1;
 	}
@@ -65,7 +65,7 @@ int Tmp117TempSensor::get( float *data ) {
 		temp = d * TEMP_RES;
 	}
 
-	*data = temp;
+	data = temp;
 	return ret;
 };
 

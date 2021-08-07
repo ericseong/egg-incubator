@@ -121,5 +121,12 @@ inline time_t SessionTime::getElapsed() const {
 	return 0;
 }
 
+inline unsigned daysPassed() const {
+	time_t now;
+	time(&now);
+
+	return( (unsigned)((now-_start)/(3600*24)) );
+}	
+
 // EOF
 

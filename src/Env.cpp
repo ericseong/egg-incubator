@@ -6,6 +6,8 @@
 #include <sstream>
 #include "Env.h"
 
+using namespace std;
+
 const string phaseNames[NUM_PHASES] = {
 	"warming-up",
 	"incubating",
@@ -58,15 +60,15 @@ void Env::_objByPhaseName( const Json::Value& phases, const string& phaseName, J
 // convert phase (json obj) into phase (structure)
 void Env::_obj2Phase( const Json::Value& objPhase, phase_t& ph ) const {
 
-	ph.name = objPhase["name"].asString();
-	ph.startDate = objPhase["s1"].asUInt();
-	ph.endDate = objPhase["s2"].asUInt();
-	ph.tempLowerLimit = objPhase["t1"].asFloat();
-	ph.tempHigherLimit = objPhase["t2"].asFloat();
-	ph.humidLowerLimit = objPhase["h1"].asFloat();
-	ph.humidHigherLimit = objPhase["h2"].asFloat();
-	ph.airFlowLevel = objPhase["af"].asUInt();
-	ph.rollInterval = objPhase["ro"].asUInt();
+	ph.header.name = objPhase["name"].asString();
+	ph.header.startDate = objPhase["s1"].asUInt();
+	ph.header.endDate = objPhase["s2"].asUInt();
+	ph.body.tempLowerLimit = objPhase["t1"].asFloat();
+	ph.body.tempHigherLimit = objPhase["t2"].asFloat();
+	ph.body.humidLowerLimit = objPhase["h1"].asFloat();
+	ph.body.humidHigherLimit = objPhase["h2"].asFloat();
+	ph.body.airFlowLevel = objPhase["af"].asUInt();
+	ph.body.rollInterval = objPhase["ro"].asUInt();
 
 	return;
 }
@@ -75,7 +77,6 @@ void Env::_obj2Phase( const Json::Value& objPhase, phase_t& ph ) const {
 void Env::_obj2Config( const Json::Value& session, config_t& cfg ) const {
 	cfg.name = session["name"].asString();		
 	cfg.days = session["days"].asUInt();
-	cfg.maxDays = session["max_days"].asUInt();
 	
 	Json::Value phases = session["phases"];
 	Json::Value obj;
@@ -86,6 +87,31 @@ void Env::_obj2Config( const Json::Value& session, config_t& cfg ) const {
 
 	return;
 }
+
+// convert cfg to forms of formulas_t 
+void Env::_cfg2Formulas( config_t& cfg, formulas_t& forms ) const {
+	bool found;
+	unsigned day = 0;
+
+	while( day < cfg.days ) {
+		found = false;
+		for( int p =  0 ; p < MAX_PHASES ; p++ ) {
+			if( cfg.phases[p].header.startDate == day ) {
+				found = true;
+				break; // found	
+			}
+		}
+		if( !found ) { // something wrong!
+			cerr << "_cfg2Formulas(): Can't find phases.\n";
+			return;
+		}
+		while( day <= cfg.phases[p].header.endDate ) {
+			forms[day].pushback( cfg.phases[p].body );
+			++day;
+		}
+	}
+	return;
+}	
 
 // Read from config file, parse json objects and store to _config 
 int Env::_readConfig( const string& cfgFile ) {
@@ -104,6 +130,20 @@ int Env::_readConfig( const string& cfgFile ) {
 	// get config structure from the json obj
 	_obj2Config( obj["session"], _config );
 
+	// get formula per day
+	_cfg2Formulas( _config, _formulars );
+	
+	// for debug
+	clog << "_formulas: \n";
+	for( int d ; d < _config.days ; d++ ) {
+		clog << "day " << d << ": " << "TL: " << _formulas[d].tempLowerLimit << ", "; 
+		clog << "day " << d << ": " << "TH: " << _formulas[d].tempHigherLimit << ", "; 
+		clog << "day " << d << ": " << "HL: " << _formulas[d].humidLowerLimit << ", "; 
+		clog << "day " << d << ": " << "HH: " << _formulas[d].humidHigherLimit << ", "; 
+		clog << "day " << d << ": " << "AF: " << _formulas[d].airFlowLevel\n << ", "; 
+		clog << "day " << d << ": " << "RI: " << _formulas[d].rollInterval\n << endl; 
+	}
+
 	return 0;
 }
 
@@ -117,9 +157,24 @@ int Env::getConfig( config_t& cfg ) const {
 	return 0;
 }
 
-// TODO!
+// get the formula per day
+int Env::getFormula( unsigned day, formula_t& formula ) const {
+
+	if( !_initialized ) {
+		cerr << "getFormulas() failed.\n";
+		return -1;
+	}
+	formula = _formulas[day];
+	return 0;
+}
+
 // write _config to back to cfg file
 int Env::setConfig( const string cfgFileName ) const {
+	if( !_initialized ) {
+		cerr << "setConfig() failed.\n";
+		return -1;
+	}
+	// TODO! if needed.
 	return 0;
 }
 

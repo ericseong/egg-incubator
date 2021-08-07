@@ -27,13 +27,13 @@ class Incubator : public Singleton<Incubator> {
 	Actuator *_pDehumidActuator;
 	Actuator *_pHeatActuator;
 	Actuator *_pRollerActuator;
-	void _singleShot();
+	void _run const;
 public:
 	Incubator() : _initialized(false) {}
 	virtual ~Incubator() {}
 	void init();
 	void deinit();
-	void mainProc() const;
+	void runLoop() const;
 };
 
 #endif

@@ -6,14 +6,14 @@
 #include "Sensor.h"
 
 class Tmp117TempSensor : public Sensor {
-	bool initialized;
+	bool _initialized;
 	int deviceFd;
 public: 
-	Tmp117TempSensor() : initialized(false) {}
-	~Tmp117TempSensor() { initialized = false; }
+	Tmp117TempSensor() : _initialized(false) {}
+	~Tmp117TempSensor() { _initialized = false; }
 	void init();
 	void deinit();
-	int get( float *data );
+	int get( float *data ) const;
 };
 
 #endif

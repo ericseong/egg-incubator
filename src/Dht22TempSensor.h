@@ -12,7 +12,7 @@ public:
 	Dht22TempSensor() : _initialized(false) {}
 	~Dht22TempSensor() { _initialized = false; }
 	void init();
-	int get( float *data );
+	int get( float& data ) const;
 };
 
 #endif

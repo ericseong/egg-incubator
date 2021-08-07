@@ -23,6 +23,7 @@ public:
 	inline time_t getElapsed() const;
 	inline time_t getLast() const;
 	inline void setLast() const;
+	inline unsigned daysPassed() const;
 };
 
 #endif

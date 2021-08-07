@@ -13,7 +13,7 @@ public:
 	~Dht22HumidSensor() { _initialized = false; }
 	void init();
 	void deinit();
-	int get( float *data );
+	int get( float& data ) const;
 };
 
 #endif

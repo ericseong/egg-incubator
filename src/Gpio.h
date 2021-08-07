@@ -18,11 +18,11 @@
  */
 
 class Gpio : public Singleton<Gpio> {
-	bool initialized;
+	bool _initialized;
 
 public:
-	Gpio() : initialized(false) {}
-	~Gpio() { initialized = false; }
+	Gpio() : _initialized(false) {}
+	~Gpio() { _initialized = false; }
 	void init();
 };
 

@@ -17,7 +17,7 @@ void Dht22TempSensor::init() {
 	return;
 }
 
-int Dht22TempSensor::get( float *data ) {
+int Dht22TempSensor::get( float& data ) const {
 	int ret = 0;
 	float temp, humid;
 
@@ -25,7 +25,7 @@ int Dht22TempSensor::get( float *data ) {
 		return -1;
 
 	if( !dht22_get_data( &temp, &humid ) )
-		*data = temp;
+		data = temp;
 	else
 		ret = -1;
 
