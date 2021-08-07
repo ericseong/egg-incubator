@@ -61,19 +61,16 @@ inline time_t SessionTime::getStart() const {
 
 // set session start time tick
 void SessionTime::setStart() {
-	time_t now;
 
 	if( _initialized ) {
-		time( &now );
 		ofstream ofs( sBeginTimeName );
-		ofs << to_string( now );
+		ofs << to_string( getCurrent() );
 		ofs.close();
 	}
 
 	_start = now;
 	return;
 }
-
 
 // get current time tick
 inline time_t SessionTime::getCurrent() const {
@@ -100,13 +97,12 @@ inline time_t SessionTime::getLast() const {
 	return 0;
 }
 
-// set the last execution tick
+// set the last execution tick. 
+// not used as of now.
 inline void SessionTime::setLast() const {
-	time_t now;
-	time(&now);
 
   ofstream ofs(sLastTimeName);
-  ofs << to_string(now);
+  ofs << to_string( getCurrent() );
   ofs.close();
 
 	return;
@@ -115,17 +111,15 @@ inline void SessionTime::setLast() const {
 // get elapsed tick (one sec. /tick) since session start
 inline time_t SessionTime::getElapsed() const {
 	if( _initialized ) {
-		return ( getCurrent() - _start ); 
+		return ( getCurrent() - getStart() ); 
 	}
 
 	return 0;
 }
 
 inline unsigned daysPassed() const {
-	time_t now;
-	time(&now);
 
-	return( (unsigned)((now-_start)/(3600*24)) );
+	return( (unsigned)( getElapsed() / ( 3600*24) ) );
 }	
 
 // EOF

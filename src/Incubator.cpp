@@ -30,9 +30,9 @@ void Incubator::init() {
 	}
 
 	// Instantiate SesssionTime singleton
-	_pStime = &SessionTime::getInstance();
-	if( !_pStime->init() ) {
-		cerr << "_pStime->init() failed!.\n";
+	_pSTime = &SessionTime::getInstance();
+	if( !_pSTime->init() ) {
+		cerr << "_pSTime->init() failed!.\n";
 		return;
 	}
 
@@ -97,9 +97,9 @@ void Incubator::deinit() {
 		delete _pSig;
 	}
 
-	if( _pStime ) {
-		_pStime->deinit();
-		delete _pStime;
+	if( _pSTime ) {
+		_pSTime->deinit();
+		delete _pSTime;
 	}
 
 	clog << "Incubator deinitialized.\n";
@@ -116,7 +116,7 @@ void Incubator::_run() const {
 
 	// get the control formula from env
 	formula_t f;
-	if( _pEnv->getFormula( _pStime->dayPassed(), f ) ) {
+	if( _pEnv->getFormula( _pSTime->dayPassed(), f ) ) {
 	 cout << "Can't get formula.\n";	
 	 return;
 	}
@@ -125,47 +125,60 @@ void Incubator::_run() const {
 	float tm;
 	bool airFlowOverridden4TempControl = false;
 	if( !_pTempSensor->get( tm ) ) {
+		clog << "real-time temperature: " << tm << "oC" << '\n';
 		if( tm >= f.tempHigherLimit + 0.1 ) { // temperature too high
 			_pAirFlowActuator->start( LEVEL_ON );	
 			airFlowOverridden4TempControl = true;
+			clog << "airflow actuator ON and airflow is overridden." << '\n';
 		}
-		if( tm >= f.tempHigherLimit )
+		if( tm >= f.tempHigherLimit ) {
 			_pHeatActuator->stop();
-		else if( tm <= f.tempLowerLimit )
+			clog << "heat actuator OFF." << '\n';
+		}
+		else if( tm <= f.tempLowerLimit ) {
 			_pHeatActuator->start();
+			clog << "heat actuator ON." << '\n';
+		}
 		else {
 			_pHeatActuator->stop();
 			_pAirFlowActuator->start( f.airFlowLevel );
 			airFlowOverridden4TempControl = false;
+			clog << "heat actuator level: " << f.airFlowLevel << "and overridden airflow is released." << '\n';
 		}
 	}
 
 	// humidity control 
 	float th;
 	if( !_pHumidSensor->get( th ) ) {
-		if( th >= f.humidHigherLimit )
+		clog << "real-time humidity: " << tm << "%" << '\n';
+		if( th >= f.humidHigherLimit ) {
 			_pDehumidActuator->start( LEVEL_ON );
-		else
+			clog << "dehumid actuator ON." << '\n';
+		}
+		else {
 			_pDehumidActuator->stop();
+			clog << "dehumid actuator OFF." << '\n';
+		}
 	}
 
 	// air flow control
 	if( !airFlowOverridden4TempControl ) {
 		_pAirFlowActuator->start( f.airFlowLevel );
+		clog << "heat actuator level: " << f.airFlowLevel << '\n';
 	}
 	
 	return;
 }
 
 // single shot for roller control
-// TODO! better run this in a separate thread.
+// TODO! better run as a separate thread.
 void Incubator::_run4Roller() const {
 
 	if( !_initialized )
 		return;
 
 	formula_t f;
-	if( _pEnv->getFormula( _pStime->dayPassed(), f ) )
+	if( _pEnv->getFormula( _pSTime->dayPassed(), f ) )
 		return;
 
 	static time_t stamp{0};
@@ -175,9 +188,11 @@ void Incubator::_run4Roller() const {
 	} else {
 		time( &now );
 		if( (now-stamp) > f.rollInterval ) {
-			_pRollerActuator->start();	
+			clog << "roller actuator starts." << '\n';
+			_pRollerActuator->start();
 			this_thread::sleep_for( std::chrono::milliseconds(6000) );
 			_pRollerActuator->stop();	
+			clog << "roller actuator ends." << '\n';
 			time( &stamp );
 		}	
 	}
@@ -187,32 +202,44 @@ void Incubator::_run4Roller() const {
 
 // loop for incubator control
 void Incubator::runLoop() const {
+	static unsigned count =  0;
 
 	if( !_initialized )
 		return;
 
 	while( !Signal::isSignaledTerm() ) {
 		if( Signal::isSignaledUsr1() ) {
-			_pStime->deinit();
-			_pStime->init();
+			_pSTime->deinit();
+			_pSTime->init();
+			clog << "Incubator got SIGUSR1 and session time is reinitialized.\n";
 		}
 
 		_run();
 		_run4Roller();
 
-		this_thread::sleep_for( std::chrono::seconds(5) );
+		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.
+		this_thread::sleep_for( std::chrono::milliseconds(3000) );
+		count++;
+		clog << "runLoop() with count: " << count << '\n';
 	}
 
-	// only get here by SIGTERM
-	clog << "Incubator shutting down.\n";
+	// will get here only by SIGTERM
+	clog << "Incubator got SIGTERM and is shutting down.\n";
 
 	return;
 }
 
-int main() {
-
+int main( int argc, char *argv[] ) {
+ 
 	// create singleton incubator instance
 	Incubator& inc  = Incubator::getInstance();
+
+	// for new session 
+	if( argc == 2 ) {
+		string arg = argv[1];
+		if( arg.compare( "--new-session" ) == 0 )
+			inc._pSTime->setStart();
+	}
 
 	inc.init();
 	inc.runLoop();
