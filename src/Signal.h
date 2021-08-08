@@ -25,6 +25,8 @@ public:
 	// helper
 	static bool isSignaledTerm();
 	static bool isSignaledUsr1();	
+  static void resetSignalTerm();
+  static void resetSignalUsr1();
 
 	Signal();
 	virtual ~Signal();

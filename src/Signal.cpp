@@ -16,12 +16,24 @@ bool Signal::isSignaledTerm() {
 	return false;
 }
 
+void Signal::resetSignalTerm() {
+	Signal::atomicSigTerm = false;
+	Signal::atomicSigTerm_ = 0;
+	return;
+}
+
 bool Signal::isSignaledUsr1() {
 	if( Signal::atomicSigUsr1 || Signal::atomicSigUsr1_.load() ) {
 		std::clog << "Got SIGUSR1.\n";
 		return true;
 	}
 	return false;
+}
+
+void Signal::resetSignalUsr1() {
+	Signal::atomicSigUsr1 = false;
+	Signal::atomicSigUsr1_ = 0;
+	return;
 }
 
 // my signal handler to break from monitoring loop

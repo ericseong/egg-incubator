@@ -137,10 +137,13 @@ void Incubator::_run() const {
 
 	// get the control formula from env
 	formula_t f;
-
-	if( _pEnv->getFormula( _pSTime->daysPassed(), f ) ) {
+	unsigned daysPassed = _pSTime->daysPassed();
+	
+	if( _pEnv->getFormula( daysPassed, f ) ) {
 	 cerr << "Can't get formula.\n";
 	 return;
+	} else {
+		cout << "### Days passed: " << daysPassed << endl;
 	}
 	
 	// temperature control 
@@ -234,6 +237,7 @@ void Incubator::runLoop() const {
 		if( Signal::isSignaledUsr1() ) {
 			_pSTime->deinit();
 			_pSTime->init();
+			Signal::resetSignalUsr1();
 			clog << "Incubator got SIGUSR1 and session time is reinitialized.\n";
 		}
 
@@ -255,6 +259,7 @@ void Incubator::runLoop() const {
 	}
 
 	// will get here only by SIGTERM
+	Signal::resetSignalTerm(); // needed?
 	clog << "Incubator got SIGTERM and is shutting down.\n";
 
 	return;
