@@ -162,6 +162,12 @@ int Env::getFormula( unsigned day, formula_t& formula ) const {
 	return 0;
 }
 
+// get maxday
+int Env::getMaxDay( unsigned& maxDay ) {
+	maxDay = _config.days; 
+	return 0;
+}
+
 // write _config to back to cfg file
 int Env::setConfig( const string cfgFileName ) const {
 	// TODO! if needed.

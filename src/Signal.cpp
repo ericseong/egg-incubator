@@ -1,5 +1,6 @@
 // Signal.cpp
 
+#include <iostream>
 #include "Signal.h"
 
 volatile sig_atomic_t Signal::atomicSigTerm{0};
@@ -9,6 +10,7 @@ std::atomic<bool> Signal::atomicSigUsr1_{false};
 
 bool Signal::isSignaledTerm() {
 	if( Signal::atomicSigTerm || Signal::atomicSigTerm_.load() ) {
+		std::clog << "Got SIGTERM.\n";
 		return true;
 	}
 	return false;
@@ -16,6 +18,7 @@ bool Signal::isSignaledTerm() {
 
 bool Signal::isSignaledUsr1() {
 	if( Signal::atomicSigUsr1 || Signal::atomicSigUsr1_.load() ) {
+		std::clog << "Got SIGUSR1.\n";
 		return true;
 	}
 	return false;
@@ -23,20 +26,20 @@ bool Signal::isSignaledUsr1() {
 
 // my signal handler to break from monitoring loop
 void Signal::signalHandler( int signum ) {
-
   if( signum == SIGTERM ) {
 		Signal::atomicSigTerm = 1;
 		Signal::atomicSigTerm_ = true;
+  	const char str[] = "SIGTERM received!\n";
+  	write( STDERR_FILENO, str, sizeof(str)-1 ); // write is signal safe!
   }
   if( signum == SIGUSR1 ) {
 		Signal::atomicSigUsr1 = 1;
 		Signal::atomicSigUsr1_ = true;
+  	const char str[] = "SIGUSR1 received!\n";
+  	write( STDERR_FILENO, str, sizeof(str)-1 ); // write is signal safe!
   }
-
-  const char str[] = "Signal received!\n";
-  write( STDERR_FILENO, str, sizeof(str)-1 ); // write is signal safe!
-
-  exit( signum );
+	return;
+  //exit( signum );
 }
 
 Signal::Signal() {

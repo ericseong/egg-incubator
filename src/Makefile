@@ -1,5 +1,5 @@
 OUT_DIR = build
-TARGET = $(OUT_DIR)/a.out
+TARGET = $(OUT_DIR)/egg-incubator
 
 C++ = g++
 RM = rm -f

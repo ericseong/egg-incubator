@@ -31,6 +31,8 @@ void DehumidActuator::deinit() {
 		return;
 
 	off();
+	softPwmStop ( PWMFAN2_PIN );
+
 	Gpio& gpio = Gpio::getInstance();
 	gpio.deinit();
   _initialized = false;

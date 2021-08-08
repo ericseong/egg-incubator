@@ -31,6 +31,9 @@ void AirFlowActuator::deinit() {
 		return;
 
 	off();
+
+	softPwmStop ( PWMFAN1_PIN );
+
 	Gpio& gpio = Gpio::getInstance();
 	gpio.deinit();
 	_initialized = false;

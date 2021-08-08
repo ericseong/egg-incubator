@@ -46,17 +46,17 @@ void Incubator::init() {
 	_pHumidSensor = 		new Dht22HumidSensor();
 	_pHumidSensor->init();
 
-	_pAirFlowActuator =	new AirFlowActuator();
-	_pAirFlowActuator->init();
-
-	_pDehumidActuator =	new DehumidActuator();
-	_pDehumidActuator->init();
-
 	_pHeatActuator =		new HeatActuator();
 	_pHeatActuator->init();
 
 	_pRollerActuator =	new RollerActuator();
 	_pRollerActuator->init();
+
+	_pAirFlowActuator =	new AirFlowActuator();
+	_pAirFlowActuator->init();
+
+	_pDehumidActuator =	new DehumidActuator();
+	_pDehumidActuator->init();
 
 	clog << "Incubator initialized.\n";
 	_initialized = true;
@@ -71,35 +71,48 @@ void Incubator::deinit() {
 	if( _pTempSensor ) {
 		_pTempSensor->deinit();	
 		delete _pTempSensor;
+		clog << "_pTempSensor is deinitialized.\n";
 	}
 	if( _pHumidSensor ) {
 		_pHumidSensor->deinit();	
 		delete _pHumidSensor;
+		clog << "_pHumidSensor is deinitialized.\n";
 	}
 	if( _pAirFlowActuator ) { 
 		_pAirFlowActuator->deinit();	
 		delete _pAirFlowActuator;
+		clog << "_pAirFlowActuator is deinitialized.\n";
 	}
 	if( _pDehumidActuator ) {
 		_pDehumidActuator->deinit();	
 		delete _pDehumidActuator;
+		clog << "_pDehumidActuator is deinitialized.\n";
 	}
 	if( _pHeatActuator ) {
 		_pHeatActuator->deinit();	
 		delete _pHeatActuator;
+		clog << "_pHeatActuator is deinitialized.\n";
 	}
 	if( _pRollerActuator ) {
 		_pRollerActuator->deinit();	
 		delete _pRollerActuator;
-	}
-
-	if( _pSig ) {
-		delete _pSig;
+		clog << "_pRollerActuator is deinitialized.\n";
 	}
 
 	if( _pSTime ) {
 		_pSTime->deinit();
-		delete _pSTime;
+		//delete _pSTime; // singleton shall be destroyed at program exit.
+		clog << "_pSTime is deinitialized.\n";
+	}
+
+	if( _pEnv ) {
+		//delete _pEnv; // singleton shall be destroyed at program exit.
+		clog << "_pEnv is deinitialized.\n";
+	}
+
+	if( _pSig ) {
+		//delete _pSig; // singleton shall be destroyed at program exit.
+		clog << "_pSig is deinitialized.\n";
 	}
 
 	clog << "Incubator deinitialized.\n";
@@ -124,7 +137,7 @@ void Incubator::_run() const {
 
 	// get the control formula from env
 	formula_t f;
-	//clog << "_pST->daysPassed(): " << _pSTime->daysPassed() << endl;
+
 	if( _pEnv->getFormula( _pSTime->daysPassed(), f ) ) {
 	 cerr << "Can't get formula.\n";
 	 return;
@@ -187,6 +200,7 @@ void Incubator::_run4Roller() const {
 		return;
 
 	formula_t f;
+	
 	if( _pEnv->getFormula( _pSTime->daysPassed(), f ) )
 		return;
 
@@ -211,7 +225,7 @@ void Incubator::_run4Roller() const {
 
 // loop for incubator control
 void Incubator::runLoop() const {
-	static unsigned count =  0;
+	static unsigned runCount =  0;
 
 	if( !_initialized )
 		return;
@@ -223,13 +237,21 @@ void Incubator::runLoop() const {
 			clog << "Incubator got SIGUSR1 and session time is reinitialized.\n";
 		}
 
+		unsigned daysPassed = _pSTime->daysPassed();
+		unsigned maxDay;
+		_pEnv->getMaxDay( maxDay );
+		if( daysPassed >= maxDay ) {
+			clog << "Max day passed: " << "maxDay: " << maxDay << ", " << "daysPassed: " << daysPassed << endl;
+			return;
+		}
+
 		_run();
 		_run4Roller();
 
 		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.
 		this_thread::sleep_for( std::chrono::milliseconds(3000) );
-		count++;
-		clog << "runLoop() with count: " << count << "\n\n";
+		runCount++;
+		clog << "runLoop() with count: " << runCount << "\n\n";
 	}
 
 	// will get here only by SIGTERM

@@ -57,6 +57,7 @@ public:
 	int getConfig( config_t& cfg ) const;
 	int setConfig( const std::string cfgFileName ) const;
 	int getFormula( unsigned day, formula_t& formula ) const;   
+	int getMaxDay( unsigned& maxDay );
 };
 
 #endif
