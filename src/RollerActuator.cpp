@@ -20,7 +20,13 @@ void RollerActuator::init() {
 }
 
 void RollerActuator::deinit() {
+	if( !_initialized )
+		return;
+	
 	off();
+	Gpio& gpio = Gpio::getInstance();
+	gpio.deinit();
+	_initialized = false;
 	return;
 }
 

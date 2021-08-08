@@ -151,10 +151,6 @@ int Env::_readConfig( const string& cfgFile ) {
 
 // Simply get confit_t structure from object variable _config 
 int Env::getConfig( config_t& cfg ) const {
-	if( !_initialized ) {
-		cerr << "getConfig() failed.\n";
-		return -1;
-	}
 	cfg = _config;	
 	return 0;
 }
@@ -162,34 +158,23 @@ int Env::getConfig( config_t& cfg ) const {
 // get the formula per day
 int Env::getFormula( unsigned day, formula_t& formula ) const {
 
-	if( !_initialized ) {
-		cerr << "getFormulas() failed.\n";
-		return -1;
-	}
 	formula = _formulas[day];
 	return 0;
 }
 
 // write _config to back to cfg file
 int Env::setConfig( const string cfgFileName ) const {
-	if( !_initialized ) {
-		cerr << "setConfig() failed.\n";
-		return -1;
-	}
 	// TODO! if needed.
 	return 0;
 }
 
 // Read from config file, parse json objects and store to _config 
 int Env::setUp( const string& cfgFileName ) {
-	if( !_initialized ) {
-		if( _readConfig( cfgFileName ) ) {
-			cerr << "_readConfig() failed.\n";
-			return -1;
-		}
+	if( _readConfig( cfgFileName ) ) {
+		cerr << "_readConfig() failed.\n";
+		return -1;
 	}
 
-	_initialized = true;
 	return 0;
 }
 

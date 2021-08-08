@@ -7,7 +7,7 @@
 #include "Gpio.h"
 #include "AirFlowActuator.h"
 
-#define PWM_RANGE1 100
+#define PWM_RANGE1 LEVEL_ON 
 
 using namespace std;
 
@@ -27,7 +27,13 @@ void AirFlowActuator::init() {
 }
 
 void AirFlowActuator::deinit() {
+	if( !_initialized )
+		return;
+
 	off();
+	Gpio& gpio = Gpio::getInstance();
+	gpio.deinit();
+	_initialized = false;
 	return;
 }
 
@@ -35,8 +41,9 @@ void AirFlowActuator::on() {
 	if( !_initialized )
 		return;
 	
-	_level = ( LEVEL_50 / LEVEL_ON * PWM_RANGE1 ) % PWM_RANGE1;
+	_level = LEVEL_50; // arbitary default, will be set by config
 	softPwmWrite( PWMFAN1_PIN, (PWM_RANGE1 - _level) );
+	clog << "softPwmWrite(on): " << ( PWM_RANGE1 - _level ) << endl;
 
 	delay(1);
 	return;
@@ -46,8 +53,9 @@ void AirFlowActuator::start( level_t level ) {
 	if( !_initialized )
 		return;
 
-	_level = ( level / LEVEL_ON * PWM_RANGE1 ) % PWM_RANGE1;
+	_level = level;
 	softPwmWrite( PWMFAN1_PIN, ( PWM_RANGE1 - _level ) );
+	clog << "softPwmWrite(level): " << ( PWM_RANGE1 - _level ) << endl;
 
 	delay(1);
 	return;
@@ -56,8 +64,9 @@ void AirFlowActuator::off() {
 	if( !_initialized )
 		return;
 
-	_level = ( LEVEL_OFF / LEVEL_ON * PWM_RANGE1 ) % PWM_RANGE1;
+	_level = LEVEL_OFF;
 	softPwmWrite( PWMFAN1_PIN, ( PWM_RANGE1 - _level ) );
+	clog << "softPwmWrite(off): " << ( PWM_RANGE1 - _level ) << endl;
 
 	delay(1);
 	return;

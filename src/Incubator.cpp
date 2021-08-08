@@ -159,7 +159,7 @@ void Incubator::_run() const {
 	// humidity control 
 	float th;
 	if( !_pHumidSensor->get( th ) ) {
-		clog << "real-time humidity: " << tm << "%" << '\n';
+		clog << "real-time humidity: " << th << "%" << '\n';
 		if( th >= f.humidHigherLimit ) {
 			_pDehumidActuator->start( LEVEL_ON );
 			clog << "dehumid actuator ON." << '\n';
@@ -192,7 +192,7 @@ void Incubator::_run4Roller() const {
 
 	static time_t stamp{0};
 	time_t now;
-	if( stamp ) {
+	if( !stamp ) {
 		time( &stamp );
 	} else {
 		time( &now );

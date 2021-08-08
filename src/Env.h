@@ -40,7 +40,6 @@ typedef struct _config {
 } config_t;
 
 class Env : public Singleton<Env> {
-	bool _initialized;
 	std::string _text;
 	config_t _config;
 	std::vector<formula_t> _formulas;
@@ -52,7 +51,7 @@ class Env : public Singleton<Env> {
 	void _obj2Config( const Json::Value& session, config_t& cfg ) const;
 	void _cfg2Formulas( config_t& cfg, std::vector<formula_t>& forms ) const;
 public:
-	Env() : _initialized(false) {}
+	Env() {}
 	virtual ~Env() {}
 	int setUp( const std::string& cfgFileName );
 	int getConfig( config_t& cfg ) const;

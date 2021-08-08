@@ -13,15 +13,18 @@
 using namespace std;
 
 void Gpio::init() {
-	if( _initialized )
-		return;
 
 	if ( wiringPiSetup() ) {
 		cerr << "wiringPiSetup() failed." << endl;
-	} else {
-		_initialized = true;
+		return;
 	}
 
+	_initialized = true;
+	return;
+}
+
+void Gpio::deinit() {
+	_initialized = false;
 	return;
 }
 

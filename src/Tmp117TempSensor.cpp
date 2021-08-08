@@ -30,7 +30,7 @@ void Tmp117TempSensor::init() {
 	}
 
 	_initialized = true;
-	deviceFd = fd;
+	_deviceFd = fd;
 	return;
 };
 
@@ -38,7 +38,7 @@ void Tmp117TempSensor::deinit() {
 	if( !_initialized )
 		return;
 
-	close( deviceFd );
+	close( _deviceFd );
 	_initialized = false;
 	return;
 }
@@ -51,7 +51,7 @@ int Tmp117TempSensor::get( float& data ) const {
 		return -1;
 	}
 
-	short rawData = wiringPiI2CReadReg16( deviceFd, TMP117_TEMP_RESULT );
+	short rawData = wiringPiI2CReadReg16( _deviceFd, TMP117_TEMP_RESULT );
 	if( rawData == -1 ) {
 		clog << "i2c read failed." << endl;
 		return -1;

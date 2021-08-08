@@ -24,6 +24,7 @@ public:
 	Gpio() : _initialized(false) {}
 	~Gpio() { _initialized = false; }
 	void init();
+	void deinit();
 };
 
 #endif
