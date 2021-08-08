@@ -5,6 +5,7 @@
 
 #include <unistd.h>
 #include <iostream>
+#include <sstream>
 #include "Incubator.h"
 #include "Tmp117TempSensor.h"
 #include "Dht22HumidSensor.h"
@@ -36,8 +37,11 @@ void Incubator::init() {
 		return;
 	}
 
-	// Instantiate Signal 
-	_pSig = new Signal();
+	// Instantiate InfoPanel
+	// ERIC 
+	//_pInfoPanel = new InfoPanel();
+	// ERIC 
+	//_pInfoPanel->init();
 	
 	// create instances for sensors and actuators
 	_pTempSensor = 			new Tmp117TempSensor();
@@ -60,6 +64,9 @@ void Incubator::init() {
 
 	clog << "Incubator initialized.\n";
 	_initialized = true;
+
+	// Instantiate Signal 
+	_pSig = new Signal();
 
 	return;
 }
@@ -110,6 +117,12 @@ void Incubator::deinit() {
 		clog << "_pEnv is deinitialized.\n";
 	}
 
+	if( _pInfoPanel ) {
+		_pInfoPanel->deinit();
+		delete _pInfoPanel;
+		clog << "_pInfoPanel is deinitialized.\n";
+	}
+
 	if( _pSig ) {
 		//delete _pSig; // singleton shall be destroyed at program exit.
 		clog << "_pSig is deinitialized.\n";
@@ -143,7 +156,7 @@ void Incubator::_run() const {
 	 cerr << "Can't get formula.\n";
 	 return;
 	} else {
-		cout << "### Days passed: " << daysPassed << endl;
+		//cout << "### Days passed: " << daysPassed << endl;
 	}
 	
 	// temperature control 
@@ -226,6 +239,62 @@ void Incubator::_run4Roller() const {
 	return;
 }
 
+// from lib/GUI/GUI_Paint.h of 1.3" LCD HAT library
+#define WHITE          0xFFFF
+#define BLACK          0x0000
+#define BLUE           0x001F
+#define RED            0xF800
+
+// show stats on lcd
+void Incubator::updatePanel() const {
+
+	// for panel header
+	unsigned daysPassed = _pSTime->daysPassed();
+	formula_t f;
+	if( _pEnv->getFormula( daysPassed, f ) )
+		return;
+
+	uint16_t headerColor = WHITE;
+	string header;
+	header = "Days " + to_string( daysPassed );
+
+	// for info1 - temperature 
+	float temp;
+	uint16_t tColor = WHITE;
+	if( _pTempSensor->get( temp ) )
+		return;
+	ostringstream oss;
+	oss.precision( 2 );
+	oss << std::fixed << temp << " oC";
+	string info1;
+	info1 = oss.str();
+	oss.clear();
+	if( temp > f.tempHigherLimit )
+		tColor = RED;
+	else if( temp < f.tempLowerLimit )
+		tColor = BLUE;
+
+	// for info2 - temperature 
+	float humid;
+	uint16_t hColor = WHITE;
+	if( _pHumidSensor->get( humid ) )
+		return;
+	//ostringstream oss;
+	oss.precision( 2 );
+	oss << std::fixed << humid << " %";
+	string info2;
+	info2 = oss.str();
+	oss.clear();
+	if( humid > f.humidHigherLimit )
+		hColor = RED;
+	else if( humid < f.humidLowerLimit )
+		hColor = BLUE;
+ 
+	_pInfoPanel->drawInfoPanel( header.c_str(), headerColor, info1.c_str(), tColor, info2.c_str(), hColor );
+
+	return;
+}
+
 // loop for incubator control
 void Incubator::runLoop() const {
 	static unsigned runCount =  0;
@@ -249,13 +318,20 @@ void Incubator::runLoop() const {
 			return;
 		}
 
+		runCount++;
+		clog << "\n[" << runCount << "] " << _pSTime->daysPassed() << " days passed or " << _pSTime->getElapsed() << " ticks elapsed.\n";
+
 		_run();
 		_run4Roller();
 
 		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.
 		this_thread::sleep_for( std::chrono::milliseconds(3000) );
-		runCount++;
-		clog << "runLoop() with count: " << runCount << "\n\n";
+
+		// show stats on lcd
+		// ERIC 
+		//updatePanel();
+
+		//cout << '\n';
 	}
 
 	// will get here only by SIGTERM

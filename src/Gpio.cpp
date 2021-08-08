@@ -16,10 +16,12 @@ void Gpio::init() {
 	if( _initialized )
 		return;
 
+#ifndef SKIP_WIRINGPI_SETUP
 	if ( wiringPiSetup() ) {
 		cerr << "wiringPiSetup() failed." << endl;
 		return;
 	}
+#endif
 
 	_initialized = true;
 	return;

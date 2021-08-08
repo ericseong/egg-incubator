@@ -35,6 +35,7 @@ The following libraries has been installed during this project
 * i2c-tools
 * libjsoncpp-dev
 * library for 1.3" LCD HAT with ST77890 controller
+  - https://www.waveshare.com/1.3inch-lcd-hat.htm
 
 # Documents
 * Schematic is at doc/schematic.svg

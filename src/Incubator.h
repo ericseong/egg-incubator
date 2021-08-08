@@ -8,6 +8,7 @@
 #include "SessionTime.h"
 #include "Sensor.h"
 #include "Actuator.h"
+#include "InfoPanel.h"
 //#include "Dht22HumidSensor.h"
 //#include "Dht22TempSensor.h"
 //#include "Tmp117TempSensor.h"
@@ -21,6 +22,7 @@ class Incubator : public Singleton<Incubator> {
 	Signal *_pSig;
 	Env *_pEnv;
 	SessionTime *_pSTime;
+	InfoPanel *_pInfoPanel;
 	Sensor *_pTempSensor;
 	Sensor *_pHumidSensor;
 	Actuator *_pAirFlowActuator;
@@ -36,6 +38,7 @@ public:
 	void deinit();
 	void runLoop() const;
 	void newSession();
+	void updatePanel() const;
 };
 
 #endif

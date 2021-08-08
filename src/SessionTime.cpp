@@ -120,7 +120,7 @@ time_t SessionTime::getElapsed() const {
 	if( _initialized ) {
 		time_t curr = getCurrent();
 		time_t start = getStart();	
-		clog << "curr: " << curr << ", " << "start: " << start << ", " << "curr-start: " << curr-start << endl;
+		//clog << "curr: " << curr << ", " << "start: " << start << ", " << "curr-start: " << curr-start << endl;
 		return ( curr - start ); 
 	}
 
