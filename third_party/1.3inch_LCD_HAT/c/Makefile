@@ -22,8 +22,9 @@ else ifeq ($(USELIB), USE_WIRINGPI_LIB)
 endif
 
 
-CC = gcc
-MSG = -g -O0 -Wall
+#CC = gcc
+CC = g++
+MSG = -g -O0 -Wall -fpermissive
 CFLAGS += $(MSG) $(DEBUG)
 
 #${TARGET}:${OBJ_O}
@@ -50,3 +51,9 @@ ${DIR_BIN}/%.o:$(DIR_Config)/%.c
 clean :
 	rm $(DIR_BIN)/*.* 
 	rm $(TARGET) 
+
+install :
+	sudo cp ${TARGET} /usr/local/lib/ 
+
+# eof
+
