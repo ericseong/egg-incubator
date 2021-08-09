@@ -23,6 +23,7 @@ void Incubator::init() {
 	if( _initialized )
 		return;
 
+#if 1
 	// Instantiate Env singleton
 	_pEnv = &Env::getInstance();
 	if( _pEnv->setUp( cfgFileName ) ) {
@@ -36,13 +37,17 @@ void Incubator::init() {
 		cerr << "_pSTime->init() failed!.\n";
 		return;
 	}
+#endif
 
+#if 0
 	// Instantiate InfoPanel
 	// ERIC 
-	//_pInfoPanel = new InfoPanel();
+	_pInfoPanel = new InfoPanel();
 	// ERIC 
-	//_pInfoPanel->init();
+	_pInfoPanel->init();
+#endif
 	
+#if 1
 	// create instances for sensors and actuators
 	_pTempSensor = 			new Tmp117TempSensor();
 	_pTempSensor->init();
@@ -62,11 +67,12 @@ void Incubator::init() {
 	_pDehumidActuator =	new DehumidActuator();
 	_pDehumidActuator->init();
 
-	clog << "Incubator initialized.\n";
-	_initialized = true;
-
 	// Instantiate Signal 
 	_pSig = new Signal();
+
+#endif
+	clog << "Incubator initialized.\n";
+	_initialized = true;
 
 	return;
 }
@@ -245,6 +251,13 @@ void Incubator::_run4Roller() const {
 #define BLUE           0x001F
 #define RED            0xF800
 
+#if 0
+void Incubator::updatePanel() const {
+	_pInfoPanel->drawInfoPanel( "Hi~", WHITE, "Hello", RED, "world!", BLUE );
+}
+#endif
+
+#if 1
 // show stats on lcd
 void Incubator::updatePanel() const {
 
@@ -294,6 +307,7 @@ void Incubator::updatePanel() const {
 
 	return;
 }
+#endif
 
 // loop for incubator control
 void Incubator::runLoop() const {
@@ -302,6 +316,10 @@ void Incubator::runLoop() const {
 	if( !_initialized )
 		return;
 
+#if 0
+	while( 1 ) {
+#endif
+#if 1
 	while( !Signal::isSignaledTerm() ) {
 		if( Signal::isSignaledUsr1() ) {
 			_pSTime->deinit();
@@ -324,19 +342,24 @@ void Incubator::runLoop() const {
 		_run();
 		_run4Roller();
 
-		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.
-		this_thread::sleep_for( std::chrono::milliseconds(3000) );
-
+#endif
+#if 0
 		// show stats on lcd
 		// ERIC 
-		//updatePanel();
+		updatePanel();
+#endif
+
+		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.
+		this_thread::sleep_for( std::chrono::milliseconds(3000) );
 
 		//cout << '\n';
 	}
 
+#if 1
 	// will get here only by SIGTERM
 	Signal::resetSignalTerm(); // needed?
 	clog << "Incubator got SIGTERM and is shutting down.\n";
+#endif
 
 	return;
 }
