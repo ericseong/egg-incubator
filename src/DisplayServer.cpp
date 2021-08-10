@@ -72,6 +72,7 @@ void DisplayServer::run() {
 	return;
 }
 
+#if 0 // for test
 int main() {
 
 	DisplayServer ds( 48557, 10 ); // port no. and max connets
@@ -79,6 +80,7 @@ int main() {
 
 	return 0;
 }
+#endif
 
 // EOF
 

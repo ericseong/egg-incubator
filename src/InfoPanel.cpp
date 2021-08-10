@@ -122,16 +122,25 @@ void InfoPanel::_drawText( uint16_t x, uint16_t y, uint16_t color, char *text ) 
 	return;
 }
 
-void InfoPanel::drawInfoPanel( const char* header, uint16_t headerColor, const char* info1, uint16_t info1Color, const char* info2, uint16_t info2Color ) {
+void InfoPanel::drawInfoPanel( 
+			const string& header, uint16_t headerColor, 
+			const string& info1, uint16_t info1Color, 
+			const string& info2, uint16_t info2Color,
+			const string& info3, uint16_t info3Color,
+			const string& footer, uint16_t footerColor 
+	) {
 
 	if( !_initialized )
 		return;
 	
 	_prepareCanvas();
 
-	Paint_DrawString_EN( 10,  10, header, &Font24, GRAY, headerColor);
-	Paint_DrawString_EN( 10,  80, info1, &Font24, GRAY, info1Color);
-	Paint_DrawString_EN( 10, 160, info2, &Font24, GRAY, info2Color);
+	Paint_DrawString_EN( 10,  10, header.c_str(), &Font24, BLACK, headerColor);
+	_drawSolidLine( 10, 40, 230, 40, WHITE );
+	Paint_DrawString_EN( 10,  60, info1.c_str(), &Font24, BLACK, info1Color);
+	Paint_DrawString_EN( 10, 110, info2.c_str() &Font24, BLACK, info2Color);
+	Paint_DrawString_EN( 10, 160, info3.c_str() &Font24, BLACK, info3Color);
+	Paint_DrawString_EN( 10, 210, footer.c_str() &Font16, BLACK, footerColor);
 
 	_refreshCanvas(); // show!
 	_destroyCanvas();

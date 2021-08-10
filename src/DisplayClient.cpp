@@ -72,7 +72,7 @@ void DisplayClient::sendMsg( string& msg ) const {
 	return;
 }
 
-#if 1 // for test
+#if 0 // for test
 int main() {
 
 	string host("127.0.0.1");
