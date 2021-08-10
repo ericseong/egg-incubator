@@ -13,18 +13,28 @@
 #include <sys/socket.h> 
 #include <netinet/tcp.h> 
 #include <arpa/inet.h> 
+#include "InfoPanel.h"
 
 int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
 
 class DisplayServer {
+	InfoPanel _pIp;
 	unsigned _bufSize;
 	unsigned _portNo;
 	unsigned _maxConnects;
 	void _updateDisplay( char *msg ) const;
 
-public: 		
-	DisplayServer( unsigned portNo, unsigned maxConnects ) : _portNo(portNo), _maxConnects(maxConnects), _bufSize(1024) {}
-	virtual ~DisplayServer() {}
+public:
+	DisplayServer( unsigned portNo, unsigned maxConnects ) : _portNo(portNo), _maxConnects(maxConnects), _bufSize(1024) {
+		_pIp = new InfoPanel();
+		_pIp->init(); 
+	}
+	virtual ~DisplayServer() {
+		if( _pIp ) {
+			_pIp->deinit;
+			delete _pIp;
+		}
+	}
 	void run();
 };
 

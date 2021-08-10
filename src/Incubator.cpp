@@ -67,6 +67,9 @@ void Incubator::init() {
 	_pDehumidActuator =	new DehumidActuator();
 	_pDehumidActuator->init();
 
+	_pDC = new DisplayClient( "127.0.0.1", 48557 ); 
+	_pDC->init();
+
 	// Instantiate Signal 
 	_pSig = new Signal();
 
@@ -123,10 +126,10 @@ void Incubator::deinit() {
 		clog << "_pEnv is deinitialized.\n";
 	}
 
-	if( _pInfoPanel ) {
-		_pInfoPanel->deinit();
-		delete _pInfoPanel;
-		clog << "_pInfoPanel is deinitialized.\n";
+	if( _pDC ) {
+		_pDC->deinit();
+		delete _pDC;
+		clog << "_pDC is deinitialized.\n";
 	}
 
 	if( _pSig ) {
@@ -267,43 +270,63 @@ void Incubator::updatePanel() const {
 	if( _pEnv->getFormula( daysPassed, f ) )
 		return;
 
-	uint16_t headerColor = WHITE;
 	string header;
-	header = "Days " + to_string( daysPassed );
+	header = to_string( daysPassed );
+  header.append( " days passed. runLoop count: " );
+  header.append( to_string( _runCount ) );
 
 	// for info1 - temperature 
+	string info1("Temperature: ");
 	float temp;
-	uint16_t tColor = WHITE;
 	if( _pTempSensor->get( temp ) )
 		return;
 	ostringstream oss;
 	oss.precision( 2 );
 	oss << std::fixed << temp << " oC";
-	string info1;
-	info1 = oss.str();
+	info1.append( oss.str() );
 	oss.clear();
-	if( temp > f.tempHigherLimit )
-		tColor = RED;
-	else if( temp < f.tempLowerLimit )
-		tColor = BLUE;
 
-	// for info2 - temperature 
+	// for info2 - humidity 
+	string info2;
 	float humid;
-	uint16_t hColor = WHITE;
 	if( _pHumidSensor->get( humid ) )
 		return;
 	//ostringstream oss;
 	oss.precision( 2 );
 	oss << std::fixed << humid << " %";
-	string info2;
-	info2 = oss.str();
+	info2.append( oss.str() );
 	oss.clear();
-	if( humid > f.humidHigherLimit )
-		hColor = RED;
-	else if( humid < f.humidLowerLimit )
-		hColor = BLUE;
  
-	_pInfoPanel->drawInfoPanel( header.c_str(), headerColor, info1.c_str(), tColor, info2.c_str(), hColor );
+	// for info3 - reserved
+	string info3("");
+
+	// for footer
+	string footer("Last update: ");
+	time_t now; time(&now);
+	footer.append( put_time( localtime( &now ), "%c %Z" ) ); 
+	
+	string headerColor("white");
+	string info1Color("white");
+	string info2Color("white");
+	string footerColor("white");
+	if( temp > f.tempHigherLimit )
+		info1Color = "red";
+	else if( temp < f.tempLowerLimit )
+		info1Color = "blue";
+	if( humid > f.humidHigherLimit )
+		info2Color = "red";
+	else if( humid < f.humidLowerLimit )
+		info2Color = "blue";
+
+	// a whole chunk of msg formatting
+	std::stringstream ss;
+	ss << header << ":" << headerColor << ":" << 
+		info1 << info1Color <<
+		info2 << info2Color <<
+		info3 << info3Color <<
+		footer << footerColor << '\n';
+	std::string msg = ss.str();
+	pDC->sendMsg( ss ); 
 
 	return;
 }
@@ -311,7 +334,7 @@ void Incubator::updatePanel() const {
 
 // loop for incubator control
 void Incubator::runLoop() const {
-	static unsigned runCount =  0;
+	_runCount =  0;
 
 	if( !_initialized )
 		return;
@@ -336,18 +359,14 @@ void Incubator::runLoop() const {
 			return;
 		}
 
-		runCount++;
-		clog << "\n[" << runCount << "] " << _pSTime->daysPassed() << " days passed or " << _pSTime->getElapsed() << " ticks elapsed.\n";
+		_runCount++;
+		clog << "\n[" << _runCount << "] " << _pSTime->daysPassed() << " days passed or " << _pSTime->getElapsed() << " ticks elapsed.\n";
 
 		_run();
 		_run4Roller();
 
 #endif
-#if 0
-		// show stats on lcd
-		// ERIC 
 		updatePanel();
-#endif
 
 		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.
 		this_thread::sleep_for( std::chrono::milliseconds(3000) );

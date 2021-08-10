@@ -5,6 +5,7 @@
 
 #include <string>
 #include <stdint.h>
+#include <string>
 
 class InfoPanel {
 	bool _initialized;
