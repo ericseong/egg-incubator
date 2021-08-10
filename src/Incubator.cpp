@@ -3,7 +3,6 @@
 // For signal handling, I refered to 
 // https://thomastrapp.com/blog/signal-handler-for-multithreaded-c++/.
 
-
 #include <unistd.h>
 #include <iostream>
 #include <sstream>
@@ -251,12 +250,6 @@ void Incubator::_run4Roller() const {
 
 	return;
 }
-
-// from lib/GUI/GUI_Paint.h of 1.3" LCD HAT library
-#define WHITE          0xFFFF
-#define BLACK          0x0000
-#define BLUE           0x001F
-#define RED            0xF800
 
 #if 0
 void Incubator::updatePanel() const {

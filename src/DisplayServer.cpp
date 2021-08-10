@@ -5,13 +5,55 @@
 // daysPassed, Temperature, Humidity, Last updated
 
 #include <string>
+#include <sstring>
+#include <vector>
+#include <iterator>
 #include "DisplayServer.h"
+#include "InfoPanel.h"
 
 static int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
 
+// from https://stackoverflow.com/questions/236129/how-do-i-iterate-over-the-words-of-a-string?rq=1
+static template <typename Out>
+void split(const std::string &s, char delim, Out result) {
+    std::istringstream iss(s);
+    std::string item;
+    while (std::getline(iss, item, delim)) {
+        *result++ = item;
+    }
+}
+
+static std::vector<std::string> split(const std::string &s, char delim) {
+    std::vector<std::string> elems;
+    split(s, delim, std::back_inserter(elems));
+    return elems;
+}
+// end of from
+
 // refresh display with the string gotten from Incubator process
 void DisplayServer::_updateDisplay( char *msg ) const {
-		
+
+	string smsg(msg);
+	std::vector<std::string> x = split(smsg, '$');
+	if( x.size() != 10 ) {
+		clog << "In display server, received string is with unexpected size " << x.size() << endl;
+		return;
+	}
+
+	headerColor =	( x[1] == "white" ? WHITE : x[1] == "red" ? RED : x[1] == "blue" ? BLUE : WHITE ); 
+	info1Color =	( x[3] == "white" ? WHITE : x[3] == "red" ? RED : x[3] == "blue" ? BLUE : WHITE ); 
+	info2Color =	( x[5] == "white" ? WHITE : x[5] == "red" ? RED : x[5] == "blue" ? BLUE : WHITE ); 
+	info3Color =	( x[7] == "white" ? WHITE : x[7] == "red" ? RED : x[7] == "blue" ? BLUE : WHITE ); 
+	footerColor =	( x[9] == "white" ? WHITE : x[9] == "red" ? RED : x[9] == "blue" ? BLUE : WHITE ); 
+
+	_pIP->drawInfoPanel( 
+			x[0], headerColor,
+			x[2], info1Color,
+			x[4], info2Color,
+			x[6], info3Color,
+			x[8], footerColor
+	);	
+	
 	return;
 }
 
@@ -60,7 +102,7 @@ void DisplayServer::run() {
 		int count = read(client_fd, buffer, sizeof(buffer)); 
 		if (count > 0) {
 			_updateDisplay( buffer );	
-#if 1 // for test
+#if 0 // for test
 			puts(buffer);
 			write(client_fd, buffer, sizeof(buffer)); /* echo as confirmation */ 
 #endif

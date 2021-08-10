@@ -16,7 +16,7 @@
 #include "InfoPanel.h"
 
 class DisplayServer {
-	InfoPanel *_pIp;
+	InfoPanel *_pIP;
 	unsigned _portNo;
 	unsigned _maxConnects;
 	unsigned _bufSize;
@@ -24,13 +24,13 @@ class DisplayServer {
 
 public:
 	DisplayServer( unsigned portNo, unsigned maxConnects ) : _portNo(portNo), _maxConnects(maxConnects), _bufSize(1024) {
-		_pIp = new InfoPanel();
-		_pIp->init(); 
+		_pIP = new InfoPanel();
+		_pIP->init(); 
 	}
 	virtual ~DisplayServer() {
-		if( _pIp ) {
-			_pIp->deinit();
-			delete _pIp;
+		if( _pIP ) {
+			_pIP->deinit();
+			delete _pIP;
 		}
 	}
 	void run();

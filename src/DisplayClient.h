@@ -17,7 +17,6 @@
 #include <netdb.h> 
 #include <string>
 
-
 class DisplayClient {
 	std::string _host;
 	unsigned _portNo;

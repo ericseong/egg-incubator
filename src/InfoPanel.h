@@ -7,6 +7,12 @@
 #include <stdint.h>
 #include <string>
 
+// from lib/GUI/GUI_Paint.h of 1.3" LCD HAT library
+#define WHITE          0xFFFF
+#define BLACK          0x0000
+#define BLUE           0x001F
+#define RED            0xF800
+
 class InfoPanel {
 	bool _initialized;
 	uint16_t *_pBlackImage;
