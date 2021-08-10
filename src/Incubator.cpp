@@ -4,6 +4,7 @@
 // https://thomastrapp.com/blog/signal-handler-for-multithreaded-c++/.
 
 #include <unistd.h>
+#include <string.h>
 #include <iostream>
 #include <sstream>
 #include <iomanip>
@@ -396,12 +397,15 @@ int main( int argc, char *argv[] ) {
 	// all composited components are initialized.
 	inc.init();
 
-	// for new session 
-	if( argc == 2 ) {
-		string arg = argv[1];
-		if( arg.compare( "--new-session" ) == 0 )
-			inc.newSession();
+	if( argc != 2 ) {
+		cerr << "Usage: egg-incubator param\n";
+		cerr << "Param shall either 0 for continuing existing session, 1 for initiating a new session.\n"; 
+		return -1;
 	}
+
+	if( !strcmp( argv[1], "1" ) ) {
+		inc.newSession();
+	} 
 
 	inc.runLoop();
 	inc.deinit();
