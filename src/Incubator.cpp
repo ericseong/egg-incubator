@@ -26,7 +26,6 @@ void Incubator::init() {
 	if( _initialized )
 		return;
 
-#if 1
 	// Instantiate Env singleton
 	_pEnv = &Env::getInstance();
 	if( _pEnv->setUp( cfgFileName ) ) {
@@ -40,17 +39,7 @@ void Incubator::init() {
 		cerr << "_pSTime->init() failed!.\n";
 		return;
 	}
-#endif
 
-#if 0
-	// Instantiate InfoPanel
-	// ERIC 
-	_pInfoPanel = new InfoPanel();
-	// ERIC 
-	_pInfoPanel->init();
-#endif
-	
-#if 1
 	// create instances for sensors and actuators
 	_pTempSensor = 			new Tmp117TempSensor();
 	_pTempSensor->init();
@@ -77,7 +66,6 @@ void Incubator::init() {
 	// Instantiate Signal 
 	_pSig = new Signal();
 
-#endif
 	clog << "Incubator initialized.\n";
 	_initialized = true;
 
@@ -168,9 +156,7 @@ void Incubator::_run() const {
 	if( _pEnv->getFormula( daysPassed, f ) ) {
 	 cerr << "Can't get formula.\n";
 	 return;
-	} else {
-		//clog << "### Days passed: " << daysPassed << endl;
-	}
+	} 
 	
 	// temperature control 
 	float tm;
@@ -252,14 +238,7 @@ void Incubator::_run4Roller() const {
 	return;
 }
 
-#if 0
-void Incubator::updatePanel() const {
-	_pInfoPanel->drawInfoPanel( "Hi~", WHITE, "Hello", RED, "world!", BLUE );
-}
-#endif
-
-#if 1
-// show stats on lcd
+// show stats on lcd by sending message to display server
 void Incubator::updatePanel() const {
 
 	// for panel header
@@ -336,7 +315,6 @@ void Incubator::updatePanel() const {
 
 	return;
 }
-#endif
 
 // loop for incubator control
 void Incubator::runLoop() {
@@ -345,10 +323,6 @@ void Incubator::runLoop() {
 	if( !_initialized )
 		return;
 
-#if 0
-	while( 1 ) {
-#endif
-#if 1
 	while( !Signal::isSignaledTerm() ) {
 		if( Signal::isSignaledUsr1() ) {
 			_pSTime->deinit();
@@ -371,20 +345,16 @@ void Incubator::runLoop() {
 		_run();
 		_run4Roller();
 
-#endif
 		updatePanel();
 
 		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.
 		this_thread::sleep_for( std::chrono::milliseconds(3000) );
 
-		//clog << '\n';
 	}
 
-#if 1
 	// will get here only by SIGTERM
 	Signal::resetSignalTerm(); // needed?
 	clog << "Incubator got SIGTERM and is shutting down.\n";
-#endif
 
 	return;
 }
@@ -392,8 +362,8 @@ void Incubator::runLoop() {
 int main( int argc, char *argv[] ) {
 
 	if( argc != 2 ) {
-		cerr << "Usage: egg-incubator param\n";
-		cerr << "Param shall either 0 for continuing existing session, 1 for initiating a new session.\n"; 
+		cerr << "Usage: egg-incubator param!\n";
+		cerr << "Note that param can either 0 for continuing existing session, or 1 for initiating a new session.\n"; 
 		return -1;
 	}
  
