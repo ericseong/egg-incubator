@@ -390,18 +390,18 @@ void Incubator::runLoop() {
 }
 
 int main( int argc, char *argv[] ) {
- 
-	// create singleton incubator instance
-	Incubator& inc  = Incubator::getInstance();
-
-	// all composited components are initialized.
-	inc.init();
 
 	if( argc != 2 ) {
 		cerr << "Usage: egg-incubator param\n";
 		cerr << "Param shall either 0 for continuing existing session, 1 for initiating a new session.\n"; 
 		return -1;
 	}
+ 
+	// create singleton incubator instance
+	Incubator& inc  = Incubator::getInstance();
+
+	// all composited components are initialized.
+	inc.init();
 
 	if( !strcmp( argv[1], "1" ) ) {
 		inc.newSession();
