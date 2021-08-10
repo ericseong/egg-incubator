@@ -4,11 +4,12 @@
 // text:color:text:color:text:color:text:color
 // daysPassed, Temperature, Humidity, Last updated
 
-#include <uint.h>
+#include <stdint.h>
 #include <string>
-#include <sstring>
+#include <sstream>
 #include <vector>
 #include <iterator>
+#include <iostream>
 #include "DisplayServer.h"
 #include "InfoPanel.h"
 
@@ -102,6 +103,8 @@ void DisplayServer::run() {
 		memset(buffer, '\0', sizeof(buffer));
 		int count = read(client_fd, buffer, sizeof(buffer)); 
 		if (count > 0) {
+			fprintf( stdout, "Read from client: \n" );
+			fprintf( stdout, "%s\n", buffer );
 			_updateDisplay( buffer );	
 #if 0 // for test
 			puts(buffer);
@@ -117,7 +120,6 @@ void DisplayServer::run() {
 	return;
 }
 
-#if 0 // for test
 int main() {
 
 	DisplayServer ds( 48557, 10 ); // port no. and max connets
@@ -125,7 +127,6 @@ int main() {
 
 	return 0;
 }
-#endif
 
 // EOF
 

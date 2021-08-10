@@ -261,58 +261,50 @@ void Incubator::updatePanel() const {
 // show stats on lcd
 void Incubator::updatePanel() const {
 
-	clog << "1\n";
 	// for panel header
 	unsigned daysPassed = _pSTime->daysPassed();
 	formula_t f;
 	if( _pEnv->getFormula( daysPassed, f ) )
 		return;
 
-	clog << "2\n";
-	string header;
-	header = to_string( daysPassed );
-  header.append( " days passed. runLoop count: " );
-  header.append( to_string( _runCount ) );
+	string header("");
+	header += "Days: "; 
+	header += to_string( daysPassed );
 
-	clog << "3\n";
 	// for info1 - temperature 
-	string info1("Temperature: ");
+	string info1("");
 	float temp;
 	if( _pTempSensor->getCache( temp ) )
 		temp = 100.00;
 	ostringstream oss1;
 	oss1.precision( 2 );
 	oss1 << std::fixed << temp << " oC";
-	info1.append( oss1.str() );
+	info1 += oss1.str();
 	oss1.clear();
 
-	clog << "4\n";
 	// for info2 - humidity 
-	string info2("Humidity: ");
+	string info2("");
 	float humid;
 	if( _pHumidSensor->getCache( humid ) )
 		humid = 100.00;
 	ostringstream oss2;
 	oss2.precision( 2 );
 	oss2 << std::fixed << humid << " %";
-	info2.append( oss2.str() );
+	info2 += oss2.str();
 	oss2.clear();
  
-	clog << "5\n";
 	// for info3 - reserved
 	string info3("");
 
-	clog << "6\n";
 	// for footer
-	string footer("Last update: ");
+	string footer("");
 	time_t now; time(&now);
 	struct tm *timeptr;
 	timeptr = localtime(&now);
 	char s[100];
-	strftime( s, sizeof(s), "%A %b %d %r", timeptr );
-	footer.append( s );
+	strftime( s, sizeof(s), "%a %b %d %R", timeptr );
+	footer += s;
 	
-	clog << "7\n";
 	string headerColor("white");
 	string info1Color("white");
 	string info2Color("white");
@@ -327,7 +319,6 @@ void Incubator::updatePanel() const {
 	else if( humid < f.humidLowerLimit )
 		info2Color = "blue";
 
-	clog << "8\n";
 	// a whole chunk of msg formatting
 	std::stringstream ss;
 	ss << 
@@ -338,7 +329,7 @@ void Incubator::updatePanel() const {
 		footer << "$" << footerColor
 	;
 	std::string msg = ss.str();
-	msg.append('\0');
+	msg += '\0';
 	_pDC->sendMsg( msg ); 
 	clog << "Incubator: pDC->sendMsg(): " << msg << endl;
 

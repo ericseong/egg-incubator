@@ -84,13 +84,8 @@ void InfoPanel::deinit() {
 void InfoPanel::_drawSolidLine( uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color ) {
 	if( !_initialized )
 		return;
-
-	_prepareCanvas();
 	
 	Paint_DrawLine(x1, y1, x2, y2, color, DOT_PIXEL_1X1, LINE_STYLE_SOLID);
-
-	_refreshCanvas(); // show!
-	_destroyCanvas();
 	return;
 }
 
@@ -98,13 +93,7 @@ void InfoPanel::_drawDottedLine( uint16_t x1, uint16_t y1, uint16_t x2, uint16_t
 	if( !_initialized )
 		return;
 
-	_prepareCanvas();
-
 	Paint_DrawLine(x1, y1, x2, y2, color, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
-
-	_refreshCanvas(); // show!
-	_destroyCanvas();
-
 	return;
 }
 
@@ -112,13 +101,7 @@ void InfoPanel::_drawText( uint16_t x, uint16_t y, uint16_t color, char *text ) 
 	if( !_initialized )
 		return;
 
-	_prepareCanvas();
-
 	Paint_DrawString_EN(x, y, text, &Font16, color, GRAY);
-
-	_refreshCanvas(); // show!
-	_destroyCanvas();
-
 	return;
 }
 
@@ -137,10 +120,16 @@ void InfoPanel::drawInfoPanel(
 
 	Paint_DrawString_EN( 10,  10, header.c_str(), &Font24, BLACK, headerColor);
 	_drawSolidLine( 10, 40, 230, 40, WHITE );
-	Paint_DrawString_EN( 10,  60, info1.c_str(), &Font24, BLACK, info1Color);
-	Paint_DrawString_EN( 10, 110, info2.c_str(), &Font24, BLACK, info2Color);
-	Paint_DrawString_EN( 10, 160, info3.c_str(), &Font24, BLACK, info3Color);
+	Paint_DrawString_EN( 10,  70, info1.c_str(), &Font24, BLACK, info1Color);
+	Paint_DrawString_EN( 10, 120, info2.c_str(), &Font24, BLACK, info2Color);
+	Paint_DrawString_EN( 10, 170, info3.c_str(), &Font24, BLACK, info3Color);
 	Paint_DrawString_EN( 10, 210, footer.c_str(), &Font16, BLACK, footerColor);
+
+	//clog << "header: " << header.c_str() << " ,color: " << headerColor << endl; 
+	//clog << "info1: " << info1.c_str() << " ,color: " << info1Color << endl; 
+	//clog << "info2: " << info2.c_str() << " ,color: " << info2Color << endl; 
+	//clog << "info3: " << info3.c_str() << " ,color: " << info3Color << endl; 
+	//clog << "footer: " << footer.c_str() << " ,color: " << footerColor << endl; 
 
 	_refreshCanvas(); // show!
 	_destroyCanvas();
