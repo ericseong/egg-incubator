@@ -7,6 +7,8 @@
 #include <string>
 #include "DisplayServer.h"
 
+static int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
+
 // refresh display with the string gotten from Incubator process
 void DisplayServer::_updateDisplay( char *msg ) const {
 		

@@ -15,13 +15,11 @@
 #include <arpa/inet.h> 
 #include "InfoPanel.h"
 
-int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
-
 class DisplayServer {
-	InfoPanel _pIp;
-	unsigned _bufSize;
+	InfoPanel *_pIp;
 	unsigned _portNo;
 	unsigned _maxConnects;
+	unsigned _bufSize;
 	void _updateDisplay( char *msg ) const;
 
 public:
@@ -31,7 +29,7 @@ public:
 	}
 	virtual ~DisplayServer() {
 		if( _pIp ) {
-			_pIp->deinit;
+			_pIp->deinit();
 			delete _pIp;
 		}
 	}

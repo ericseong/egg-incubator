@@ -3,6 +3,7 @@
 #include "Dht22HumidSensor.h"
 using namespace std;
 
+
 //extern "C" {
 //	extern int dht22_get_data( float *temp, float *humid );
 //}
@@ -25,19 +26,30 @@ void Dht22HumidSensor::deinit() {
 	return;
 }
 
-int Dht22HumidSensor::get( float& data ) const {
+int Dht22HumidSensor::get( float& data ) {
 	int ret = 0;
 	float temp, humid;
 
 	if( !_initialized )
 		return -1;
 
-	if( !dht22_get_data( &temp, &humid ) )
-		data = humid;
-	else
+	if( !dht22_get_data( &temp, &humid ) ) {
+		_lastVal = data = humid;
+		
+	}
+	else {
 		ret = -1;
+	}
 
 	return ret;
+}
+
+int Dht22HumidSensor::getCache( float& data ) const {
+	if( !_initialized )
+		return -1;
+
+	data = _lastVal;
+	return 0;
 }
 
 // EOF

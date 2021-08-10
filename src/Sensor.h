@@ -7,7 +7,8 @@ struct Sensor {
 	virtual ~Sensor() {}
 	virtual void init() = 0; 
 	virtual void deinit() = 0; 
-	virtual int get( float& data ) const = 0;
+	virtual int get( float& data ) = 0;
+	virtual int getCache( float& data ) const = 0;
 };
 
 #endif

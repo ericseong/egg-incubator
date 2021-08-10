@@ -8,12 +8,14 @@
 class Tmp117TempSensor : public Sensor {
 	bool _initialized;
 	int _deviceFd;
+	float _lastVal;
 public: 
-	Tmp117TempSensor() : _initialized(false) {}
+	Tmp117TempSensor() : _initialized(false), _lastVal(100.00) {}
 	~Tmp117TempSensor() { _initialized = false; }
 	void init();
 	void deinit();
-	int get( float& data ) const;
+	int get( float& data );
+	int getCache( float& data ) const;
 };
 
 #endif

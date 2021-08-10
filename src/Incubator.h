@@ -37,7 +37,7 @@ public:
 	virtual ~Incubator() {}
 	void init();
 	void deinit();
-	void runLoop() const;
+	void runLoop();
 	void newSession();
 	void updatePanel() const;
 };

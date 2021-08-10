@@ -138,9 +138,9 @@ void InfoPanel::drawInfoPanel(
 	Paint_DrawString_EN( 10,  10, header.c_str(), &Font24, BLACK, headerColor);
 	_drawSolidLine( 10, 40, 230, 40, WHITE );
 	Paint_DrawString_EN( 10,  60, info1.c_str(), &Font24, BLACK, info1Color);
-	Paint_DrawString_EN( 10, 110, info2.c_str() &Font24, BLACK, info2Color);
-	Paint_DrawString_EN( 10, 160, info3.c_str() &Font24, BLACK, info3Color);
-	Paint_DrawString_EN( 10, 210, footer.c_str() &Font16, BLACK, footerColor);
+	Paint_DrawString_EN( 10, 110, info2.c_str(), &Font24, BLACK, info2Color);
+	Paint_DrawString_EN( 10, 160, info3.c_str(), &Font24, BLACK, info3Color);
+	Paint_DrawString_EN( 10, 210, footer.c_str(), &Font16, BLACK, footerColor);
 
 	_refreshCanvas(); // show!
 	_destroyCanvas();

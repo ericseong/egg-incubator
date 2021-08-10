@@ -7,13 +7,15 @@
 
 class Dht22TempSensor : public Sensor {
 	bool _initialized;
+	float _lastVal;
 
 public: 
-	Dht22TempSensor() : _initialized(false) {}
+	Dht22TempSensor() : _initialized(false), _lastVal(100.00) {}
 	~Dht22TempSensor() { _initialized = false; }
 	void init();
 	void deinit();
-	int get( float& data ) const;
+	int get( float& data );
+	int getCache( float& data ) const;
 };
 
 #endif

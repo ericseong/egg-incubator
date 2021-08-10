@@ -12,7 +12,6 @@ DIR_Examples = $(HOME)/hobby/egg-incubator/third_party/1.3inch_LCD_HAT/c/example
 C++ = g++
 RM = rm -f
 SED = sed
-#MAKEDEPEND = $(C++) -M
 # generate dependency without mentioning system header directories
 MAKEDEPEND = $(C++) -MM
 CPPFLAGS = -g -Wall -std=c++14 -I $(DIR_Config) -I $(DIR_GUI) -I $(DIR_EPD) -I $(DIR_Examples)
@@ -39,8 +38,8 @@ DEPS = $(addprefix $(OUT_DIR)/, $(SRCS:.cpp=.d))
 
 $(OUT_DIR)/%.d : %.cpp
 	@set -e; $(RM) $@; \
-	$(MAKEDEPEND) $(CPPFLAGS) $< > $@.$$$$; \
-	$(SED) 's/^/$(OUT_DIR)\//g' < $@.$$$$ > $@; \
+	$(C++) -M $(CPPFLAGS) $< > $@.$$$$; \
+	$(SED) 's,\($*\).o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	$(RM) $@.$$$$
 
 # do not delete!

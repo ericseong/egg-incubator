@@ -25,19 +25,28 @@ void Dht22TempSensor::deinit() {
   return;
 }
 
-int Dht22TempSensor::get( float& data ) const {
+int Dht22TempSensor::get( float& data ) {
 	int ret = 0;
 	float temp, humid;
 
 	if( !_initialized )
 		return -1;
 
-	if( !dht22_get_data( &temp, &humid ) )
-		data = temp;
+	if( !dht22_get_data( &temp, &humid ) ) {
+		_lastVal = data = temp;
+	}
 	else
 		ret = -1;
 
 	return ret;
+}
+
+int Dht22TempSensor::getCache( float& data ) const {
+	if( !_initialized )
+		return -1;
+
+	data = _lastVal;
+	return 0;
 }
 
 // EOF

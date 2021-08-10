@@ -43,7 +43,7 @@ void Tmp117TempSensor::deinit() {
 	return;
 }
 
-int Tmp117TempSensor::get( float& data ) const {
+int Tmp117TempSensor::get( float& data ) {
 	int ret = 0;
 
 	if( !_initialized ) {
@@ -65,9 +65,17 @@ int Tmp117TempSensor::get( float& data ) const {
 		temp = d * TEMP_RES;
 	}
 
-	data = temp;
+	_lastVal = data = temp;
 	return ret;
 };
+
+int Tmp117TempSensor::getCache( float& data ) const {
+	if( !_initialized )
+		return -1;
+
+	data = _lastVal;
+	return 0;
+}
 
 // EOF
 

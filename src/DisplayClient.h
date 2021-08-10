@@ -17,12 +17,11 @@
 #include <netdb.h> 
 #include <string>
 
-int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
 
 class DisplayClient {
-	unsigned _bufSize;
 	std::string _host;
 	unsigned _portNo;
+	unsigned _bufSize;
 
 public: 		
 	DisplayClient( std::string& host, unsigned portNo ) : _host(host), _portNo(portNo), _bufSize(1024) {}

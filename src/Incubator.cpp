@@ -3,9 +3,12 @@
 // For signal handling, I refered to 
 // https://thomastrapp.com/blog/signal-handler-for-multithreaded-c++/.
 
+
 #include <unistd.h>
 #include <iostream>
 #include <sstream>
+#include <iomanip>
+#include <ctime>
 #include "Incubator.h"
 #include "Tmp117TempSensor.h"
 #include "Dht22HumidSensor.h"
@@ -67,8 +70,9 @@ void Incubator::init() {
 	_pDehumidActuator =	new DehumidActuator();
 	_pDehumidActuator->init();
 
-	_pDC = new DisplayClient( "127.0.0.1", 48557 ); 
-	_pDC->init();
+	string host("127.0.0.1");
+	_pDC = new DisplayClient( host, 48557 ); 
+	//_pDC->init(); // there's no init() in DisplayClient
 
 	// Instantiate Signal 
 	_pSig = new Signal();
@@ -127,7 +131,7 @@ void Incubator::deinit() {
 	}
 
 	if( _pDC ) {
-		_pDC->deinit();
+		//_pDC->deinit(); // there's no deinit() in DisplayClient
 		delete _pDC;
 		clog << "_pDC is deinitialized.\n";
 	}
@@ -165,7 +169,7 @@ void Incubator::_run() const {
 	 cerr << "Can't get formula.\n";
 	 return;
 	} else {
-		//cout << "### Days passed: " << daysPassed << endl;
+		//clog << "### Days passed: " << daysPassed << endl;
 	}
 	
 	// temperature control 
@@ -264,50 +268,62 @@ void Incubator::updatePanel() const {
 // show stats on lcd
 void Incubator::updatePanel() const {
 
+	clog << "1\n";
 	// for panel header
 	unsigned daysPassed = _pSTime->daysPassed();
 	formula_t f;
 	if( _pEnv->getFormula( daysPassed, f ) )
 		return;
 
+	clog << "2\n";
 	string header;
 	header = to_string( daysPassed );
   header.append( " days passed. runLoop count: " );
   header.append( to_string( _runCount ) );
 
+	clog << "3\n";
 	// for info1 - temperature 
 	string info1("Temperature: ");
 	float temp;
-	if( _pTempSensor->get( temp ) )
-		return;
-	ostringstream oss;
-	oss.precision( 2 );
-	oss << std::fixed << temp << " oC";
-	info1.append( oss.str() );
-	oss.clear();
+	if( _pTempSensor->getCache( temp ) )
+		temp = 100.00;
+	ostringstream oss1;
+	oss1.precision( 2 );
+	oss1 << std::fixed << temp << " oC";
+	info1.append( oss1.str() );
+	oss1.clear();
 
+	clog << "4\n";
 	// for info2 - humidity 
-	string info2;
+	string info2("Humidity: ");
 	float humid;
-	if( _pHumidSensor->get( humid ) )
-		return;
-	//ostringstream oss;
-	oss.precision( 2 );
-	oss << std::fixed << humid << " %";
-	info2.append( oss.str() );
-	oss.clear();
+	if( _pHumidSensor->getCache( humid ) )
+		humid = 100.00;
+	ostringstream oss2;
+	oss2.precision( 2 );
+	oss2 << std::fixed << humid << " %";
+	info2.append( oss2.str() );
+	oss2.clear();
  
+	clog << "5\n";
 	// for info3 - reserved
 	string info3("");
 
+	clog << "6\n";
 	// for footer
 	string footer("Last update: ");
 	time_t now; time(&now);
-	footer.append( put_time( localtime( &now ), "%c %Z" ) ); 
+	struct tm *timeptr;
+	timeptr = localtime(&now);
+	char s[100];
+	strftime( s, sizeof(s), "%A %b %d %r", timeptr );
+	footer.append( s );
 	
+	clog << "7\n";
 	string headerColor("white");
 	string info1Color("white");
 	string info2Color("white");
+	string info3Color("white");
 	string footerColor("white");
 	if( temp > f.tempHigherLimit )
 		info1Color = "red";
@@ -318,22 +334,27 @@ void Incubator::updatePanel() const {
 	else if( humid < f.humidLowerLimit )
 		info2Color = "blue";
 
+	clog << "8\n";
 	// a whole chunk of msg formatting
 	std::stringstream ss;
-	ss << header << ":" << headerColor << ":" << 
-		info1 << info1Color <<
-		info2 << info2Color <<
-		info3 << info3Color <<
-		footer << footerColor << '\n';
+	ss << 
+		header << "$" << headerColor << "$" <<
+		info1 << "$" << info1Color << "$" <<
+		info2 << "$" << info2Color << "$" <<
+		info3 << "$" << info3Color << "$" <<
+		footer << "$" << footerColor
+	;
 	std::string msg = ss.str();
-	pDC->sendMsg( ss ); 
+	msg.append('\0');
+	_pDC->sendMsg( msg ); 
+	clog << "Incubator: pDC->sendMsg(): " << msg << endl;
 
 	return;
 }
 #endif
 
 // loop for incubator control
-void Incubator::runLoop() const {
+void Incubator::runLoop() {
 	_runCount =  0;
 
 	if( !_initialized )
@@ -371,7 +392,7 @@ void Incubator::runLoop() const {
 		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.
 		this_thread::sleep_for( std::chrono::milliseconds(3000) );
 
-		//cout << '\n';
+		//clog << '\n';
 	}
 
 #if 1

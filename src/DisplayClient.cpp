@@ -6,6 +6,7 @@
 using namespace std;
 
 const unsigned BufSize = 1024;
+static int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
 
 #if 1 // for test
 const char* message = "What is the youth.. Impetuous fire.. What is a maid.. Ice and desire.. The world wags on..";
@@ -18,8 +19,8 @@ void DisplayClient::sendMsg( string& msg ) const {
 		SOCK_STREAM, /* reliable, bidirectional */
 		0), "could not create TCP listening socket" ); /* system picks protocol (TCP) */ 
 
-	//int flags = guard( fcntl( fd, F_GETFL ), "could not get flags on TCP listening socket" );
-	//guard( fcntl( fd, F_SETFL, flags | O_NONBLOCK ), "could not set TCP listening socket to be non-blocking" );
+	int flags = guard( fcntl( fd, F_GETFL ), "could not get flags on TCP listening socket" );
+	guard( fcntl( fd, F_SETFL, flags | O_NONBLOCK ), "could not set TCP listening socket to be non-blocking" );
 	
 	/* get the address of the host */
 	struct hostent* hptr = gethostbyname( _host.c_str() ); /* localhost: 127.0.0.1 */ 
@@ -59,11 +60,13 @@ void DisplayClient::sendMsg( string& msg ) const {
 	/* Write some stuff and read the echoes. */
 	puts("Connect to server, about to write some stuff..."); 
 
-	if ( write( fd, msg.c_str(), msg.size() ) > 0 ) { /* get confirmation echoed from server and print */ 
+	if ( write( fd, msg.c_str(), msg.size() ) > 0 ) { 
 		char buffer[_bufSize + 1];
 		memset(buffer, '\0', sizeof(buffer));
-		if (read(fd, buffer, sizeof(buffer)) > 0) 
-			puts(buffer);
+#if 0 // test
+	//if (read(fd, buffer, sizeof(buffer)) > 0) 
+	//	puts(buffer);
+#endif
 	} 
 
 	puts( "Client exit..." ); 
