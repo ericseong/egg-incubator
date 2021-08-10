@@ -8,7 +8,7 @@ DIR_BIN      = ./bin
 OBJ_C = $(wildcard ${DIR_EPD}/*.c ${DIR_Config}/*.c ${DIR_GUI}/*.c ${DIR_Examples}/*.c ${DIR_FONTS}/*.c)
 OBJ_O = $(patsubst %.c,${DIR_BIN}/%.o,$(notdir ${OBJ_C}))
 
-TARGET = liblcd.so
+TARGET = main
 
 # USELIB = USE_BCM2835_LIB
 USELIB = USE_WIRINGPI_LIB
@@ -21,14 +21,12 @@ else ifeq ($(USELIB), USE_WIRINGPI_LIB)
 endif
 
 
-#CC = gcc
-CC = g++
-MSG = -g -O0 -Wall -fpermissive
-#MSG = -g -O0 -Wall
+CC = gcc
+MSG = -g -O0 -Wall
 CFLAGS += $(MSG) $(DEBUG)
 
 ${TARGET}:${OBJ_O}
-	$(CC) -shared $(CFLAGS) $(OBJ_O) -o $@ $(LIB)
+	$(CC) $(CFLAGS) $(OBJ_O) -o $@ $(LIB)
     
 ${DIR_BIN}/%.o:$(DIR_Examples)/%.c
 	$(CC) $(CFLAGS) -c  $< -o $@ -I $(DIR_Config) -I $(DIR_GUI) -I $(DIR_EPD)
@@ -48,7 +46,3 @@ ${DIR_BIN}/%.o:$(DIR_Config)/%.c
 clean :
 	rm $(DIR_BIN)/*.* 
 	rm $(TARGET) 
-
-install :
-	sudo cp liblcd.so /usr/local/lib/
-
