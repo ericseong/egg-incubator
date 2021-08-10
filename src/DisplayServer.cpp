@@ -9,7 +9,7 @@
 
 // refresh display with the string gotten from Incubator process
 void DisplayServer::_updateDisplay( char *msg ) const {
-	
+		
 	return;
 }
 

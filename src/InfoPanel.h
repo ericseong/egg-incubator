@@ -4,6 +4,7 @@
 #define __INFOPANEL_H__ 
 
 #include <stdint.h>
+#include <string>
 
 class InfoPanel {
 	bool _initialized;
@@ -20,11 +21,11 @@ public:
 	InfoPanel() : _initialized(false) {}
 	virtual ~InfoPanel() {}
 	void drawInfoPanel( 
-			const string& header, uint16_t headerColor, 
-			const string& info1, uint16_t info1Color, 
-			const string& info2, uint16_t info2Color,
-			const string& info3, uint16_t info3Color,
-			const string& footer, uint16_t footerColor 
+			const std::string& header, uint16_t headerColor, 
+			const std::string& info1, uint16_t info1Color, 
+			const std::string& info2, uint16_t info2Color,
+			const std::string& info3, uint16_t info3Color,
+			const std::string& footer, uint16_t footerColor 
 	);
 	void init();
 	void deinit();
