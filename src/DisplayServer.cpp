@@ -4,6 +4,7 @@
 // text:color:text:color:text:color:text:color
 // daysPassed, Temperature, Humidity, Last updated
 
+#include <uint.h>
 #include <string>
 #include <sstring>
 #include <vector>
@@ -11,22 +12,22 @@
 #include "DisplayServer.h"
 #include "InfoPanel.h"
 
+using namespace std;
+
 static int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
 
 // from https://stackoverflow.com/questions/236129/how-do-i-iterate-over-the-words-of-a-string?rq=1
-static template <typename Out>
-void split(const std::string &s, char delim, Out result) {
-    std::istringstream iss(s);
-    std::string item;
-    while (std::getline(iss, item, delim)) {
-        *result++ = item;
-    }
+template <typename Out> void split(const std::string &s, char delim, Out result) {
+	std::istringstream iss(s);
+	std::string item;
+	while (std::getline(iss, item, delim)) {
+		*result++ = item;
+	}
 }
-
-static std::vector<std::string> split(const std::string &s, char delim) {
-    std::vector<std::string> elems;
-    split(s, delim, std::back_inserter(elems));
-    return elems;
+std::vector<std::string> split(const std::string &s, char delim) {
+	std::vector<std::string> elems;
+	split(s, delim, std::back_inserter(elems));
+	return elems;
 }
 // end of from
 
@@ -40,11 +41,11 @@ void DisplayServer::_updateDisplay( char *msg ) const {
 		return;
 	}
 
-	headerColor =	( x[1] == "white" ? WHITE : x[1] == "red" ? RED : x[1] == "blue" ? BLUE : WHITE ); 
-	info1Color =	( x[3] == "white" ? WHITE : x[3] == "red" ? RED : x[3] == "blue" ? BLUE : WHITE ); 
-	info2Color =	( x[5] == "white" ? WHITE : x[5] == "red" ? RED : x[5] == "blue" ? BLUE : WHITE ); 
-	info3Color =	( x[7] == "white" ? WHITE : x[7] == "red" ? RED : x[7] == "blue" ? BLUE : WHITE ); 
-	footerColor =	( x[9] == "white" ? WHITE : x[9] == "red" ? RED : x[9] == "blue" ? BLUE : WHITE ); 
+	uint16_t headerColor =	( x[1] == "white" ? WHITE : x[1] == "red" ? RED : x[1] == "blue" ? BLUE : WHITE ); 
+	uint16_t info1Color =	( x[3] == "white" ? WHITE : x[3] == "red" ? RED : x[3] == "blue" ? BLUE : WHITE ); 
+	uint16_t info2Color =	( x[5] == "white" ? WHITE : x[5] == "red" ? RED : x[5] == "blue" ? BLUE : WHITE ); 
+	uint16_t info3Color =	( x[7] == "white" ? WHITE : x[7] == "red" ? RED : x[7] == "blue" ? BLUE : WHITE ); 
+	uint16_t footerColor =	( x[9] == "white" ? WHITE : x[9] == "red" ? RED : x[9] == "blue" ? BLUE : WHITE ); 
 
 	_pIP->drawInfoPanel( 
 			x[0], headerColor,
