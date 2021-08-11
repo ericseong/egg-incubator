@@ -117,6 +117,7 @@ void DisplayServer::run() {
 
 		// Check if user requests new session by pressing both btn1 and 2
 		if( _pIP->isRequestNewSession() ) {
+			_pIP->drawInfoNewSession();
 			system("/home/pi/hobby/egg-incubator/src/display_server/newsession.sh");
 		}
 

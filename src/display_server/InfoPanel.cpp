@@ -137,6 +137,32 @@ void InfoPanel::drawInfoPanel(
 	return;
 }
 
+void InfoPanel::drawInfoNewSession() {
+
+	if( !_initialized )
+		return;
+	
+	_prepareCanvas();
+
+	string str1( "NEW SESSION..." );
+	string str2( "..." );
+	string str3( "..." );
+	string str4( "..." );
+	Paint_DrawString_EN( 10, 10, str1.c_str(), &Font24, BLACK, WHITE);
+	sleep(1);
+	Paint_DrawString_EN( 10, 70, str2.c_str(), &Font24, BLACK, WHITE);
+	sleep(1);
+	Paint_DrawString_EN( 10, 120, str3.c_str(), &Font24, BLACK, WHITE);
+	sleep(1);
+	Paint_DrawString_EN( 10, 170, str4.c_str(), &Font24, BLACK, WHITE);
+	sleep(1);
+
+	_refreshCanvas(); // show!
+	_destroyCanvas();
+
+	return;
+}
+
 bool InfoPanel::isRequestNewSession() const {
 	bool key1Pressed = false;
 	bool key2Pressed = false;

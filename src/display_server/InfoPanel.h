@@ -35,6 +35,7 @@ public:
 			const std::string& footer, uint16_t footerColor 
 	);
 	bool isRequestNewSession() const;
+	void drawInfoNewSession();
 	void init();
 	void deinit();
 };
