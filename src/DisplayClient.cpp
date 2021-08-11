@@ -6,7 +6,8 @@
 using namespace std;
 
 const unsigned BufSize = 1024;
-static int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
+//#static int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
+static int guard(int n, char * err) { if (n == -1) { perror(err); } return n; }
 
 #if 1 // for test
 const char* message = "What is the youth.. Impetuous fire.. What is a maid.. Ice and desire.. The world wags on..";
@@ -40,6 +41,7 @@ void DisplayClient::sendMsg( string& msg ) const {
 	saddr.sin_port = htons(_portNo); /* port number in big-endian */
 
 	if( connect( fd, (struct sockaddr*) &saddr, sizeof(saddr) ) ) {
+		fprintf( stderr, "can't connect to server.\n" );
 		if( errno == EINPROGRESS ) {
 			fprintf( stdout, "connect() failed: EINPROGRESS\n" );
 			int result;
@@ -55,8 +57,8 @@ void DisplayClient::sendMsg( string& msg ) const {
 				close( fd );
 				return;
 			}
-		// socket is ready for read()/write()
 		}
+		return;
 	}	
 
 	/* Write some stuff and read the echoes. */
@@ -65,12 +67,6 @@ void DisplayClient::sendMsg( string& msg ) const {
 
 	if ( write( fd, msg.c_str(), msg.size() ) > 0 ) { 
 		;
-#if 0 // test
-		char buffer[_bufSize + 1];
-		memset(buffer, '\0', sizeof(buffer));
-	//if (read(fd, buffer, sizeof(buffer)) > 0) 
-	//	puts(buffer);
-#endif
 	} 
 
 	puts( "Written.." ); 

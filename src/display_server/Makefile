@@ -1,5 +1,5 @@
 OUT_DIR = build
-TARGET = $(OUT_DIR)/display-server
+TARGET = $(OUT_DIR)/2ne1-display-server
 
 # added for lcd
 DIR_Config   = $(HOME)/hobby/egg-incubator/third_party/1.3inch_LCD_HAT/c/lib/Config

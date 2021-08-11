@@ -1,14 +1,14 @@
 OUT_DIR = build
-TARGET = $(OUT_DIR)/egg-incubator
+TARGET = $(OUT_DIR)/2ne1
 
 C++ = g++
 RM = rm -f
 SED = sed
 # generate dependency without mentioning system header directories
 MAKEDEPEND = $(C++) -MM
-CPPFLAGS = -g -Wall -std=c++14 -DENABLE_NONBLOCKING_CLIENT_SOCKET
+CPPFLAGS = -g -Wall -std=c++14 -DENABLE_NONBLOCKING_CLIENT_SOCKET -DDO_SD_NOTIFY
 #CPPFLAGS = -DSKIP_WIRINGPI_SETUP -g -Wall -std=c++14
-LDFLAGS = -L/usr/local/lib -lpthread -lwiringPi -ljsoncpp -llcd
+LDFLAGS = -L/usr/local/lib -lpthread -lwiringPi -ljsoncpp
 
 SRCS = $(wildcard *.cpp)
 
