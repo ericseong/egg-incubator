@@ -137,5 +137,31 @@ void InfoPanel::drawInfoPanel(
 	return;
 }
 
+bool InfoPanel::isRequestNewSession() const {
+	bool key1Pressed = false;
+	bool key2Pressed = false;
+	static unsigned countPressed = 0;
+
+  if( !_initialized )
+    return false;
+
+	key1Pressed = ( GET_KEY1 == 0 ? true : false );
+	key2Pressed = ( GET_KEY2 == 0 ? true : false );
+
+	if( key1Pressed && key2Pressed ) {
+		countPressed++;
+	} else {
+		countPressed = 0;
+	}	
+
+	if( countPressed >= 3 ) {
+		countPressed = 0;
+		clog << "CAUGHT NEW SESSION REQUEST!!\n";
+		return true;	
+	}
+	
+	return false;
+}
+
 // EOF
 

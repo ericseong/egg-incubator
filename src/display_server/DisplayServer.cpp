@@ -2,10 +2,13 @@
 //
 // Message format:
 // text:color:text:color:text:color:text:color
-// daysPassed, Temperature, Humidity, Last updated
+//
+// Contents are: daysPassed, Temperature, Humidity, reserved, Updated or,
+// header, info1, info2, info3, footer
 
 #include <systemd/sd-daemon.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string>
 #include <sstream>
 #include <vector>
@@ -112,6 +115,11 @@ void DisplayServer::run() {
 		}
 
 		close(client_fd); /* break connection */ 
+
+		// Check if user requests new session by pressing both btn1 and 2
+		if( _pIP->isRequestNewSession() ) {
+			system("newsession.sh");
+		}
 
     // notify systemd watchdog only if systemd expects notification.
 //#ifdef DO_SD_NOTIFY

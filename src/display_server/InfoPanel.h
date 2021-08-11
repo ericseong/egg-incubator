@@ -34,6 +34,7 @@ public:
 			const std::string& info3, uint16_t info3Color,
 			const std::string& footer, uint16_t footerColor 
 	);
+	bool isRequestNewSession() const;
 	void init();
 	void deinit();
 };
