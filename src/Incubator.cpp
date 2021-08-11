@@ -357,7 +357,7 @@ void Incubator::runLoop() {
 		uint64_t usec;
 		if( sd_watchdog_enabled( 0, &usec ) > 0 ) {
 			sd_notify (0, "WATCHDOG=1");
-			clog << "sd_notify().\n";
+			//clog << "sd_notify().\n";
 		} 
 //#endif
 	}

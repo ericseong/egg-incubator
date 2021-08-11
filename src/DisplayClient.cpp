@@ -62,8 +62,7 @@ void DisplayClient::sendMsg( string& msg ) const {
 	}	
 
 	/* Write some stuff and read the echoes. */
-	fprintf(stdout, "Connect to server, about to write the following:\n"); 
-	fprintf(stdout, "%s\n", msg.c_str()); 
+	fprintf(stdout, "From display client, writing %s\n", msg.c_str()); 
 
 	if ( write( fd, msg.c_str(), msg.size() ) > 0 ) { 
 		;

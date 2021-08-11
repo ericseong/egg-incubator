@@ -107,8 +107,7 @@ void DisplayServer::run() {
 		memset(buffer, '\0', sizeof(buffer));
 		int count = read(client_fd, buffer, sizeof(buffer)); 
 		if (count > 0) {
-			fprintf( stdout, "Read from client: \n" );
-			fprintf( stdout, "%s\n", buffer );
+			fprintf( stdout, "Read from client: %s\n", buffer );
 			_updateDisplay( buffer );	
 		} else { // can be here for O_NONBLOCK
 			;
@@ -118,7 +117,7 @@ void DisplayServer::run() {
 
 		// Check if user requests new session by pressing both btn1 and 2
 		if( _pIP->isRequestNewSession() ) {
-			system("newsession.sh");
+			system("/home/pi/hobby/egg-incubator/src/display_server/newsession.sh");
 		}
 
     // notify systemd watchdog only if systemd expects notification.
@@ -126,7 +125,7 @@ void DisplayServer::run() {
 		uint64_t usec;
 		if( sd_watchdog_enabled( 0, &usec ) > 0 ) {
 			sd_notify (0, "WATCHDOG=1");
-			clog << "sd_notify().\n";
+			//clog << "sd_notify().\n";
 		}
 //#endif
 		

@@ -145,6 +145,8 @@ bool InfoPanel::isRequestNewSession() const {
   if( !_initialized )
     return false;
 
+	//clog << "GET_KEY1" << GET_KEY1 << endl;
+	//clog << "GET_KEY2" << GET_KEY2 << endl;
 	key1Pressed = ( GET_KEY1 == 0 ? true : false );
 	key2Pressed = ( GET_KEY2 == 0 ? true : false );
 
@@ -156,7 +158,9 @@ bool InfoPanel::isRequestNewSession() const {
 
 	if( countPressed >= 3 ) {
 		countPressed = 0;
+		clog << "----------------------------\n";
 		clog << "CAUGHT NEW SESSION REQUEST!!\n";
+		clog << "----------------------------\n";
 		return true;	
 	}
 	
