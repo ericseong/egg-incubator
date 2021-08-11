@@ -96,14 +96,15 @@ static void DEV_GPIO_Init(void)
     DEV_GPIO_Mode(LCD_DC, 1);
     DEV_GPIO_Mode(LCD_BL, 1);
     
-    DEV_GPIO_Mode(KEY_UP_PIN, 0);
-    DEV_GPIO_Mode(KEY_DOWN_PIN, 0);
-    DEV_GPIO_Mode(KEY_LEFT_PIN, 0);
-    DEV_GPIO_Mode(KEY_RIGHT_PIN, 0);
-    DEV_GPIO_Mode(KEY_PRESS_PIN, 0);
+		// ERIC egg-incubator needs button1 and button2
+    //DEV_GPIO_Mode(KEY_UP_PIN, 0);
+    //DEV_GPIO_Mode(KEY_DOWN_PIN, 0);
+    //DEV_GPIO_Mode(KEY_LEFT_PIN, 0);
+    //DEV_GPIO_Mode(KEY_RIGHT_PIN, 0);
+    //DEV_GPIO_Mode(KEY_PRESS_PIN, 0);
     DEV_GPIO_Mode(KEY1_PIN, 0);
     DEV_GPIO_Mode(KEY2_PIN, 0);
-    DEV_GPIO_Mode(KEY3_PIN, 0);
+    //DEV_GPIO_Mode(KEY3_PIN, 0);
     LCD_CS_1;
     
 }

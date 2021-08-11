@@ -8,7 +8,8 @@ DIR_BIN      = ./bin
 OBJ_C = $(wildcard ${DIR_EPD}/*.c ${DIR_Config}/*.c ${DIR_GUI}/*.c ${DIR_Examples}/*.c ${DIR_FONTS}/*.c)
 OBJ_O = $(patsubst %.c,${DIR_BIN}/%.o,$(notdir ${OBJ_C}))
 
-TARGET = main
+# ERIC TARGET = main
+TARGET = liblcd.so 
 
 # USELIB = USE_BCM2835_LIB
 USELIB = USE_WIRINGPI_LIB
@@ -21,12 +22,15 @@ else ifeq ($(USELIB), USE_WIRINGPI_LIB)
 endif
 
 
-CC = gcc
-MSG = -g -O0 -Wall
+CC = g++
+# ERIC CC = gcc
+MSG = -g -O0 -Wall -fpermissive
+# ERIC MSG = -g -O0 -Wall
 CFLAGS += $(MSG) $(DEBUG)
 
+#	ERIC, original $(CC) $(CFLAGS) $(OBJ_O) -o $@ $(LIB)
 ${TARGET}:${OBJ_O}
-	$(CC) $(CFLAGS) $(OBJ_O) -o $@ $(LIB)
+	$(CC) -shared $(CFLAGS) $(OBJ_O) -o $@ $(LIB)
     
 ${DIR_BIN}/%.o:$(DIR_Examples)/%.c
 	$(CC) $(CFLAGS) -c  $< -o $@ -I $(DIR_Config) -I $(DIR_GUI) -I $(DIR_EPD)
@@ -46,3 +50,8 @@ ${DIR_BIN}/%.o:$(DIR_Config)/%.c
 clean :
 	rm $(DIR_BIN)/*.* 
 	rm $(TARGET) 
+
+# ERIC added install target
+install :
+	sudo cp -f liblcd.so /usr/local/lib
+
