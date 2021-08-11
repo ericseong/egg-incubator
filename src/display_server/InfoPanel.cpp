@@ -144,7 +144,7 @@ void InfoPanel::drawInfoNewSession() {
 	
 	_prepareCanvas();
 
-	string str1( "NEW SESSION..." );
+	string str1( "NEW SESSION" );
 	string str2( "..." );
 	string str3( "..." );
 	string str4( "..." );
