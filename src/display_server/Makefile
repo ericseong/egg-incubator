@@ -16,7 +16,7 @@ SED = sed
 MAKEDEPEND = $(C++) -MM
 CPPFLAGS = -g -Wall -std=c++14 -I $(DIR_Config) -I $(DIR_GUI) -I $(DIR_EPD) -I $(DIR_Examples)
 #CPPFLAGS = -DSKIP_WIRINGPI_SETUP -g -Wall -std=c++14 -I $(DIR_Config) -I $(DIR_GUI) -I $(DIR_EPD) -I $(DIR_Examples)
-LDFLAGS = -L/usr/local/lib -lpthread -lwiringPi -ljsoncpp -llcd
+LDFLAGS = -L/usr/local/lib -lpthread -lwiringPi -ljsoncpp -llcd -lsystemd
 
 SRCS = $(wildcard *.cpp)
 

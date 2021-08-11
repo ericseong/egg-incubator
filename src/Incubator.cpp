@@ -3,6 +3,8 @@
 // For signal handling, I refered to 
 // https://thomastrapp.com/blog/signal-handler-for-multithreaded-c++/.
 
+#include <systemd/sd-daemon.h> // for sd_notify
+#include <stdint.h>
 #include <unistd.h>
 #include <string.h>
 #include <iostream>
@@ -349,7 +351,15 @@ void Incubator::runLoop() {
 
 		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.
 		this_thread::sleep_for( std::chrono::milliseconds(3000) );
-
+		
+		// notify systemd watchdog only if systemd expects notification.
+//#ifdef DO_SD_NOTIFY
+		uint64_t usec;
+		if( sd_watchdog_enabled( 0, &usec ) > 0 ) {
+			sd_notify (0, "WATCHDOG=1");
+			clog << "sd_notify().\n";
+		} 
+//#endif
 	}
 
 	// will get here only by SIGTERM
@@ -376,6 +386,14 @@ int main( int argc, char *argv[] ) {
 	if( !strcmp( argv[1], "1" ) ) {
 		inc.newSession();
 	} 
+
+//#ifdef DO_SD_NOTIFY
+	uint64_t usec;
+	if( sd_watchdog_enabled( 0, &usec ) > 0 ) {
+		sd_notify (0, "READY=1");
+		clog << "systemd watchdog is enabled. will send notify.\n";	
+	} 
+//#endif
 
 	inc.runLoop();
 	inc.deinit();

@@ -4,6 +4,7 @@
 // text:color:text:color:text:color:text:color
 // daysPassed, Temperature, Humidity, Last updated
 
+#include <systemd/sd-daemon.h>
 #include <stdint.h>
 #include <string>
 #include <sstream>
@@ -106,15 +107,21 @@ void DisplayServer::run() {
 			fprintf( stdout, "Read from client: \n" );
 			fprintf( stdout, "%s\n", buffer );
 			_updateDisplay( buffer );	
-#if 0 // for test
-			puts(buffer);
-			write(client_fd, buffer, sizeof(buffer)); /* echo as confirmation */ 
-#endif
 		} else { // can be here for O_NONBLOCK
 			;
 		}
 
 		close(client_fd); /* break connection */ 
+
+    // notify systemd watchdog only if systemd expects notification.
+//#ifdef DO_SD_NOTIFY
+		uint64_t usec;
+		if( sd_watchdog_enabled( 0, &usec ) > 0 ) {
+			sd_notify (0, "WATCHDOG=1");
+			clog << "sd_notify().\n";
+		}
+//#endif
+		
 	} /* while(1) */
 
 	return;
@@ -123,6 +130,15 @@ void DisplayServer::run() {
 int main() {
 
 	DisplayServer ds( 48557, 10 ); // port no. and max connets
+
+//#ifdef DO_SD_NOTIFY
+  uint64_t usec;
+  if( sd_watchdog_enabled( 0, &usec ) > 0 ) {
+    sd_notify (0, "READY=1");
+    clog << "systemd watchdog is enabled. will send notify.\n";
+  }
+//#endif
+
 	ds.run();
 
 	return 0;
