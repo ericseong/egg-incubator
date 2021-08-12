@@ -1,5 +1,8 @@
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND!
+
 # Overview
-egg incubator program. It'll loop endlessly to monitor/control the temperature/humidity as per the policy given by config.json. 
+egg incubator program. It'll loop endlessly to monitor/control the temperature/humidity as per the policy given by config.json.
 
 # Managing run-time using systemd
 2ne1.service will continuously monitor and control the environment. In case the service is not looping for some reasons, watchdog daemon shall restart the service for about three times. 2ne1-display-server.service shall run as a separate service and will loop to process the incoming clients' request for drawing the stats and to check if we got the key pressed. If this service fails, then it'll restart and if the restart occurs about three times in a given period, the device will be rebooted.
