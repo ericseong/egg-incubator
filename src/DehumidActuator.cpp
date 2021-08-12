@@ -45,7 +45,7 @@ void DehumidActuator::on() {
 	
 	_level = LEVEL_ON;
 	softPwmWrite( PWMFAN2_PIN, ( PWM_RANGE2 - _level ) );
-	clog << "softPwmWrite(on): " << ( PWM_RANGE2 - _level ) << endl; 
+	//clog << "softPwmWrite(on): " << ( PWM_RANGE2 - _level ) << endl; 
 
 	delay(1);
 	return;
@@ -57,7 +57,7 @@ void DehumidActuator::start( level_t level ) {
 
 	_level = level; 
 	softPwmWrite( PWMFAN2_PIN, ( PWM_RANGE2 - _level ) );
-	clog << "softPwmWrite(level): " << ( PWM_RANGE2 - _level ) << endl; 
+	//clog << "softPwmWrite(level): " << ( PWM_RANGE2 - _level ) << endl; 
 
 	delay(1);
 	return;
@@ -69,7 +69,7 @@ void DehumidActuator::off() {
 
 	_level = LEVEL_OFF;
 	softPwmWrite( PWMFAN2_PIN, ( PWM_RANGE2 - _level ) );
-	clog << "softPwmWrite(off): " << ( PWM_RANGE2 - _level ) << endl; 
+	//clog << "softPwmWrite(off): " << ( PWM_RANGE2 - _level ) << endl; 
 
 	delay(1);
 	return;

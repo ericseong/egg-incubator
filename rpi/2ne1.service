@@ -1,0 +1,21 @@
+[Unit]
+Description=2ne1 - egg incubator
+After=network.target
+Requires=network.target
+
+[Service]
+Type=notify
+User=pi
+WorkingDirectory=/home/pi/hobby/egg-incubator/src
+EnvironmentFile=/etc/.2ne1.conf
+ExecStart=/home/pi/hobby/egg-incubator/src/build/2ne1 $ARG1
+Restart=on-watchdog
+WatchdogSec=60s
+RestartSec=30s
+NotifyAccess=all
+StartLimitInterval=10min
+StartLimitBurst=3
+StartLimitAction=none
+
+[Install]
+WantedBy=default.target

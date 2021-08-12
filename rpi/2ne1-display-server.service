@@ -1,0 +1,21 @@
+[Unit]
+Description=2ne1 display server for egg incubator
+After=network.target
+Requires=network.target
+
+[Service]
+Type=notify
+User=pi
+WorkingDirectory=/home/pi/hobby/egg-incubator/src/display_server
+ExecStart=/home/pi/hobby/egg-incubator/src/display_server/build/2ne1-display-server
+Environment=LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
+Restart=on-failure
+WatchdogSec=120s
+RestartSec=60s
+NotifyAccess=all
+StartLimitInterval=10min
+StartLimitBurst=3
+StartLimitAction=reboot
+
+[Install]
+WantedBy=default.target

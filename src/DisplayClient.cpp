@@ -61,14 +61,9 @@ void DisplayClient::sendMsg( string& msg ) const {
 		return;
 	}	
 
-	/* Write some stuff and read the echoes. */
+	write( fd, msg.c_str(), msg.size() );
 	fprintf(stdout, "From display client, writing %s\n", msg.c_str()); 
 
-	if ( write( fd, msg.c_str(), msg.size() ) > 0 ) { 
-		;
-	} 
-
-	puts( "Written.." ); 
 	close( fd ); /* close the connection */ 
 
 	return;

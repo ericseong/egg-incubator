@@ -46,7 +46,7 @@ void AirFlowActuator::on() {
 	
 	_level = LEVEL_50; // arbitary default, will be set by config
 	softPwmWrite( PWMFAN1_PIN, (PWM_RANGE1 - _level) );
-	clog << "softPwmWrite(on): " << ( PWM_RANGE1 - _level ) << endl;
+	//clog << "softPwmWrite(on): " << ( PWM_RANGE1 - _level ) << endl;
 
 	delay(1);
 	return;
@@ -58,7 +58,7 @@ void AirFlowActuator::start( level_t level ) {
 
 	_level = level;
 	softPwmWrite( PWMFAN1_PIN, ( PWM_RANGE1 - _level ) );
-	clog << "softPwmWrite(level): " << ( PWM_RANGE1 - _level ) << endl;
+	//clog << "softPwmWrite(level): " << ( PWM_RANGE1 - _level ) << endl;
 
 	delay(1);
 	return;
@@ -69,7 +69,7 @@ void AirFlowActuator::off() {
 
 	_level = LEVEL_OFF;
 	softPwmWrite( PWMFAN1_PIN, ( PWM_RANGE1 - _level ) );
-	clog << "softPwmWrite(off): " << ( PWM_RANGE1 - _level ) << endl;
+	//clog << "softPwmWrite(off): " << ( PWM_RANGE1 - _level ) << endl;
 
 	delay(1);
 	return;
