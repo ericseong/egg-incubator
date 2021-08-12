@@ -4,16 +4,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND!
 # Overview
 egg incubator program. It'll loop endlessly to monitor/control the temperature/humidity as per the policy given by config.json.
 
-# Managing run-time using systemd
-2ne1.service will continuously monitor and control the environment. In case the service is not looping for some reasons, watchdog daemon shall restart the service for about three times. 2ne1-display-server.service shall run as a separate service and will loop to process the incoming clients' request for drawing the stats and to check if we got the key pressed. If this service fails, then it'll restart and if the restart occurs about three times in a given period, the device will be rebooted.
-See "rpi/2ne1.service and 2ne1-display-server.service for the details.
-
-# User interface
-UI will simply display the days passed since the session started, temperature/humidity values gotten from the sensors, and date/time for the last update. User can start a new session by pressing button 1 and button 2 at the same time for about five seconds.
-
 # Install and run 
 The code can be compiled and run on raspberry pi. It's tested on Raspberry Pi OS Lite. To build incubator monitoring/control program, goto src/ and type make. Will get 2ne1 binary at build/ dir. To build display-server, goto src/display-server/ and type make. Will get 2ne1-display-server binay. The resulting binaries are to be registered as systemd services.
  
+# User interface
+UI will simply display the days passed since the session started, temperature/humidity values gotten from the sensors, and date/time for the last update. User can start a new session by pressing button 1 and button 2 at the same time for about five seconds.
+
+# Managing runtime using systemd
+2ne1.service will continuously monitor and control the environment. In case the service is not looping for some reasons, watchdog daemon shall restart the service for about three times. 2ne1-display-server.service shall run as a separate service and will loop to process the incoming clients' request for drawing the stats and to check if we got the key pressed. If this service fails, then it'll restart and if the restart occurs about three times in a given period, the device will be rebooted.
+See "rpi/2ne1.service and 2ne1-display-server.service for the details.
+
 # Dependencies
 * Enable I2C via raspi-config (for temp. sensor and RTC module)
 * Enable SPI via raspi-config (for lcd display)
