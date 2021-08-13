@@ -1,46 +1,38 @@
-# This project is in WIP!!!
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND!
 
 # Overview
-egg incubator. 
-
-incubator.service will continuously monitor and control the environment. In case the service is not looping for some reasons, incubator-watchdog.service shall recover the session by rebooting the device. 
-
-It's with very simple user interface displaying the followings on the 1.3" display.
-* days passed since session start
-* measured temperature in real-time
-* measured humidity in real-time
-
-The display module is also with some buttons and each button is with its own function below:
-* button 1 for initiating a new session
-* button 2 for restarting the on-going session
-* button 3 reserved
+egg incubator program. It'll loop endlessly to monitor/control the temperature/humidity as per the policy given by config.json.
 
 # Install and run 
-build/egg-controller // command-line
-TODO // systemd
+The code can be compiled and run on raspberry pi. It's tested on Raspberry Pi OS Lite. To build incubator monitoring/control program, goto src/ and type make. Will get 2ne1 binary at build/ dir. To build display-server, goto src/display-server/ and type make. Will get 2ne1-display-server binay. The resulting binaries are to be registered as systemd services.
+ 
+# User interface
+UI will simply display the days passed since the session started, temperature/humidity values gotten from the sensors, and date/time for the last update. User can start a new session by pressing button 1 and button 2 at the same time for about five seconds.
 
-# Known issues
-* dht22 frequently fails to get the data but not always
-
-# TODO
+# Managing runtime using systemd
+2ne1.service will continuously monitor and control the environment. In case the service is not looping for some reasons, watchdog daemon shall restart the service for about three times. 2ne1-display-server.service shall run as a separate service and will loop to process the incoming clients' request for drawing the stats and to check if we got the key pressed. If this service fails, then it'll restart and if the restart occurs about three times in a given period, the device will be rebooted.
+See "rpi/2ne1.service and 2ne1-display-server.service for the details.
 
 # Dependencies
-The followings the additional configurations I did for this project via raspi-config
-* Enable I2C
-* Enable SPI
-
-The following libraries has been installed during this project
-* Git
-* WiringPi (requires to install from source)
-* i2c-tools
+* Enable I2C via raspi-config (for temp. sensor and RTC module)
+* Enable SPI via raspi-config (for lcd display)
+* Real-time clock module configuration. Used controller is ds1307
+* WiringPi (See third_party/WiringPi) for gpio, i2c, pwm, and etc
+* TMP117 library. See third_party/SparkFun_TMP117_Arduino_Library.tar.gz 
+* Data read using dht22 temperature/humidity sensor
+* LCD library. See third_party/1.3inch_LCD_HAT.7z
+* libsystemd-dev for systemd watchdog
 * libjsoncpp-dev
-* library for 1.3" LCD HAT with ST77890 controller
-  - https://www.waveshare.com/1.3inch-lcd-hat.htm
+* i2c-tools
 
 # Documents
-* Schematic is at doc/schematic.svg
-* SW design is at doc/sw_design.png 
-* Doxygen format document is at doc/doxygen
- 
+* Circuit chematic is at doc/schematic.svg
+* Class diagram is at doc/sw-design.png 
+
+# Known issues
+* Button 1 and 2 are to be used and the other buttons there on LCD HAT are not conifigured properly
+* Couldn't get data from dht22 with about 50% chance of failing.
+
 // EOF
 
