@@ -43,7 +43,8 @@ void DehumidActuator::on() {
 	if( !_initialized )
 		return;
 	
-	_level = LEVEL_ON;
+	//_level = LEVEL_ON;
+	_level = LEVEL_50;
 	softPwmWrite( PWMFAN2_PIN, ( PWM_RANGE2 - _level ) );
 	//clog << "softPwmWrite(on): " << ( PWM_RANGE2 - _level ) << endl; 
 

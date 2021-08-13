@@ -179,8 +179,8 @@ void Incubator::_run() const {
 			clog << "heat actuator ON." << '\n';
 		}
 		else {
-			_pHeatActuator->off();
-			_pAirFlowActuator->start( f.airFlowLevel );
+			//_pHeatActuator->off();
+			//_pAirFlowActuator->start( f.airFlowLevel );
 			airFlowOverridden4TempControl = false;
 			clog << "airflow level: " << f.airFlowLevel << "and airflow is to be normal ." << '\n';
 		}
@@ -190,7 +190,7 @@ void Incubator::_run() const {
 	float th;
 	if( !_pHumidSensor->get( th ) ) {
 		clog << "real-time humidity: " << th << "%" << '\n';
-		if( th >= f.humidHigherLimit ) {
+		if( th >= f.humidHigherLimit && tm > (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 ) {
 			_pDehumidActuator->start( LEVEL_ON );
 			clog << "dehumid actuator ON." << '\n';
 		}
@@ -202,7 +202,11 @@ void Incubator::_run() const {
 
 	// air flow control
 	if( !airFlowOverridden4TempControl ) {
-		_pAirFlowActuator->start( f.airFlowLevel );
+		if( tm > (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 )
+			_pAirFlowActuator->start( f.airFlowLevel );
+		else // air flow fan stops in low temperature
+			_pAirFlowActuator->stop();
+			
 		clog << "airflow actuator level: " << f.airFlowLevel << '\n';
 	}
 	
