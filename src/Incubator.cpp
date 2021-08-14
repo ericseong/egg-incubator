@@ -169,6 +169,10 @@ void Incubator::_run() const {
 			_pAirFlowActuator->start( LEVEL_ON );	
 			airFlowOverridden4TempControl = true;
 			clog << "airflow actuator ON and airflow is overridden." << '\n';
+		} else {
+			_pAirFlowActuator->stop();	
+			airFlowOverridden4TempControl = false;
+			clog << "airflow level: " << f.airFlowLevel << "and airflow is to be normal ." << '\n';
 		}
 		if( tm >= f.tempHigherLimit ) {
 			_pHeatActuator->off();
@@ -177,12 +181,6 @@ void Incubator::_run() const {
 		else if( tm <= f.tempLowerLimit ) {
 			_pHeatActuator->on();
 			clog << "heat actuator ON." << '\n';
-		}
-		else {
-			//_pHeatActuator->off();
-			//_pAirFlowActuator->start( f.airFlowLevel );
-			airFlowOverridden4TempControl = false;
-			clog << "airflow level: " << f.airFlowLevel << "and airflow is to be normal ." << '\n';
 		}
 	}
 
@@ -202,9 +200,9 @@ void Incubator::_run() const {
 
 	// air flow control
 	if( !airFlowOverridden4TempControl ) {
-		if( tm > (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 )
+		if( tm > ( (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 ) )
 			_pAirFlowActuator->start( f.airFlowLevel );
-		else // air flow fan stops in low temperature
+		else if ( tm < f.tempLowerLimit )
 			_pAirFlowActuator->stop();
 			
 		clog << "airflow actuator level: " << f.airFlowLevel << '\n';
@@ -234,7 +232,7 @@ void Incubator::_run4Roller() const {
 		if( (now-stamp) > (time_t)f.rollInterval ) {
 			clog << "roller actuator starts." << '\n';
 			_pRollerActuator->on();
-			this_thread::sleep_for( std::chrono::milliseconds(6000) );
+			this_thread::sleep_for( std::chrono::milliseconds(7000) );
 			_pRollerActuator->off();	
 			clog << "roller actuator ends." << '\n';
 			time( &stamp );

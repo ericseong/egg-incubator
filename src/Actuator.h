@@ -18,8 +18,10 @@ struct Actuator {
 	//virtual level_t get() = 0;
 	virtual void on() = 0;
 	virtual void off() = 0;
-	virtual void start( level_t ) { std::clog << "start(level) is not implemented in the derived classs.\n"; }
-	virtual void stop() { std::clog << "stop() is not implemented in the derived class. \n"; }
+	virtual void start( level_t ) = 0;
+	virtual void stop() = 0;
+	//virtual void start( level_t ) { std::clog << "start(level) is not implemented in the derived classs.\n"; }
+	//virtual void stop() { std::clog << "stop() is not implemented in the derived class. \n"; }
 };
 
 #endif

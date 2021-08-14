@@ -75,6 +75,11 @@ void AirFlowActuator::off() {
 	return;
 }
 
+void AirFlowActuator::stop() {
+	off();
+	return;
+}
+
 level_t AirFlowActuator::get() {
 	if( !_initialized ) 
 		return LEVEL_INVALID;

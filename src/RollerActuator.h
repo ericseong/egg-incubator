@@ -15,6 +15,8 @@ public:
 	void deinit();
 	void on();
 	void off();
+	void start( level_t );
+	void stop();
 };
 
 #endif

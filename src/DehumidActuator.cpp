@@ -76,6 +76,11 @@ void DehumidActuator::off() {
 	return;
 }
 
+void DehumidActuator::stop() {
+	off();
+	return;
+}
+
 level_t DehumidActuator::get() {
 	if( !_initialized ) 
 		return LEVEL_INVALID;
