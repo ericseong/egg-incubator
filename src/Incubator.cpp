@@ -147,6 +147,7 @@ void Incubator::newSession() {
 
 // single shot for incubator control
 void Incubator::_run() const {
+	static int tempSensorFailureCount = 0; 
 
 	if( !_initialized )
 	 return;
@@ -164,13 +165,16 @@ void Incubator::_run() const {
 	float tm;
 	bool airFlowOverridden4TempControl = false;
 	if( !_pTempSensor->get( tm ) ) {
+
+		tempSensorFailureCount = 0;
+
 		clog << "real-time temperature: " << tm << "oC" << '\n';
 		if( tm >= f.tempHigherLimit + 0.1 ) { // temperature too high
 			_pAirFlowActuator->start( LEVEL_ON );	
 			airFlowOverridden4TempControl = true;
 			clog << "airflow actuator ON and airflow is overridden." << '\n';
 		} else {
-			_pAirFlowActuator->stop();	
+			//_pAirFlowActuator->stop();	
 			airFlowOverridden4TempControl = false;
 			clog << "airflow level: " << f.airFlowLevel << "and airflow is to be normal ." << '\n';
 		}
@@ -181,6 +185,13 @@ void Incubator::_run() const {
 		else if( tm <= f.tempLowerLimit ) {
 			_pHeatActuator->on();
 			clog << "heat actuator ON." << '\n';
+		}
+	} else { // can't get the value from temperature sensor
+		++tempSensorFailureCount;
+		if( tempSensorFailureCount >= 3 ) { // consecutive failures for more than three times
+			_pHeatActuator->off(); // prevent over-heating
+			//_pAirFlowActuator->start( LEVEL_ON );
+			//airFlowOverridden4TempControl = true;	
 		}
 	}
 
