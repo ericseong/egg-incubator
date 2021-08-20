@@ -1,0 +1,5 @@
+<map id="HeatActuator::init" name="HeatActuator::init">
+<area shape="rect" id="node1" title=" " alt="" coords="5,42,129,69"/>
+<area shape="rect" id="node2" href="$class_singleton.html#a8ec70839501fe76ec61195233d8fdb62" title=" " alt="" coords="177,5,313,47"/>
+<area shape="rect" id="node3" href="$class_gpio.html#ad5006f04eb912df7556ee05a7045d7e2" title=" " alt="" coords="208,71,283,98"/>
+</map>

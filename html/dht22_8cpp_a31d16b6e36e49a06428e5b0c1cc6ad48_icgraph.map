@@ -1,0 +1,5 @@
+<map id="dht22_get_data" name="dht22_get_data">
+<area shape="rect" id="node1" title=" " alt="" coords="217,31,332,57"/>
+<area shape="rect" id="node2" href="$class_dht22_humid_sensor.html#a04b841660184c6fb51094505bb3f9c27" title=" " alt="" coords="5,5,169,32"/>
+<area shape="rect" id="node3" href="$class_dht22_temp_sensor.html#a3c3e0c5e38d8d93f03eef27991840d15" title=" " alt="" coords="8,56,167,83"/>
+</map>

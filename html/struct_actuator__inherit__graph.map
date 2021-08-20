@@ -1,0 +1,7 @@
+<map id="Actuator" name="Actuator">
+<area shape="rect" id="node1" title=" " alt="" coords="283,5,383,171"/>
+<area shape="rect" id="node2" href="$class_air_flow_actuator.html" title=" " alt="" coords="5,219,149,428"/>
+<area shape="rect" id="node3" href="$class_dehumid_actuator.html" title=" " alt="" coords="174,219,327,428"/>
+<area shape="rect" id="node4" href="$class_heat_actuator.html" title=" " alt="" coords="352,233,480,413"/>
+<area shape="rect" id="node5" href="$class_roller_actuator.html" title=" " alt="" coords="505,233,639,413"/>
+</map>
