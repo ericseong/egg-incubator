@@ -5,8 +5,10 @@
 #include "Singleton.h"
 
 // gpio pin numbering by wiringPi configuration 
-#define PWMFAN1_PIN 					26 /* GPIO-12 */
-#define PWMFAN2_PIN 					23 /* GPIO-13 */
+//#define PWMFAN1_PIN 					26 /* GPIO-12 */
+//#define PWMFAN2_PIN 					23 /* GPIO-13 */
+#define PWMFAN1_PIN 					23 /* GPIO-12 */
+#define PWMFAN2_PIN 					26 /* GPIO-13 */
 #define RELAY_BULB1_PIN 				21 /* GPIO-5 */
 #define RELAY_BULB2_PIN 	22 /* GPIO-6 */
 #define RELAY_MOTOR_PIN 			27 /* GPIO-16 */
