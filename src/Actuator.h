@@ -15,7 +15,7 @@ struct Actuator {
 	virtual ~Actuator() {}
 	virtual void init() = 0;
 	virtual void deinit() = 0;
-	//virtual level_t get() = 0;
+	virtual level_t get() = 0;
 	virtual void on() = 0;
 	virtual void off() = 0;
 	virtual void start( level_t ) = 0;

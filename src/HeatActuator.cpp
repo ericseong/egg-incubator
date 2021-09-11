@@ -16,7 +16,10 @@ void HeatActuator::init() {
 
 	pinMode( RELAY_BULB1_PIN, OUTPUT );
 	pinMode( RELAY_BULB2_PIN, OUTPUT );
+
 	_initialized = true;
+	off();
+
 	return;
 }
 
@@ -25,6 +28,7 @@ void HeatActuator::deinit() {
 		return;
 	
 	off();
+
 	Gpio& gpio = Gpio::getInstance();
 	gpio.deinit();
 	_initialized = false;
@@ -37,7 +41,7 @@ void HeatActuator::on() {
 	
 	digitalWrite( RELAY_BULB1_PIN, HIGH );
 	digitalWrite( RELAY_BULB2_PIN, HIGH );
-	//_level = LEVEL_ON;
+	_level = LEVEL_ON;
 
 	delay(1);
 	return;
@@ -54,7 +58,7 @@ void HeatActuator::off() {
 
 	digitalWrite( RELAY_BULB1_PIN, LOW );
 	digitalWrite( RELAY_BULB2_PIN, LOW );
-	//_level = LEVEL_OFF;
+	_level = LEVEL_OFF;
 
 	delay(1);
 	return;
@@ -65,12 +69,12 @@ void HeatActuator::stop() {
 	return;
 }
 
-//level_t HeatActuator::get() {
-//	if( !_initialized ) 
-//		return LEVEL_INVALID;
+level_t HeatActuator::get() {
+	if( !_initialized ) 
+		return LEVEL_INVALID;
 
-//	return _level;
-//} 
+	return _level;
+} 
 
 // EOF
 

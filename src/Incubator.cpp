@@ -211,10 +211,17 @@ void Incubator::_run() const {
 
 	// air flow control
 	if( !airFlowOverridden4TempControl ) {
-		if( tm > ( (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 ) )
+		//if( tm > ( (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 ) )
+		//	_pAirFlowActuator->start( f.airFlowLevel );
+		//else if ( tm < f.tempLowerLimit )
+		//	_pAirFlowActuator->stop();
+
+		// set air flow always on as airflow fan is now inside the incubator to circulate the heat(airflow) inside incubator
+		if( _pHeatActuator->get() == LEVEL_ON ) {
+			_pAirFlowActuator->start( LEVEL_50 );
+		} else {
 			_pAirFlowActuator->start( f.airFlowLevel );
-		else if ( tm < f.tempLowerLimit )
-			_pAirFlowActuator->stop();
+		}
 			
 		clog << "airflow actuator level: " << f.airFlowLevel << '\n';
 	}

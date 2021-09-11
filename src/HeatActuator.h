@@ -7,7 +7,7 @@
 
 class HeatActuator : public Actuator {
 	bool _initialized;
-	//unsigned _level;
+	unsigned _level;
 	
 public:
 	HeatActuator() : _initialized(false) {}
@@ -18,7 +18,7 @@ public:
 	void off();
 	void start( level_t );
 	void stop();
-	//level_t get();
+	level_t get();
 };
 
 #endif

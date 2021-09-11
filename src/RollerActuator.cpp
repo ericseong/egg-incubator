@@ -60,12 +60,12 @@ void RollerActuator::stop() {
 	return;
 }
 
-//level_t RollerActuator::get() {
-//	if( !_initialized ) 
-//		return LEVEL_INVALID;
+level_t RollerActuator::get() {
+	if( !_initialized ) 
+		return LEVEL_INVALID;
 
-//	return _level;
-//} 
+	return LEVEL_OFF; // dummy value.
+} 
 
 // EOF
 
