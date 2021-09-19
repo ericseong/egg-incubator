@@ -176,7 +176,7 @@ void Incubator::_run() const {
 		} else {
 			//_pAirFlowActuator->stop();	
 			airFlowOverridden4TempControl = false;
-			clog << "airflow level: " << f.airFlowLevel << "and airflow is to be normal ." << '\n';
+			clog << "airflow level: " << f.airFlowLevel << " and airflow is to be normal ." << '\n';
 		}
 		if( tm >= f.tempHigherLimit ) {
 			_pHeatActuator->off();
@@ -211,17 +211,17 @@ void Incubator::_run() const {
 
 	// air flow control
 	if( !airFlowOverridden4TempControl ) {
-		//if( tm > ( (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 ) )
-		//	_pAirFlowActuator->start( f.airFlowLevel );
-		//else if ( tm < f.tempLowerLimit )
-		//	_pAirFlowActuator->stop();
-
-		// set air flow always on as airflow fan is now inside the incubator to circulate the heat(airflow) inside incubator
-		if( _pHeatActuator->get() == LEVEL_ON ) {
-			_pAirFlowActuator->start( LEVEL_50 );
-		} else {
+		if( tm > ( (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 ) )
 			_pAirFlowActuator->start( f.airFlowLevel );
-		}
+		else if ( tm < f.tempLowerLimit )
+			_pAirFlowActuator->stop();
+
+		// Comment out! as airflow fan is now outside of the incubator
+		//if( _pHeatActuator->get() == LEVEL_ON ) {
+		//	_pAirFlowActuator->start( LEVEL_50 );
+		//} else {
+		//	_pAirFlowActuator->start( f.airFlowLevel );
+		//}
 			
 		clog << "airflow actuator level: " << f.airFlowLevel << '\n';
 	}
