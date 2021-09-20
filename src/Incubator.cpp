@@ -17,6 +17,7 @@
 #include "AirFlowActuator.h"
 #include "DehumidActuator.h"
 #include "HeatActuator.h"
+#include "HeatFlowActuator.h"
 #include "RollerActuator.h"
 
 using namespace std;
@@ -51,6 +52,9 @@ void Incubator::init() {
 
 	_pHeatActuator =		new HeatActuator();
 	_pHeatActuator->init();
+
+	_pHeatFlowActuator =		new HeatFlowActuator();
+	_pHeatFlowActuator->init();
 
 	_pRollerActuator =	new RollerActuator();
 	_pRollerActuator->init();
@@ -102,6 +106,11 @@ void Incubator::deinit() {
 		_pHeatActuator->deinit();	
 		delete _pHeatActuator;
 		clog << "_pHeatActuator is deinitialized.\n";
+	}
+	if( _pHeatFlowActuator ) {
+		_pHeatFlowActuator->deinit();	
+		delete _pHeatFlowActuator;
+		clog << "_pHeatFlowActuator is deinitialized.\n";
 	}
 	if( _pRollerActuator ) {
 		_pRollerActuator->deinit();	
@@ -171,6 +180,7 @@ void Incubator::_run() const {
 		clog << "real-time temperature: " << tm << "oC" << '\n';
 		if( tm >= f.tempHigherLimit + 0.1 ) { // temperature too high
 			_pAirFlowActuator->start( LEVEL_ON );	
+			_pHeatFlowActuator->on();	
 			airFlowOverridden4TempControl = true;
 			clog << "airflow actuator ON and airflow is overridden." << '\n';
 		} else {
@@ -184,8 +194,15 @@ void Incubator::_run() const {
 		}
 		else if( tm <= f.tempLowerLimit ) {
 			_pHeatActuator->on();
+			_pHeatFlowActuator->on();
 			clog << "heat actuator ON." << '\n';
 		}
+
+		if( tm >= ( f.tempHigherLimit + f.tempLowerLimit ) / 2. )
+			_pHeatFlowActuator->on();
+		else
+			-pHeatFlowActuator->off();
+
 	} else { // can't get the value from temperature sensor
 		++tempSensorFailureCount;
 		if( tempSensorFailureCount >= 3 ) { // consecutive failures for more than three times
@@ -202,19 +219,25 @@ void Incubator::_run() const {
 		if( th >= f.humidHigherLimit && tm > (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 ) {
 			_pDehumidActuator->start( LEVEL_ON );
 			clog << "dehumid actuator ON." << '\n';
+			_pHeatFlowActuator->on();
 		}
 		else {
 			_pDehumidActuator->off();
 			clog << "dehumid actuator OFF." << '\n';
+			_pHeatFlowActuator->off();
 		}
 	}
 
 	// air flow control
 	if( !airFlowOverridden4TempControl ) {
-		if( tm > ( (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 ) )
+		if( tm > ( (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 ) ) {
 			_pAirFlowActuator->start( f.airFlowLevel );
-		else if ( tm < f.tempLowerLimit )
+			_pHeatFlowActuator->on();
+		}
+		else {
 			_pAirFlowActuator->stop();
+			_pHeatFlowActuator->off();
+		}
 
 		// Comment out! as airflow fan is now outside of the incubator
 		//if( _pHeatActuator->get() == LEVEL_ON ) {

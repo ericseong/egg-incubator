@@ -29,6 +29,7 @@ class Incubator : public Singleton<Incubator> {
 	Actuator *_pAirFlowActuator;
 	Actuator *_pDehumidActuator;
 	Actuator *_pHeatActuator;
+	Actuator *_pHeatFlowActuator;
 	Actuator *_pRollerActuator;
 	void _run() const;
 	void _run4Roller() const;
