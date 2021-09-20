@@ -1,18 +1,20 @@
 // Dht22HumidSensor.cpp
+// how to build: -lwiringPi is required
 
+#include <wiringPi.h>
+#include "Gpio.h"
 #include "Dht22HumidSensor.h"
+
 using namespace std;
 
-
-//extern "C" {
-//	extern int dht22_get_data( float *temp, float *humid );
-//}
 extern int dht22_get_data( float *temp, float *humid );
 
 void Dht22HumidSensor::init() {
-
 	if( _initialized )
 		return;
+
+	Gpio& gpio = Gpio::getInstance();
+	gpio.init();
 
 	_initialized = true;
 	return;
@@ -21,6 +23,9 @@ void Dht22HumidSensor::init() {
 void Dht22HumidSensor::deinit() {
 	if( !_initialized )
 		return;
+
+	Gpio& gpio = Gpio::getInstance();
+	gpio.deinit();
 
 	_initialized = false;
 	return;
@@ -35,7 +40,6 @@ int Dht22HumidSensor::get( float& data ) {
 
 	if( !dht22_get_data( &temp, &humid ) ) {
 		_lastVal = data = humid;
-		
 	}
 	else {
 		ret = -1;

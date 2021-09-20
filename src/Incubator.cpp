@@ -44,19 +44,19 @@ void Incubator::init() {
 	}
 
 	// create instances for sensors and actuators
-	_pTempSensor = 			new Tmp117TempSensor();
+	_pTempSensor = new Tmp117TempSensor();
 	_pTempSensor->init();
 
-	_pHumidSensor = 		new Dht22HumidSensor();
+	_pHumidSensor =	new Dht22HumidSensor();
 	_pHumidSensor->init();
 
-	_pHeatActuator =		new HeatActuator();
+	_pHeatActuator = new HeatActuator();
 	_pHeatActuator->init();
 
-	_pHeatFlowActuator =		new HeatFlowActuator();
+	_pHeatFlowActuator = new HeatFlowActuator();
 	_pHeatFlowActuator->init();
 
-	_pRollerActuator =	new RollerActuator();
+	_pRollerActuator = new RollerActuator();
 	_pRollerActuator->init();
 
 	_pAirFlowActuator =	new AirFlowActuator();
@@ -182,13 +182,13 @@ void Incubator::_run() const {
 		// high temperature control
 		if( tm >= f.tempHigherLimit + 0.1 ) { // temperature too high
 			_pAirFlowActuator->start( LEVEL_ON );	
-			_pHeatFlowActuator->on();	
+			//_pHeatFlowActuator->on();	
 			airFlowOverridden4TempControl = true;
 			clog << "airflow actuator ON and airflow is overridden." << '\n';
 		} else {
 			//_pAirFlowActuator->stop();	
 			airFlowOverridden4TempControl = false;
-			clog << "airflow level: " << f.airFlowLevel << " and airflow is to be normal ." << '\n';
+			//clog << "airflow level: " << f.airFlowLevel << " and airflow is to be normal ." << '\n';
 		}
 
 		// normal temperature control
@@ -231,12 +231,10 @@ void Incubator::_run() const {
 		if( th >= f.humidHigherLimit && tm > (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 ) {
 			_pDehumidActuator->start( LEVEL_ON );
 			clog << "dehumid actuator ON." << '\n';
-			_pHeatFlowActuator->on();
 		}
 		else {
 			_pDehumidActuator->off();
 			clog << "dehumid actuator OFF." << '\n';
-			_pHeatFlowActuator->off();
 		}
 	}
 
@@ -244,11 +242,9 @@ void Incubator::_run() const {
 	if( !airFlowOverridden4TempControl ) {
 		if( tm > ( (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 ) ) {
 			_pAirFlowActuator->start( f.airFlowLevel );
-			_pHeatFlowActuator->on();
 		}
 		else {
 			_pAirFlowActuator->stop();
-			_pHeatFlowActuator->off();
 		}
 
 		// Comment out! as airflow fan is now outside of the incubator
@@ -258,7 +254,7 @@ void Incubator::_run() const {
 		//	_pAirFlowActuator->start( f.airFlowLevel );
 		//}
 			
-		clog << "airflow actuator level: " << f.airFlowLevel << '\n';
+		//clog << "airflow actuator level: " << f.airFlowLevel << '\n';
 	}
 	
 	return;
