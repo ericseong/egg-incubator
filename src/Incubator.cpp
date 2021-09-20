@@ -178,6 +178,8 @@ void Incubator::_run() const {
 		tempSensorFailureCount = 0;
 
 		clog << "real-time temperature: " << tm << "oC" << '\n';
+
+		// high temperature control
 		if( tm >= f.tempHigherLimit + 0.1 ) { // temperature too high
 			_pAirFlowActuator->start( LEVEL_ON );	
 			_pHeatFlowActuator->on();	
@@ -188,20 +190,30 @@ void Incubator::_run() const {
 			airFlowOverridden4TempControl = false;
 			clog << "airflow level: " << f.airFlowLevel << " and airflow is to be normal ." << '\n';
 		}
-		if( tm >= f.tempHigherLimit ) {
+
+		// normal temperature control
+		if( tm > f.tempHigherLimit ) {
 			_pHeatActuator->off();
 			clog << "heat actuator OFF." << '\n';
+			_pHeatFlowActuator->on();
+			clog << "heatflow actuator ON." << '\n';
 		}
-		else if( tm <= f.tempLowerLimit ) {
+		else if( tm > ( f.tempHigherLimit + f.tempLowerLimit ) / 2. ) {
+			_pHeatFlowActuator->on();
+			clog << "heatflow actuator ON." << '\n';
+		}
+		else if( tm > f.tempLowerLimit && tm < ( f.tempHigherLimit + f.tempLowerLimit ) / 2. ) {
+			if( _pHeatActuator->get() != LEVEL_ON ) {
+				_pHeatActuator->off();
+				clog << "heat actuator OFF." << '\n';
+			}
+		}
+		else if( tm < f.tempLowerLimit ) {
 			_pHeatActuator->on();
-			_pHeatFlowActuator->on();
 			clog << "heat actuator ON." << '\n';
-		}
-
-		if( tm >= ( f.tempHigherLimit + f.tempLowerLimit ) / 2. )
 			_pHeatFlowActuator->on();
-		else
-			-pHeatFlowActuator->off();
+			clog << "heatflow actuator ON." << '\n';
+		}
 
 	} else { // can't get the value from temperature sensor
 		++tempSensorFailureCount;
