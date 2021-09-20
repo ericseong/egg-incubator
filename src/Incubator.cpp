@@ -177,7 +177,7 @@ void Incubator::_run() const {
 
 		tempSensorFailureCount = 0;
 
-		clog << "real-time temperature: " << tm << "oC" << '\n';
+		clog << "real-time temperature: " << tm << " oC" << '\n';
 
 		// high temperature control
 		if( tm >= f.tempHigherLimit + 0.1 ) { // temperature too high
@@ -227,7 +227,7 @@ void Incubator::_run() const {
 	// humidity control 
 	float th;
 	if( !_pHumidSensor->get( th ) ) {
-		clog << "real-time humidity: " << th << "%" << '\n';
+		clog << "real-time humidity: " << th << " %" << '\n';
 		if( th >= f.humidHigherLimit && tm > (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 ) {
 			_pDehumidActuator->start( LEVEL_ON );
 			clog << "dehumid actuator ON." << '\n';
