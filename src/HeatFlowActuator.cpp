@@ -38,7 +38,8 @@ void HeatFlowActuator::on() {
 	if( !_initialized )
 		return;
 	
-	digitalWrite( RELAY_HEATFLOW_PIN, HIGH );
+	//if( get() != LEVEL_ON )
+		digitalWrite( RELAY_HEATFLOW_PIN, HIGH );
 	_level = LEVEL_ON;
 
 	delay(1);
@@ -54,7 +55,8 @@ void HeatFlowActuator::off() {
 	if( !_initialized )
 		return;
 
-	digitalWrite( RELAY_HEATFLOW_PIN, LOW );
+	//if( get() != LEVEL_OFF )
+		digitalWrite( RELAY_HEATFLOW_PIN, LOW );
 	_level = LEVEL_OFF;
 
 	delay(1);

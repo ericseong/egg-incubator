@@ -204,8 +204,8 @@ void Incubator::_run() const {
 		}
 		else if( tm > f.tempLowerLimit && tm < ( f.tempHigherLimit + f.tempLowerLimit ) / 2. ) {
 			if( _pHeatActuator->get() != LEVEL_ON ) {
-				_pHeatActuator->off();
-				clog << "heat actuator OFF." << '\n';
+				_pHeatFlowActuator->off();
+				clog << "heatflow actuator OFF." << '\n';
 			}
 		}
 		else if( tm < f.tempLowerLimit ) {
