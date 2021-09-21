@@ -19,6 +19,7 @@
 #include "HeatActuator.h"
 #include "HeatFlowActuator.h"
 #include "RollerActuator.h"
+#include "HumidActuator.h"
 
 using namespace std;
 
@@ -64,6 +65,9 @@ void Incubator::init() {
 
 	_pDehumidActuator =	new DehumidActuator();
 	_pDehumidActuator->init();
+
+	_pHumidActuator =	new HumidActuator();
+	_pHumidActuator->init();
 
 	string host("127.0.0.1");
 	_pDC = new DisplayClient( host, 48557 ); 
@@ -116,6 +120,11 @@ void Incubator::deinit() {
 		_pRollerActuator->deinit();	
 		delete _pRollerActuator;
 		clog << "_pRollerActuator is deinitialized.\n";
+	}
+	if( _pHumidActuator ) {
+		_pHumidActuator->deinit();	
+		delete _pHumidActuator;
+		clog << "_pHumidActuator is deinitialized.\n";
 	}
 
 	if( _pSTime ) {
@@ -224,10 +233,11 @@ void Incubator::_run() const {
 		}
 	}
 
-	// humidity control 
 	float th;
 	if( !_pHumidSensor->get( th ) ) {
 		clog << "real-time humidity: " << th << " %" << '\n';
+
+		// dehumidfier control 
 		if( th >= f.humidHigherLimit && tm > (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 ) {
 			_pDehumidActuator->start( LEVEL_ON );
 			clog << "dehumid actuator ON." << '\n';
@@ -235,6 +245,17 @@ void Incubator::_run() const {
 		else {
 			_pDehumidActuator->off();
 			clog << "dehumid actuator OFF." << '\n';
+		}
+
+		// humidifier control
+		if( th < f.humidLowerLimit ) {
+			_pHumidActuator->start( LEVEL_50 );
+			clog << "humid actuator LEVEL_50." << '\n';
+			//_pHumidActuator->on();
+		}
+		else if( th > ( f.humidLowerLimit + f.humidHigherLimit ) / 2.0 ) {
+			_pHumidActuator->off();
+			clog << "humid actuator OFF." << '\n';
 		}
 	}
 
