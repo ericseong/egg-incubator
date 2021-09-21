@@ -15,13 +15,12 @@ void HumidActuator::init() {
 	gpio.init();
 
 	pinMode( RELAY_HUMIDIFIER_POWER_PIN, OUTPUT );
-	delay(1);
+	pinMode( RELAY_HUMIDIFIER_PIN, OUTPUT );
 
-	// turn off humidifier 
+	// power on humidifier 
+	delay(1);
 	digitalWrite( RELAY_HUMIDIFIER_POWER_PIN, HIGH );
 	delay(1);
-
-	pinMode( RELAY_HUMIDIFIER_PIN, OUTPUT );
 
 	_initialized = true;
 	off();
@@ -35,7 +34,7 @@ void HumidActuator::deinit() {
 	
 	off();
 
-	// turn off humidifier 
+	// power off humidifier 
 	digitalWrite( RELAY_HUMIDIFIER_POWER_PIN, LOW );
 	delay(1);
 
@@ -96,6 +95,7 @@ void HumidActuator::start( level_t level ) {
 			default:
 				// nothing to do
 				break;
+		}
 	} else {
 		;
 	}
@@ -141,11 +141,10 @@ level_t HumidActuator::get() {
 
 // simulate one button press
 void HumidActuator::_press() {
-	delay(1);
-	digitalWrite( RELAY_HUMIDIFIER_POWER_PIN, HIGH );
-	delay(1);
-	digitalWrite( RELAY_HUMIDIFIER_POWER_PIN, LOW );
-	delay(1);
+	digitalWrite( RELAY_HUMIDIFIER_PIN, HIGH );
+	delay(1000);
+	digitalWrite( RELAY_HUMIDIFIER_PIN, LOW );
+	delay(1000);
 
 	return;
 }

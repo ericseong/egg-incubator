@@ -254,7 +254,8 @@ void Incubator::_run() const {
 			//_pHumidActuator->on();
 		}
 		else if( th > ( f.humidLowerLimit + f.humidHigherLimit ) / 2.0 ) {
-			_pHumidActuator->off();
+			_pHumidActuator->stop();
+			//_pHumidActuator->off();
 			clog << "humid actuator OFF." << '\n';
 		}
 	}
