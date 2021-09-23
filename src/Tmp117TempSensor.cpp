@@ -65,7 +65,12 @@ int Tmp117TempSensor::get( float& data ) {
 		temp = d * TEMP_RES;
 	}
 
+#ifdef TMP117_OFFSET
+	_lastVal = data = temp + TMP117_OFFSET;
+#else
 	_lastVal = data = temp;
+#endif
+
 	return ret;
 };
 

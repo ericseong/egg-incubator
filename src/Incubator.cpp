@@ -303,7 +303,8 @@ void Incubator::_run4Roller() const {
 		if( (now-stamp) > (time_t)f.rollInterval ) {
 			clog << "roller actuator starts." << '\n';
 			_pRollerActuator->on();
-			this_thread::sleep_for( std::chrono::milliseconds(6000) );
+			//this_thread::sleep_for( std::chrono::milliseconds(6000) );
+			this_thread::sleep_for( std::chrono::milliseconds(3000) );
 			_pRollerActuator->off();	
 			clog << "roller actuator ends." << '\n';
 			time( &stamp );
