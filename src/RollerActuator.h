@@ -7,6 +7,7 @@
 
 class RollerActuator : public Actuator {
 	bool _initialized;
+  unsigned _level;
 	
 public:
 	RollerActuator() : _initialized(false) {}

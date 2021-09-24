@@ -409,9 +409,27 @@ void Incubator::runLoop() {
 
 		unsigned daysPassed = _pSTime->daysPassed();
 		unsigned maxDay;
+
 		_pEnv->getMaxDay( maxDay );
 		if( daysPassed >= maxDay ) {
 			clog << "Max day passed: " << "maxDay: " << maxDay << ", " << "daysPassed: " << daysPassed << endl;
+			clog << "All actuators is off if not." << endl;
+
+			if( _pAirFlowActuator->get() != LEVEL_OFF ) 
+				_pAirFlowActuator->off();	
+			if( _pDehumidActuator->get() != LEVEL_OFF ) 
+				_pDehumidActuator->off();
+			if( _pHeatActuator->get() != LEVEL_OFF ) 
+				_pHeatActuator->off();
+			if( _pHeatFlowActuator->get() != LEVEL_OFF ) 
+				_pHeatFlowActuator->off();
+			if( _pRollerActuator->get() != LEVEL_OFF ) 
+				_pRollerActuator->off();
+			if( _pHumidActuator->get() != LEVEL_OFF ) 
+				_pHumidActuator->off();
+
+			this_thread::sleep_for( std::chrono::milliseconds(1000) );
+
 			return;
 		}
 
