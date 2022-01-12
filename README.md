@@ -34,5 +34,11 @@ See "rpi/2ne1.service and 2ne1-display-server.service for the details.
 * Button 1 and 2 are to be used and the other buttons there on LCD HAT are not conifigured properly
 * Couldn't get data from dht22 with about 50% chance of failing.
 
+# How it looks like
+![PXL_20211016_094342700](https://user-images.githubusercontent.com/4989239/149160810-7a4d0771-ac1a-4e10-b5cd-e123645382a9.jpg)
+
+# It worked!
+![PXL_20211016_120921380](https://user-images.githubusercontent.com/4989239/149160955-1700751e-5e02-4f95-b455-5fc90e8799fe.jpg)
+
 // EOF
 
