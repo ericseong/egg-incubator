@@ -2,7 +2,7 @@
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND!
 
 # Overview
-egg incubator program. It'll loop endlessly to monitor/control the temperature/humidity as per the policy given by config.json.
+egg incubator program. It'll loop endlessly to monitor/control the temperature/humidity and air flow as per the policy given by config.json.
 
 # Install and run 
 The code can be compiled and run on raspberry pi. It's tested on Raspberry Pi OS Lite. To build incubator monitoring/control program, goto src/ and type make. Will get 2ne1 binary at build/ dir. To build display-server, goto src/display-server/ and type make. Will get 2ne1-display-server binay. The resulting binaries are to be registered as systemd services.
