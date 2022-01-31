@@ -2,7 +2,7 @@
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND!
 
 # Overview
-egg incubator program. It'll loop endlessly to monitor/control the temperature/humidity as per the policy given by config.json.
+egg incubator program. It'll loop endlessly to monitor/control the temperature/humidity and air flow as per the policy given by config.json.
 
 # Install and run 
 The code can be compiled and run on raspberry pi. It's tested on Raspberry Pi OS Lite. To build incubator monitoring/control program, goto src/ and type make. Will get 2ne1 binary at build/ dir. To build display-server, goto src/display-server/ and type make. Will get 2ne1-display-server binay. The resulting binaries are to be registered as systemd services.
@@ -33,6 +33,12 @@ See "rpi/2ne1.service and 2ne1-display-server.service for the details.
 # Known issues
 * Button 1 and 2 are to be used and the other buttons there on LCD HAT are not conifigured properly
 * Couldn't get data from dht22 with about 50% chance of failing.
+
+# How it looks like
+![PXL_20211016_094342700](https://user-images.githubusercontent.com/4989239/149160810-7a4d0771-ac1a-4e10-b5cd-e123645382a9.jpg)
+
+# It worked!
+![PXL_20211016_120921380](https://user-images.githubusercontent.com/4989239/149160955-1700751e-5e02-4f95-b455-5fc90e8799fe.jpg)
 
 // EOF
 
