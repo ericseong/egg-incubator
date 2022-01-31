@@ -264,9 +264,11 @@ void Incubator::_run() const {
 	if( !airFlowOverridden4TempControl ) {
 		if( tm > ( (f.tempLowerLimit + f.tempHigherLimit ) / 2.0 ) ) {
 			_pAirFlowActuator->start( f.airFlowLevel );
+			clog << "airflow actuator level: " << f.airFlowLevel << '\n';
 		}
 		else {
 			_pAirFlowActuator->stop();
+			clog << "airflow actuator STOP." << '\n';
 		}
 
 		// Comment out! as airflow fan is now outside of the incubator
@@ -275,8 +277,6 @@ void Incubator::_run() const {
 		//} else {
 		//	_pAirFlowActuator->start( f.airFlowLevel );
 		//}
-			
-		//clog << "airflow actuator level: " << f.airFlowLevel << '\n';
 	}
 	
 	return;
