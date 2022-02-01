@@ -6,7 +6,8 @@ RM = rm -f
 SED = sed
 # generate dependency without mentioning system header directories
 MAKEDEPEND = $(C++) -MM
-CPPFLAGS = -O2 -Wall -std=c++14 -DENABLE_NONBLOCKING_CLIENT_SOCKET -DTMP117_OFFSET=0.5
+#CPPFLAGS = -O2 -Wall -std=c++14 -DENABLE_NONBLOCKING_CLIENT_SOCKET -DTMP117_OFFSET=0.5
+CPPFLAGS = -O2 -Wall -std=c++14 -DENABLE_NONBLOCKING_CLIENT_SOCKET -DTMP117_OFFSET=0.0
 #CPPFLAGS = -DSKIP_WIRINGPI_SETUP -g -Wall -std=c++14
 LDFLAGS = -L/usr/local/lib -lpthread -lwiringPi -ljsoncpp -lsystemd
 
