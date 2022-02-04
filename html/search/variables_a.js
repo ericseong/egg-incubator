@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['startdate_400',['startDate',['../struct__phase__header.html#a22d8c2e41c66a9fd31a245c33b81e82e',1,'_phase_header']]]
+  ['recinterval_0',['RecInterval',['../class_temp_algo.html#ad77865ad30c243e22d39d200e581dd50',1,'TempAlgo']]],
+  ['rollinterval_1',['rollInterval',['../struct__fomula.html#a6e419e2cefd368f4c6e513652c4cf03b',1,'_fomula']]]
 ];

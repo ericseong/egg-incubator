@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['rollinterval_399',['rollInterval',['../struct__fomula.html#a6e419e2cefd368f4c6e513652c4cf03b',1,'_fomula']]]
+  ['phasenames_0',['phaseNames',['../_env_8cpp.html#a76bfec3f625145790d52706bc7923046',1,'Env.cpp']]],
+  ['phases_1',['phases',['../struct__config.html#ae25b12141b2d34c81d1d6e609a4b23c9',1,'_config']]]
 ];

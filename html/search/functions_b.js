@@ -1,8 +1,4 @@
 var searchData=
 [
-  ['resetsignalterm_322',['resetSignalTerm',['../class_signal.html#aed6098485cfbacfbcfe105bd3c70cdde',1,'Signal']]],
-  ['resetsignalusr1_323',['resetSignalUsr1',['../class_signal.html#a2184d31e9dac489d01c6f9f558000668',1,'Signal']]],
-  ['rolleractuator_324',['RollerActuator',['../class_roller_actuator.html#a27b1ffb9cfd1242ae44200f4bcf43bd9',1,'RollerActuator']]],
-  ['run_325',['run',['../class_display_server.html#a51dae66f15f858f9ed8407e425fe03f1',1,'DisplayServer']]],
-  ['runloop_326',['runLoop',['../class_incubator.html#ab2084701ceb46e156faa8c7e9724a0fd',1,'Incubator']]]
+  ['printrecord_0',['printRecord',['../class_temp_algo.html#af4be20b8cf3665738329c4c962322fc5',1,'TempAlgo']]]
 ];

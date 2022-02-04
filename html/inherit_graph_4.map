@@ -1,7 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$struct_actuator.html" title=" " alt="" coords="5,81,77,108"/>
-<area shape="rect" id="node2" href="$class_air_flow_actuator.html" title=" " alt="" coords="130,5,246,32"/>
-<area shape="rect" id="node3" href="$class_dehumid_actuator.html" title=" " alt="" coords="125,56,251,83"/>
-<area shape="rect" id="node4" href="$class_heat_actuator.html" title=" " alt="" coords="138,107,238,133"/>
-<area shape="rect" id="node5" href="$class_roller_actuator.html" title=" " alt="" coords="135,157,241,184"/>
+<area shape="rect" id="node1" href="$struct_actuator.html" title=" " alt="" coords="5,132,76,159"/>
+<area shape="rect" id="node2" href="$class_air_flow_actuator.html" title=" " alt="" coords="130,5,245,32"/>
+<area shape="rect" id="node3" href="$class_dehumid_actuator.html" title=" " alt="" coords="126,56,249,83"/>
+<area shape="rect" id="node4" href="$class_heat_actuator.html" title=" " alt="" coords="138,107,237,133"/>
+<area shape="rect" id="node5" href="$class_heat_flow_actuator.html" title=" " alt="" coords="124,157,251,184"/>
+<area shape="rect" id="node6" href="$class_humid_actuator.html" title=" " alt="" coords="133,208,242,235"/>
+<area shape="rect" id="node7" href="$class_roller_actuator.html" title=" " alt="" coords="135,259,240,285"/>
 </map>

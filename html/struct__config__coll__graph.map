@@ -1,9 +1,9 @@
 <map id="_config" name="_config">
-<area shape="rect" id="node1" title=" " alt="" coords="200,469,265,547"/>
+<area shape="rect" id="node1" title=" " alt="" coords="87,469,151,547"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,5,60,83"/>
-<area shape="rect" id="node7" href="$struct__phase__header.html" title=" " alt="" coords="122,189,237,267"/>
-<area shape="rect" id="node3" href="$struct__phase.html" title=" " alt="" coords="200,329,265,407"/>
-<area shape="rect" id="node4" href="$struct__fomula.html" title=" " alt="" coords="261,189,330,267"/>
-<area shape="rect" id="node5" title=" " alt="" coords="107,5,153,83"/>
-<area shape="rect" id="node6" title=" " alt="" coords="332,5,408,83"/>
+<area shape="rect" id="node5" href="$struct__phase__header.html" title=" " alt="" coords="157,189,268,267"/>
+<area shape="rect" id="node3" title=" " alt="" coords="150,5,225,83"/>
+<area shape="rect" id="node6" href="$struct__fomula.html" title=" " alt="" coords="292,189,360,267"/>
+<area shape="rect" id="node4" href="$struct__phase.html" title=" " alt="" coords="181,329,245,407"/>
+<area shape="rect" id="node7" title=" " alt="" coords="373,5,420,83"/>
 </map>

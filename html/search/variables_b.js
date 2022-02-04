@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['temphigherlimit_401',['tempHigherLimit',['../struct__fomula.html#ac6f0f38eea23f5211be43e2abaa1e68d',1,'_fomula']]],
-  ['templowerlimit_402',['tempLowerLimit',['../struct__fomula.html#af90da5f34cd64672c8a6ce299bc11cc8',1,'_fomula']]]
+  ['startdate_0',['startDate',['../struct__phase__header.html#a22d8c2e41c66a9fd31a245c33b81e82e',1,'_phase_header']]]
 ];
