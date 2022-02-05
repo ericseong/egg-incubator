@@ -159,7 +159,7 @@ void Incubator::newSession() {
 	if( !_initialized )
 		return;
 
-	_pSTime->	setStart();	
+	_pSTime->setStart();	
 	return;
 }
 
@@ -314,6 +314,28 @@ void Incubator::_run4Roller() const {
 	return;
 }
 
+// see if it's during out-of-nest period 
+bool Incubator::_isOon() {
+	unsigned daysPassed = _pSTime->daysPassed();
+	unsigned maxDay;
+	
+	_pEnv->getMaxDay( maxDay );
+  if( daysPassed < maxDay ) {
+		formula_t f;
+		if( !_pEnv->getFormula( daysPassed, f ) {
+			if( f.outOfNest != 0 ) {
+				time_t elapsed = _pSTime->getElapsed();
+				time_t oonFrom = 86400*daysPassed - f.outOfNest; // out-of-nest is taken at the end of the day 
+				time_t oonTo = 86400*daysPassed;
+				if( elapsed > oonFrom && elapsed < oonTo )
+					return true;
+			}
+		}	
+	}
+	
+	return false;
+}
+
 // show stats on lcd by sending message to display server
 void Incubator::updatePanel() const {
 
@@ -407,6 +429,7 @@ void Incubator::runLoop() {
 			clog << "Incubator got SIGUSR1 and session time is reinitialized.\n";
 		}
 
+		// we don't want to control any actuator if session is expired
 		unsigned daysPassed = _pSTime->daysPassed();
 		unsigned maxDay;
 
@@ -436,7 +459,32 @@ void Incubator::runLoop() {
 		_runCount++;
 		clog << "\n[" << _runCount << "] " << _pSTime->daysPassed() << " days passed or " << _pSTime->getElapsed() << " ticks elapsed.\n";
 
-		_run();
+		// we don't want to control any actuator if it's during out-of-nest period
+		if( !_isOon ) {
+			_run();
+		}
+		else { // simulate out-of-nest env. 
+			clog << "It's out-of-nest time!" << endl;
+			if( _pAirFlowActuator->get() != LEVEL_OFF ) 
+				_pAirFlowActuator->off();	
+			if( _pDehumidActuator->get() != LEVEL_OFF ) 
+				_pDehumidActuator->off();
+			if( _pHeatActuator->get() != LEVEL_OFF ) 
+				_pHeatActuator->off();
+			if( _pHeatFlowActuator->get() != LEVEL_OFF ) 
+				_pHeatFlowActuator->off();
+			//if( _pRollerActuator->get() != LEVEL_OFF ) 
+			//	_pRollerActuator->off();
+			if( _pHumidActuator->get() != LEVEL_OFF ) 
+				_pHumidActuator->off();
+
+			// let temp/humid level be updated. note that temp/humid level is updated via cache.
+			float tm;
+			_pTempSensor->get( tm );
+			float th;
+			_pHumidSensor->get( th )
+		}
+
 		_run4Roller();
 
 		updatePanel();

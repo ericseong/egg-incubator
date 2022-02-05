@@ -26,6 +26,7 @@ typedef struct _fomula {
 	float humidHigherLimit;
 	unsigned airFlowLevel;
 	unsigned rollInterval;
+	unsigned outOfNest;
 } formula_t;
 
 typedef struct _phase {
