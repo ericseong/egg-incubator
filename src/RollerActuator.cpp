@@ -16,6 +16,8 @@ void RollerActuator::init() {
 
 	pinMode( RELAY_MOTOR_PIN, OUTPUT );
 	_initialized = true;
+	_count = 0;
+
 	return;
 }
 
@@ -37,6 +39,7 @@ void RollerActuator::on() {
 	digitalWrite( RELAY_MOTOR_PIN, HIGH );
 
 	_level = LEVEL_ON;
+	++_count;
 	delay(1);
 
 	return;
@@ -69,6 +72,13 @@ level_t RollerActuator::get() {
 
 	return _level;
 } 
+
+unsigned RollerActuator::getCount() {
+	if( !_initialized ) 
+		return LEVEL_INVALID;
+
+	return _count;
+}
 
 // EOF
 

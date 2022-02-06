@@ -8,9 +8,10 @@
 class RollerActuator : public Actuator {
 	bool _initialized;
   unsigned _level;
+	unsigned _count;
 	
 public:
-	RollerActuator() : _initialized(false) {}
+	RollerActuator() : _initialized(false), _count(0) {}
 	virtual ~RollerActuator() { _initialized = false; }
 	void init();
 	void deinit();
@@ -19,6 +20,7 @@ public:
 	void start( level_t );
 	void stop();
 	level_t get();
+	unsigned getCount();
 };
 
 #endif

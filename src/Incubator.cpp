@@ -73,6 +73,8 @@ void Incubator::init() {
 	_pDC = new DisplayClient( host, 48557 ); 
 	//_pDC->init(); // there's no init() in DisplayClient
 
+  _pSLC = new SessionLoggerClient( host, 48558 );
+
 	// Instantiate Signal 
 	_pSig = new Signal();
 
@@ -142,6 +144,11 @@ void Incubator::deinit() {
 		//_pDC->deinit(); // there's no deinit() in DisplayClient
 		delete _pDC;
 		clog << "_pDC is deinitialized.\n";
+	}
+
+	if( _pSLC ) {
+		delete _pSLC;
+		clog << "_pSLC is deinitialized.\n";
 	}
 
 	if( _pSig ) {
@@ -392,8 +399,36 @@ void Incubator::updatePanel() const {
 	return;
 }
 
+void Incubator::updateSessionLog() const {
+	string msg;
+	msg  = _pSLC->getTimeStr();
+	msg += " ";
+
+  float val;
+  if( _pTempSensor->getCache( val ) )
+    val = 100.00;
+
+	msg += _pSLC->getTempStr( val );
+	msg += " ";
+	
+  if( _pHumidSensor->getCache( val ) )
+    val = 100.00;
+
+	msg += _pSLC->getHumidStr( val );
+	msg += " ";
+
+	msg += getRollerCountStr( _pRollerActuator->getCount() );
+	//msg += '\n';
+
+	// send to session logger 
+	_pSLC->sendMsg( msg );
+	
+	return;
+}
+
 // loop for incubator control
 void Incubator::runLoop() {
+	static time_t sessionLogStamp=0;
 	_runCount =  0;
 
 	if( !_initialized )
@@ -440,6 +475,14 @@ void Incubator::runLoop() {
 		_run4Roller();
 
 		updatePanel();
+
+		// update session log once in every 1 minute.
+		time_t now;
+		time( &now );
+		if( now - sessionLogStamp >= 60 ) {
+			updateSessionLog();
+			time( &sessionLogStamp );	
+		}
 
 		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.
 		this_thread::sleep_for( std::chrono::milliseconds(3000) );
