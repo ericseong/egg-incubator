@@ -68,11 +68,11 @@ void DisplayServer::run() {
 	int fd = guard( socket( 
 		AF_INET, /* network versus AF_LOCAL */ 
 		SOCK_STREAM, /* reliable, bidirectional, arbitrary payload size */ 
-		0), "could not create TCP listening socket" 
+		0), (char*)"could not create TCP listening socket" 
 	); /* system picks underlying protocol (TCP) */ 
 
-	int flags = guard( fcntl( fd, F_GETFL ), "could not get flags on TCP listening socket" );
-	guard( fcntl( fd, F_SETFL, flags | O_NONBLOCK ), "could not set TCP listening socket to be non-blocking" );
+	int flags = guard( fcntl( fd, F_GETFL ), (char*)"could not get flags on TCP listening socket" );
+	guard( fcntl( fd, F_SETFL, flags | O_NONBLOCK ), (char*)"could not set TCP listening socket to be non-blocking" );
 
 	/* bind the server's local address in memory */
 	struct sockaddr_in saddr;
@@ -81,10 +81,10 @@ void DisplayServer::run() {
 	saddr.sin_addr.s_addr = htonl(INADDR_ANY); /* host-to-network endian */ 
 	saddr.sin_port = htons(_portNo); /* for listening */
 
-	guard (bind(fd, (struct sockaddr *) &saddr, sizeof(saddr)), "could not bind" );
+	guard (bind(fd, (struct sockaddr *) &saddr, sizeof(saddr)), (char*)"could not bind" );
 
 	/* listen to the socket */
-	guard( listen(fd, _maxConnects), "could not listen" ); /* listen for clients, up to _maxConnects */
+	guard( listen(fd, _maxConnects), (char*)"could not listen" ); /* listen for clients, up to _maxConnects */
 
 	while (1) {
 		struct sockaddr_in caddr; /* client address */
