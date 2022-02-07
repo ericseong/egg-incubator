@@ -23,8 +23,8 @@ bool SessionLogger::_fileExist( const string& fname ) const {
 
 void SessionLogger::_createFile( const string& fname ) const {
   ofstream ofs(fname);
-  ofs << "date/time temperature humidity roller_count" << endl;
-  ofs << "--------------------------------------------------" << endl;
+  ofs << "runcount date/time temperature humidity rollercount" << endl;
+  ofs << "---------------------------------------------------" << endl;
   ofs.close();
 
   return;
