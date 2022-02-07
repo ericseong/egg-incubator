@@ -400,24 +400,24 @@ void Incubator::updatePanel() const {
 }
 
 void Incubator::updateSessionLog() const {
+
 	string msg;
-	msg  = _pSLC->getTimeStr();
-	msg += " ";
+
+	msg  = Util::num2Str( _runCount, 10 );	
+	msg += Util::dateTime2Str( 20 );
 
   float val;
   if( _pTempSensor->getCache( val ) )
     val = 100.00;
 
-	msg += _pSLC->getTempStr( val );
-	msg += " ";
+	msg += Util::fp2Str( val, 8, 2 );
 	
   if( _pHumidSensor->getCache( val ) )
     val = 100.00;
 
-	msg += _pSLC->getHumidStr( val );
-	msg += " ";
+	msg += Util::fp2Str( val, 8, 2 );
 
-	msg += getRollerCountStr( _pRollerActuator->getCount() );
+	msg += Util::num2Str( _pRollerActuator->getCount(), 5 );
 	//msg += '\n';
 
 	// send to session logger 
