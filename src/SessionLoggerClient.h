@@ -3,12 +3,12 @@
 #ifndef __SESSIONLOGGERCLIENT_H__
 #define __SESSIONLOGGERCLIENT_H__ 
 #include <string>
-#include "Client.h"
+#include "StreamClient.h"
 
-class SessionLoggerClient : public Client {
+class SessionLoggerClient : public StreamClient {
 
 public: 		
-	SessionLoggerClient( std::string& host, unsigned portNo ) : Client( host, portNo ) {}
+	SessionLoggerClient( std::string& host, unsigned portNo ) : StreamClient( host, portNo ) {}
 	virtual ~SessionLoggerClient() {}
 };
 
