@@ -4,8 +4,7 @@
 
 #include <string>
 
-class Util {
-public:
+struct Util {
 	static std::string strFormat( const std::string& format, Args ... args );
 	static std::string dateTime2Str();
 };
