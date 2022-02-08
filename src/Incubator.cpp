@@ -399,6 +399,7 @@ void Incubator::updatePanel() const {
 	return;
 }
 
+// show stats on session log by sending message to log server
 void Incubator::updateSessionLog() const {
 
 	string dt, msg; // date/time, message
@@ -440,9 +441,25 @@ void Incubator::runLoop() {
 
 		unsigned daysPassed = _pSTime->daysPassed();
 		unsigned maxDay;
-
 		_pEnv->getMaxDay( maxDay );
-		if( daysPassed >= maxDay ) {
+		if( daysPassed < maxDay ) { // active session is on-going
+			_runCount++;
+			clog << "\n[" << _runCount << "] " << _pSTime->daysPassed() << " days passed or " << _pSTime->getElapsed() << " ticks elapsed.\n";
+
+			_run();
+			_run4Roller();
+
+			updatePanel();
+
+			// update session log once in every 1 minute.
+			time_t now;
+			time( &now );
+			if( now - sessionLogStamp >= 60 ) {
+				updateSessionLog();
+				time( &sessionLogStamp );	
+			}
+		}
+		else { // session has been completed.
 			clog << "Max day passed: " << "maxDay: " << maxDay << ", " << "daysPassed: " << daysPassed << endl;
 			clog << "All actuators is off if not." << endl;
 
@@ -459,25 +476,8 @@ void Incubator::runLoop() {
 			if( _pHumidActuator->get() != LEVEL_OFF ) 
 				_pHumidActuator->off();
 
-			this_thread::sleep_for( std::chrono::milliseconds(1000) );
-
-			return;
-		}
-
-		_runCount++;
-		clog << "\n[" << _runCount << "] " << _pSTime->daysPassed() << " days passed or " << _pSTime->getElapsed() << " ticks elapsed.\n";
-
-		_run();
-		_run4Roller();
-
-		updatePanel();
-
-		// update session log once in every 1 minute.
-		time_t now;
-		time( &now );
-		if( now - sessionLogStamp >= 60 ) {
-			updateSessionLog();
-			time( &sessionLogStamp );	
+			//this_thread::sleep_for( std::chrono::milliseconds(1000) );
+			//return;
 		}
 
 		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.
