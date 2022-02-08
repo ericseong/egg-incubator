@@ -115,7 +115,7 @@ void SessionLogger::run() {
 
 		close(client_fd); /* break connection */ 
 
-    notify systemd watchdog only if systemd expects notification.
+    // notify systemd watchdog only if systemd expects notification.
 		uint64_t usec;
 		if( sd_watchdog_enabled( 0, &usec ) > 0 ) {
 			sd_notify (0, "WATCHDOG=1");
