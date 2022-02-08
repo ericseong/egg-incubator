@@ -401,26 +401,22 @@ void Incubator::updatePanel() const {
 
 void Incubator::updateSessionLog() const {
 
-	string msg;
+	string dt, msg; // date/time, message
 
-	msg  = Util::num2Str( _runCount, 10 );	
-	msg += Util::dateTime2Str( 20 );
+	dt = Util::dateTime2Str();
 
-  float val;
-  if( _pTempSensor->getCache( val ) )
-    val = 100.00;
-
-	msg += Util::fp2Str( val, 8, 2 );
+  float temp;
+  if( _pTempSensor->getCache( temp ) )
+    temp = 100.00;
 	
-  if( _pHumidSensor->getCache( val ) )
-    val = 100.00;
+	float humid;
+  if( _pHumidSensor->getCache( humid ) )
+    humid = 100.00;
 
-	msg += Util::fp2Str( val, 8, 2 );
+	// format string
+	msg = Util::strFormat( "%10d %20s %8.2f %8.2f %5d", _runCount, dt.str(), temp, humid, _pRollerActuator->getCount() );	
 
-	msg += Util::num2Str( _pRollerActuator->getCount(), 5 );
-	//msg += '\n';
-
-	// send to session logger 
+	// send string to session logger 
 	_pSLC->sendMsg( msg );
 	
 	return;
