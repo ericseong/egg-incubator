@@ -40,11 +40,14 @@ float TempAlgo::_getMedian( float *arr, unsigned size ) const {
 // note that this is expected to be called after tryGoOnRec().
 pair<float, float> TempAlgo::getPair( float t1, float t2 ) const {
 	pair<float, float> tp;
-	float arr[3];
+	float arr[1024];
 
-	for( int i=0 ; i< 3 ; i++ )
-		arr[i] = _record[NumRecords/2-1+i].temp; 
-	float med = _getMedian( arr, 3 ); // to suppress some possible noisy values
+	for( int i=0 ; i< NumRecords ; i++ )
+		arr[i] = _record[i].temp; 
+	//for( int i=0 ; i< 3 ; i++ )
+	//	arr[i] = _record[NumRecords/2-1+i].temp; 
+	//float med = _getMedian( arr, 3 ); // to suppress some possible noisy values
+	float med = _getMedian( arr, NumRecords ); // to suppress some possible noisy values
 	float gap = t2-t1;
 
 	if( med+TempIncrement >= t1 )

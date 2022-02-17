@@ -16,15 +16,16 @@ int main() {
 		ta.tryGoOnRec( now, temp ); // !!! 
 
 		// simulated temperature
-		if( temp < tt.first )
-			temp += 0.05;
+		if( temp < tt.second )
+			temp += 0.02;
 		else
-			temp = tt.first;
+			temp = tt.second;
 		
 		tt = ta.getPair( 37.5, 37.7 ); // !!!
 		std::cout << "tick: " << now << ", new target: " << "( " << tt.first << ", " << tt.second << " )" << std::endl;
 		ta.printRecord();
-		sleep(10);
+		sleep(5);
+		//sleep(10); // debug
 		//sleep(1); // debug
 	}
 
