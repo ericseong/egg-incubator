@@ -5,5 +5,17 @@ order or merge:
 2. merge with periodic_hen_leaving
 3. merge with session_logging 
 
+fyi, how to merge feature branch into master?
+$ git checkout master
+$ git branch new-feature-branch
+$ git checkout new-feature-branch
+
+# ...develop some code...
+
+$ git add –A
+$ git commit –m "Some commit message"
+$ git checkout master
+$ git merge new-feature-branch // this will merge the commits from new-feature-branch into master (or active branch)
+
 // eof
 
