@@ -7,8 +7,8 @@ SED = sed
 # generate dependency without mentioning system header directories
 MAKEDEPEND = $(C++) -MM
 CPPFLAGS = -O2 -Wall -std=c++14
-LDFLAGS = -lpthread
-#LDFLAGS = -L/usr/local/lib -lpthread -ljsoncpp -lsystemd
+#LDFLAGS = -lpthread
+LDFLAGS = -L/usr/local/lib -lpthread -ljsoncpp -lsystemd
 
 SRCS = $(wildcard *.cpp)
 
