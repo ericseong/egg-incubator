@@ -36,6 +36,15 @@ static int clientfd;
 
 static char *buf;
 
+// for debug
+void print_clients() {
+	for( int i = 0 ; i < CONNMAX ; i++ ) {
+		printf( "%5d ", clients[i]  ); 
+	}
+	printf("\n");
+	return;
+}
+
 void serve_forever(const char *PORT)
 {
     struct sockaddr_in clientaddr;
@@ -77,8 +86,10 @@ void serve_forever(const char *PORT)
                 exit(0);
             } else {  // parent
 							close(clients[slot]);
+							clients[slot] = -1;
 						}
         }
+				print_clients(); // for debug
 
         while (clients[slot]!=-1) slot = (slot+1)%CONNMAX;
     }
