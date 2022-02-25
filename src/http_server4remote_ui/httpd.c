@@ -156,7 +156,8 @@ void respond(int n)
 
         fprintf(stderr, "\x1b[32m + [%s] %s\x1b[0m\n", method, uri);
         
-        if (qs = strchr(uri, '?'))
+        qs = strchr(uri, '?');
+        if (qs)
         {
             *qs++ = '\0'; //split URI
         } else {
