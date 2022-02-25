@@ -70,11 +70,14 @@ void serve_forever(const char *PORT)
         }
         else
         {
-            if ( fork()==0 )
+            if ( fork()==0 ) // child
             {
+								close(listenfd);
                 respond(slot);
                 exit(0);
-            }
+            } else {  // parent
+							close(clients[slot]);
+						}
         }
 
         while (clients[slot]!=-1) slot = (slot+1)%CONNMAX;
