@@ -170,7 +170,8 @@ void respond(int n)
         header_t *h = reqhdr;
         char *t, *t2;
         while(h < reqhdr+16) {
-            char *k,*v,*t;
+            char *k,*v;
+            //char *k,*v,*t; // duplicated declaration of *t
             k = strtok(NULL, "\r\n: \t"); if (!k) break;
             v = strtok(NULL, "\r\n");     while(*v && *v==' ') v++;
             h->name  = k;
