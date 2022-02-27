@@ -227,7 +227,36 @@ void route()
 		ROUTE_GET("/")
 		{
 				printf("HTTP/1.1 200 OK\r\n\r\n");
-				printf("Hello! You are using %s", request_header("User-Agent"));
+				//printf("Hello! You are using %s", request_header("User-Agent"));
+				printf(" <head> \
+					<meta http-equiv=\"refresh\" content=\"10\"> \
+					</head> \
+					<style> \
+					.large_red { \
+						font-size: 64pt; \
+						color: red; \
+					} \
+					.large { \
+						font-size: 64pt; \
+						color: white; \
+					} \
+					.mid { \
+						font-size: 32pt; \
+						color: white; \
+					} \
+					.small { \
+						font-size: 24pt; \
+						color: white; \
+					} \
+					</style> \
+					<body style=\"background-color:#000000;\"> \
+					<p class=mid>Day 01</p> \
+					<hr> \
+					<p class=large_red>36.9</p> \
+					<p class=large>55.2</p> \
+					<p class=large>12</p> \
+					</body> \
+					<p class=small>Last update: 2022.02.25 12:31</p>" ); 
 		}
 
 		ROUTE_POST("/")
