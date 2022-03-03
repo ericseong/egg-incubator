@@ -11,6 +11,7 @@
 #include <netdb.h>
 #include <fcntl.h>
 #include <signal.h>
+#include "gen_html.h"
 
 #define CONNMAX 10
 
@@ -68,6 +69,7 @@ void serve_forever(const char *PORT)
 		signal(SIGCHLD,SIG_IGN);
 
 		// ACCEPT connections
+		pid_t pid;
 		while (1)
 		{
 				addrlen = sizeof(clientaddr);
@@ -79,7 +81,11 @@ void serve_forever(const char *PORT)
 				}
 				else
 				{
-						if ( fork()==0 ) // child
+						pid = fork();
+						if( pid == -1 ) {
+							perror("Can't fork()!");
+						}
+						else if ( pid == 0 ) // child
 						{
 								close(listenfd);
 								respond(slot);
@@ -89,7 +95,7 @@ void serve_forever(const char *PORT)
 							clients[slot] = -1;
 						}
 				}
-				print_clients(); // for debug
+				//print_clients(); // for debug
 
 				while (clients[slot]!=-1) slot = (slot+1)%CONNMAX;
 		}
@@ -228,35 +234,7 @@ void route()
 		{
 				printf("HTTP/1.1 200 OK\r\n\r\n");
 				//printf("Hello! You are using %s", request_header("User-Agent"));
-				printf(" <head> \
-					<meta http-equiv=\"refresh\" content=\"10\"> \
-					</head> \
-					<style> \
-					.large_red { \
-						font-size: 64pt; \
-						color: red; \
-					} \
-					.large { \
-						font-size: 64pt; \
-						color: white; \
-					} \
-					.mid { \
-						font-size: 32pt; \
-						color: white; \
-					} \
-					.small { \
-						font-size: 24pt; \
-						color: white; \
-					} \
-					</style> \
-					<body style=\"background-color:#000000;\"> \
-					<p class=mid>Day 01</p> \
-					<hr> \
-					<p class=large_red>36.9</p> \
-					<p class=large>55.2</p> \
-					<p class=large>12</p> \
-					</body> \
-					<p class=small>Last update: 2022.02.25 12:31</p>" ); 
+				printf("%s", gen_html( 10, 39.2, 38.0, 37.0, 39.9, 55.0, 45.0, 127, "2022.10.11 13:12" ) ); 
 		}
 
 		ROUTE_POST("/")
@@ -268,4 +246,6 @@ void route()
 	
 		ROUTE_END()
 }
+
+/* eof */
 
