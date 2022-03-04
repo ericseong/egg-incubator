@@ -43,6 +43,7 @@ public:
 	void runLoop();
 	void newSession();
 	void updatePanel() const;
+	void updateSessionLog() const;
 };
 
 #endif
