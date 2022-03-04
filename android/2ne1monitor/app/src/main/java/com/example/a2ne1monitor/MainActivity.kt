@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         webView.getSettings().setMediaPlaybackRequiresUserGesture(false)
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView, url: String) {
-                // page loading finished. do we have ways to get audiocontext?
+                // page loading finished. the injection below is to avoid prohibited autoplay by triggering a simple user interaction to a hidden button. 
                 webView.loadUrl("javascript:(function() { document.getElementById('hidden_button').click(); })()");
             }
         }
