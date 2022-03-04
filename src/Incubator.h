@@ -42,6 +42,7 @@ public:
 	void runLoop();
 	void newSession();
 	void updatePanel() const;
+	void update4RemoteUI() const;
 };
 
 #endif

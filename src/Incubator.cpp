@@ -392,6 +392,35 @@ void Incubator::updatePanel() const {
 	return;
 }
 
+void Incubator::update4RemoteUI() const {
+  string dt, msg; // date/time, message
+
+  dt = Util::dateTime2Str();
+
+  float temp;
+  if( _pTempSensor->getCache( temp ) )
+    temp = 100.00;
+
+  float humid;
+  if( _pHumidSensor->getCache( humid ) )
+    humid = 100.00;
+
+  // format string
+	// elapsed_tick, date/time, num_ticks4hen_leaving, temp, temp_high, temp_low, humid, humid_high, humid_low, date/time
+  msg = Util::strFormat( "%10d %20s %.2f %.2f %.2f %.2f %.2f %.2f %5d", 
+		_pSTime->getElapsed(), 
+		dt.str(), 
+		temp, 
+		humid, 
+		_pRollerActuator->getCount() 
+	);
+
+  // send string to session logger
+  _pSLC->sendMsg( msg );
+
+	return;
+}
+
 // loop for incubator control
 void Incubator::runLoop() {
 	_runCount =  0;
