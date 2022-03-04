@@ -34,7 +34,7 @@ class Incubator : public Singleton<Incubator> {
 	Actuator *_pHumidActuator;
 	void _run() const;
 	void _run4Roller() const;
-	bool _isOon() const;
+	bool _isOon( unsigned margin ) const;
 public:
 	Incubator() : _initialized(false), _runCount(0) {}
 	virtual ~Incubator() {}

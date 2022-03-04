@@ -315,7 +315,8 @@ void Incubator::_run4Roller() const {
 }
 
 // see if it's during out-of-nest period 
-bool Incubator::_isOon() {
+// zero margin is for control the incubator and non-zero margin is for some other purposes
+bool Incubator::_isOon( unsigned margin ) const {
 	unsigned daysPassed = _pSTime->daysPassed();
 	unsigned maxDay;
 	
@@ -326,7 +327,7 @@ bool Incubator::_isOon() {
 			if( f.outOfNest != 0 ) {
 				time_t elapsed = _pSTime->getElapsed();
 				time_t oonFrom = 86400*daysPassed - f.outOfNest; // out-of-nest is taken at the end of the day 
-				time_t oonTo = 86400*daysPassed;
+				time_t oonTo = 86400*daysPassed + margin;
 				if( elapsed > oonFrom && elapsed < oonTo )
 					return true;
 			}
@@ -460,7 +461,7 @@ void Incubator::runLoop() {
 		clog << "\n[" << _runCount << "] " << _pSTime->daysPassed() << " days passed or " << _pSTime->getElapsed() << " ticks elapsed.\n";
 
 		// we don't want to control any actuator if it's during out-of-nest period
-		if( !_isOon ) {
+		if( !_isOon(0) ) {
 			_run();
 		}
 		else { // simulate out-of-nest env. 
