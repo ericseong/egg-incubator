@@ -1,3 +1,6 @@
+// orginal code from:
+//   https://gist.github.com/laobubu/d6d0e9beb934b60b2e552c2d03e1409e
+//
 #include <stdio.h>
 #include <string.h>
 #include "gen_html.h"
@@ -7,24 +10,24 @@ static char* header =
 	<meta http-equiv='refresh' content='20'> \
 	<style> \
 	.large_red { \
-		font-size: 30pt; \
-		color: red; \
+		font-size: 28pt; \
+		color: #AA0000; \
 	} \
 	.large_blue { \
-		font-size: 30pt; \
-		color: blue; \
+		font-size: 28pt; \
+		color: #0066FF; \
 	} \
 	.large { \
-		font-size: 30pt; \
-		color: white; \
+		font-size: 28pt; \
+		color: #AAAAAA; \
 	} \
 	.mid { \
 		font-size: 20pt; \
-		color: white; \
+		color: #AAAAAA; \
 	} \
 	.small { \
 		font-size: 10pt; \
-		color: white; \
+		color: #AAAAAA; \
 	} \
 	</style> \
 	<script type='text/javascript'> \
@@ -45,7 +48,7 @@ static char* header =
 			audioCtx.resume(); \
 			cnt = 0; \
 			while( cnt < 10 ) { \
-				if( key == 'low' ) { setTimeout( function(){ beep( 500, 300, 0.5, 'sine', null ); }, 1000*cnt ); } \
+				if( key == 'low' ) { setTimeout( function(){ beep( 500, 300, 1.5, 'sine', null ); }, 1000*cnt ); } \
 				else if( key == 'high' ) { setTimeout( function(){ beep( 500, 1000, 0.5, 'sine', null ); }, 1000*cnt ); } \
 				cnt += 1; \
 			} \
@@ -66,7 +69,7 @@ char* gen_body( unsigned days, float temp, float temp_high, float temp_low, floa
 	int i = 0;
 
 	i  = sprintf( body, "%s", 
-		"<body style=\'background-color:#000000;\'>"
+		"<body style=\'background-color:#303030;\'>"
 	);
 
 	/* days passed */
@@ -77,26 +80,26 @@ char* gen_body( unsigned days, float temp, float temp_high, float temp_low, floa
 	);
 
 	/* temperature */
-	i += sprintf( body+i, "%s%s%.2f%s",
+	i += sprintf( body+i, "%s%.2f%s%s",
 		( temp < temp_low-1. ? "<div class=large_blue>" : temp > temp_high+1. ? "<div class=large_red>" : "<div class=large>" ),
-		"T: ",
 		temp,
+		" &#x2103",
 		"</div>"	
 	);
 
 	/* humidity */
-	i += sprintf( body+i, "%s%s%.2f%s",
+	i += sprintf( body+i, "%s%.2f%s%s",
 		( humid < humid_low-5. ? "<div class=large_blue>" : humid > humid_high+5. ? "<div class=large_red>" : "<div class=large>" ),
-		"H: ",
 		humid,
+		" %",
 		"</div>"	
 	);
 
 	/* roller_count */
-	i += sprintf( body+i, "%s%s%u%s",
+	i += sprintf( body+i, "%s%u%s%s",
 		"<div class=large>",
-		"R: ",
 		roller_count,
+		" times rolled",
 		"</div><br>"	
 	);
 
