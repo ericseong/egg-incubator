@@ -1,17 +1,17 @@
 OUT_DIR = build
 TARGET = $(OUT_DIR)/pico_http_server
 
-CC = gcc
+C++ = g++
 RM = rm -f
 SED = sed
 # generate dependency without mentioning system header directories
-MAKEDEPEND = $(CC) -MM
-CFLAGS = -O2 -Wall
+MAKEDEPEND = $(C++) -MM
+CFLAGS = -O2 -Wall -std=c++14
 LDFLAGS =
 
-SRCS = $(wildcard *.c)
+SRCS = $(wildcard *.cpp)
 
-OBJS = $(addprefix $(OUT_DIR)/, $(SRCS:.c=.o))
+OBJS = $(addprefix $(OUT_DIR)/, $(SRCS:.cpp=.o))
 
 all: $(TARGET)
 
@@ -20,16 +20,16 @@ clean:
 	$(RM) $(OUT_DIR)/*
 
 $(TARGET) : $(OBJS)
-	$(CC) $(LDFLAGS) $^ -o $@
+	$(C++) $(LDFLAGS) $^ -o $@
 
 $(OUT_DIR)/%.o : $(OUT_DIR)/%.d
-	$(CC) -c $(CFLAGS) $*.c -o $@
+	$(C++) -c $(CFLAGS) $*.cpp -o $@
 
-DEPS = $(addprefix $(OUT_DIR)/, $(SRCS:.c=.d))
+DEPS = $(addprefix $(OUT_DIR)/, $(SRCS:.cpp=.d))
 
-$(OUT_DIR)/%.d : %.c
+$(OUT_DIR)/%.d : %.cpp
 	@set -e; $(RM) $@; \
-	$(CC) -M $(CFLAGS) $< > $@.$$$$; \
+	$(C++) -M $(CFLAGS) $< > $@.$$$$; \
 	$(SED) 's,\($*\).o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	$(RM) $@.$$$$
 

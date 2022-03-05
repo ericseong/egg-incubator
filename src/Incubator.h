@@ -9,6 +9,7 @@
 #include "Sensor.h"
 #include "Actuator.h"
 #include "DisplayClient.h"
+#include "LockedFileAccess.h"
 //#include "Dht22HumidSensor.h"
 //#include "Dht22TempSensor.h"
 //#include "Tmp117TempSensor.h"

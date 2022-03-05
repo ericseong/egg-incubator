@@ -405,18 +405,42 @@ void Incubator::update4RemoteUI() const {
   if( _pHumidSensor->getCache( humid ) )
     humid = 100.00;
 
-  // format string
-	// elapsed_tick, date/time, num_ticks4hen_leaving, temp, temp_high, temp_low, humid, humid_high, humid_low, date/time
-  msg = Util::strFormat( "%10d %20s %.2f %.2f %.2f %.2f %.2f %.2f %5d", 
-		_pSTime->getElapsed(), 
-		dt.str(), 
+	formula_t f;
+	if( _pEnv->getFormula( _pSTime->daysPassed(), f ) ) {
+   cerr << "Can't get formula.\n";
+	}
+
+	/*
+	format string for 10 items, or 11 space separated fields (space is there between date and time)
+		elapsed_tick, 
+		date/time, 
 		temp, 
+		temp_high, 
+		temp_low, 
 		humid, 
-		_pRollerActuator->getCount() 
+		humid_high, 
+		humid_low, 
+		roller_count,
+		bool(periodic_hen_leaving) 
+**/
+  msg = Util::strFormat( "%10d %20s %.2f %.2f %.2f %.2f %.2f %.2f %5d %s", 
+		_pSTime->getElapsed(),
+		dt.str(),
+		temp,
+		f.tempHigherLimit,
+		f.humidLowerLimit,
+		humid,
+		f.humidHigherLimit,
+		f.humidLowerLimit,
+		_pRollerActuator->getCount(),
+		( _isOon(3600) ? "true" : "false" ) 
 	);
 
-  // send string to session logger
-  _pSLC->sendMsg( msg );
+  // store it to file 
+	LockedFileAccess lfa( CUR_SESSION_STAT_FILE_NAME );
+	if( lfa.fileWrite( msg ) ) {
+		cerr << "fileWrite() failed." << std::endl;
+	}
 
 	return;
 }
@@ -469,6 +493,8 @@ void Incubator::runLoop() {
 		_run4Roller();
 
 		updatePanel();
+
+		update4RemoteUI();
 
 		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.
 		this_thread::sleep_for( std::chrono::milliseconds(3000) );

@@ -27,12 +27,12 @@ int      payload_size;
 //
 
 static int listenfd, clients[CONNMAX];
-static void error(char *);
+//static void error(char *);
 static void startServer(const char *);
 static void respond(int);
 
 typedef struct { char *name, *value; } header_t;
-static header_t reqhdr[17] = { {"\0", "\0"} };
+static header_t reqhdr[17] = { {(char*)"\0", (char*)"\0"} };
 static int clientfd;
 
 static char *buf;
@@ -50,7 +50,6 @@ void serve_forever(const char *PORT)
 {
 		struct sockaddr_in clientaddr;
 		socklen_t addrlen;
-		char c;    
 		
 		int slot=0;
 		
@@ -156,8 +155,7 @@ char *request_header(const char* name)
 //client connection
 void respond(int n)
 {
-		int rcvd, fd, bytes_read;
-		char *ptr;
+		int rcvd;
 
 		buf = (char*)malloc(65535);
 		rcvd=recv(clients[n], buf, 65535, 0);
@@ -234,7 +232,7 @@ void route()
 		{
 				printf("HTTP/1.1 200 OK\r\n\r\n");
 				//printf("Hello! You are using %s", request_header("User-Agent"));
-				printf("%s", gen_html( 10, 39.2, 38.0, 37.0, 39.9, 55.0, 45.0, 127, "2022.10.11 13:12" ) ); 
+				printf("%s", gen_html_from_stat_file() ); 
 		}
 
 		ROUTE_POST("/")

@@ -3,12 +3,9 @@ package com.example.a2ne1monitor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import android.webkit.WebChromeClient
 import android.util.Log
-import android.webkit.RenderProcessGoneDetail
 import android.view.ViewGroup
+import android.webkit.*
 import java.util.Timer
 import kotlin.concurrent.schedule
 
@@ -28,8 +25,18 @@ class MainActivity : AppCompatActivity() {
     fun _create( wv: WebView ) {
         wv.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView, url: String) {
+                super.onPageFinished(view, url)
                 // page loading finished. the injection below is to avoid prohibited autoplay by triggering a simple user interaction to a hidden button.
                 wv.loadUrl("javascript:(function() { document.getElementById('hidden_button').click(); })()");
+            }
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
+                super.onReceivedError(view, request, error)
+                if(view != null)
+                    view.reload()
             }
         }
     }
@@ -66,5 +73,17 @@ class MainActivity : AppCompatActivity() {
 //            return false
 //        }
 //    }
+    override fun onResume() {
+        val webView = findViewById<WebView>(R.id.webView)
+        super.onResume()
+        webView.onResume()
+        webView.resumeTimers()
+    }
+    override fun onPause() {
+        val webView = findViewById<WebView>(R.id.webView)
+        super.onPause()
+        webView.onPause()
+        webView.pauseTimers()
+    }
 }
 
