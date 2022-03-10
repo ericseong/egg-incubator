@@ -12,6 +12,7 @@
 #include <fcntl.h>
 #include <signal.h>
 #include "gen_html.h"
+#include "process_httppost.h"
 
 #define CONNMAX 10
 
@@ -204,9 +205,7 @@ void respond(int n)
 				t2 = request_header("Content-Length"); // and the related header if there is  
 				payload = t;
 				payload_size = t2 ? atol(t2) : (rcvd-(t-buf));
-				for( int i=0 ; i <payload_size ; i++ ) {
-					fprintf(stderr,"%d: %c\n", i, payload[i]);
-				}
+				fprintf(stderr,"%s\n", payload);
 
 				// bind clientfd to stdout, making it easier to write
 				clientfd = clients[n];
@@ -247,6 +246,8 @@ void route()
 				printf("HTTP/1.1 200 OK\r\n\r\n");
 				//printf("Wow, seems that you POSTed %d bytes. \r\n", payload_size);
 				//printf("Fetch the data using `payload` variable.");
+				std::string body(payload);
+				handle_with_body( body );
 		}
 	
 		ROUTE_END()

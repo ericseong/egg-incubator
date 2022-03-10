@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val tb: androidx.appcompat.widget.Toolbar = findViewById(R.id.app_toolbar)
-        tb.setTitle("    2 N E 1    M O N I T O R") // I want background image instead of text on title bar
+        tb.setTitle("2 N E 1    M O N I T O R")
         setSupportActionBar(tb)
 
         // 1. config web view
@@ -186,7 +186,7 @@ class MainActivity : AppCompatActivity() {
             // ok button
             messageBoxBuilder.setPositiveButton("CONFIRM",
                 { dialog, id ->
-                    val jsonBody = "{ new_session: true }"
+                    val jsonBody = "{ \"new_session\": true }"
                         this.processNewSessionRequest(jsonBody)
                         dialog.cancel()
                 }

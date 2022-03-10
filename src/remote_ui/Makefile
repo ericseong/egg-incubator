@@ -6,8 +6,9 @@ RM = rm -f
 SED = sed
 # generate dependency without mentioning system header directories
 MAKEDEPEND = $(C++) -MM
-CFLAGS = -O2 -Wall -std=c++14
-LDFLAGS =
+CPPFLAGS = -O2 -Wall -std=c++14 -I/usr/local/include -DDEBUG_MACOS
+#LDFLAGS = -L/usr/local/lib -ljsoncpp -lsystemd # for rpi target 
+LDFLAGS = -L/usr/local/lib -ljsoncpp # for DEBUG_MACOS 
 
 SRCS = $(wildcard *.cpp)
 
@@ -23,13 +24,13 @@ $(TARGET) : $(OBJS)
 	$(C++) $(LDFLAGS) $^ -o $@
 
 $(OUT_DIR)/%.o : $(OUT_DIR)/%.d
-	$(C++) -c $(CFLAGS) $*.cpp -o $@
+	$(C++) -c $(CPPFLAGS) $*.cpp -o $@
 
 DEPS = $(addprefix $(OUT_DIR)/, $(SRCS:.cpp=.d))
 
 $(OUT_DIR)/%.d : %.cpp
 	@set -e; $(RM) $@; \
-	$(C++) -M $(CFLAGS) $< > $@.$$$$; \
+	$(C++) -M $(CPPFLAGS) $< > $@.$$$$; \
 	$(SED) 's,\($*\).o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	$(RM) $@.$$$$
 
