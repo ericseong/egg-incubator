@@ -158,6 +158,7 @@ void respond(int n)
 		int rcvd;
 
 		buf = (char*)malloc(65535);
+		//memset( buf, '\0', sizeof( buf );
 		rcvd=recv(clients[n], buf, 65535, 0);
 
 		if (rcvd<0)    // receive error
@@ -186,7 +187,7 @@ void respond(int n)
 				char *t, *t2;
 				while(h < reqhdr+16) {
 						char *k,*v;
-						//char *k,*v,*t; // duplicated declaration of *t
+						//char *k,*v,*t; // ? eric) duplicated declaration of *t
 						k = strtok(NULL, "\r\n: \t"); if (!k) break;
 						v = strtok(NULL, "\r\n");     while(*v && *v==' ') v++;
 						h->name  = k;
@@ -194,12 +195,18 @@ void respond(int n)
 						h++;
 						fprintf(stderr, "[H] %s: %s\n", k, v);
 						t = v + 1 + strlen(v);
-						if (t[1] == '\r' && t[2] == '\n') break;
+						if (t[1] == '\r' && t[2] == '\n') {
+							t += 2; // two bytes for CR/LF
+							break;
+						}
 				}
 				t++; // now the *t shall be the beginning of user payload
 				t2 = request_header("Content-Length"); // and the related header if there is  
 				payload = t;
 				payload_size = t2 ? atol(t2) : (rcvd-(t-buf));
+				for( int i=0 ; i <payload_size ; i++ ) {
+					fprintf(stderr,"%d: %c\n", i, payload[i]);
+				}
 
 				// bind clientfd to stdout, making it easier to write
 				clientfd = clients[n];
@@ -238,8 +245,8 @@ void route()
 		ROUTE_POST("/")
 		{
 				printf("HTTP/1.1 200 OK\r\n\r\n");
-				printf("Wow, seems that you POSTed %d bytes. \r\n", payload_size);
-				printf("Fetch the data using `payload` variable.");
+				//printf("Wow, seems that you POSTed %d bytes. \r\n", payload_size);
+				//printf("Fetch the data using `payload` variable.");
 		}
 	
 		ROUTE_END()

@@ -16,27 +16,27 @@ static const char* header =
 	.large_red { \
 		font_family: Verdana, sans-serif; \
 		font-size: 28pt; \
-		color: #BB0000; \
+		color: #FF66CC; \
 	} \
 	.large_blue { \
 		font_family: Verdana, sans-serif; \
 		font-size: 28pt; \
-		color: #0044FF; \
+		color: #87CEFF; \
 	} \
 	.large { \
 		font_family: Verdana, sans-serif; \
 		font-size: 28pt; \
-		color: #CCCCCC; \
+		color: #DDDDDD; \
 	} \
 	.mid { \
 		font_family: Verdana, sans-serif; \
 		font-size: 20pt; \
-		color: #CCCCCC; \
+		color: #DDDDDD; \
 	} \
 	.small { \
 		font_family: Verdana, sans-serif; \
 		font-size: 10pt; \
-		color: #CCCCCC; \
+		color: #DDDDDD; \
 	} \
 	</style> \
 	<script type='text/javascript'> \
@@ -78,11 +78,19 @@ static char* gen_body( unsigned days, float temp, float temp_high, float temp_lo
 
 	int i = 0;
 
+#if 0
 	i  = sprintf( body, "%s", 
 		( !is_phl ? "<body style=\'background-color: #808080;\'>" :
 			"<body style=\'background-color:#202020;\'>"
 		)
 	);
+#else
+	i  = sprintf( body, "%s", 
+		( !is_phl ? "<body style=\'background-image: linear-gradient(to bottom right, #808080, #a0a0a0, #c0c0c0);\'>" :
+			"<body style=\'background-color:#202020;\'>"
+		)
+	);
+#endif
 
 	/* days passed */
 	i += sprintf( body+i, "%s%2d%s", 
@@ -117,7 +125,7 @@ static char* gen_body( unsigned days, float temp, float temp_high, float temp_lo
 
 	/* last update */
 	i += sprintf( body+i, "%s%s%s",
-		"<div class=small>Last update: ",
+		"<div class=small style=\'font-style:italic;\'>Last update: ",
 		date_time,
 		"</div>"
 	);
