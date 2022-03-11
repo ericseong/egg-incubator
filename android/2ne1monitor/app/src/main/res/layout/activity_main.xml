@@ -12,6 +12,10 @@
 		android:layout_height="?attr/actionBarSize"
 		android:background="@color/titlebar"
 		android:elevation="4dp" />
+		<ImageView
+    		android:layout_width="192px"
+    		android:layout_height="192px"
+    		android:src="@mipmap/ic_launcher_foreground" /> />
 
 	<WebView
 		android:id="@+id/webView"
