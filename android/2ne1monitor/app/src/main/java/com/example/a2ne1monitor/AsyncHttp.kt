@@ -49,7 +49,9 @@ public class RequestRepository {
         conn.doOutput = true
 
         // send / receive data
-        TrafficStats.setThreadStatsTag(Thread.currentThread().id.toInt()) // to avoid strict mode violation
+        if (BuildConfig.DEBUG) {
+            TrafficStats.setThreadStatsTag(Thread.currentThread().id.toInt()) // to avoid strict mode violation
+        }
         try {
             conn.connect()
 
