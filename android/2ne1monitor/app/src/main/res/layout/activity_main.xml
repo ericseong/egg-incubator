@@ -10,12 +10,44 @@
 		android:id="@+id/app_toolbar"
 		android:layout_width="match_parent"
 		android:layout_height="?attr/actionBarSize"
+		android:layout_marginStart="-15dp"
 		android:background="@color/titlebar"
-		android:elevation="4dp" />
-		<ImageView
-    		android:layout_width="192px"
-    		android:layout_height="192px"
-    		android:src="@mipmap/ic_launcher_foreground" /> />
+		android:elevation="4dp"
+		app:layout_constraintStart_toStartOf="parent">
+
+		<RelativeLayout
+			app:layout_constraintTop_toTopOf="@id/app_toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			tools:layout_editor_absoluteX="16dp">
+
+			<ImageButton
+				android:id="@+id/toolbar_image_button"
+				android:layout_width="70dp"
+				android:layout_height="match_parent"
+				android:layout_alignParentStart="true"
+				android:layout_marginStart="-15dp"
+				android:background="@null"
+				android:clickable="false"
+				android:contentDescription="@string/toolbar_imageview_descriptor"
+				android:scaleType="centerInside"
+				android:src="@mipmap/ic_launcher_foreground"
+				tools:ignore="ImageContrastCheck" />
+
+			<TextView
+				android:id="@+id/toolbar_textview"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_centerInParent="true"
+				android:background="@null"
+				android:contentDescription="@string/app_title"
+				android:gravity="center"
+				android:padding="0dip"
+				android:text="@string/app_title"
+				android:textColor="#ffffff"
+				android:textSize="32sp" />
+		</RelativeLayout>
+	</androidx.appcompat.widget.Toolbar>
 
 	<WebView
 		android:id="@+id/webView"

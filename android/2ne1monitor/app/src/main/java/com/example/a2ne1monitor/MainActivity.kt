@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val tb: androidx.appcompat.widget.Toolbar = findViewById(R.id.app_toolbar)
-        //tb.setTitle("2 N E 1    M O N I T O R") // I want icon instead of text.
+        //tb.setTitle("2ne1 monitor") // see activity_main.xml
         setSupportActionBar(tb)
 
         // 1. config web view
