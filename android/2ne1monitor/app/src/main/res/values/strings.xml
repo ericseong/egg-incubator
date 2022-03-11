@@ -7,5 +7,5 @@
     <string name="about">About&#8230;</string>
     <string name="new_session_header">Caution!</string>
     <string name="new_session_body">Are you sure to initiate a new session?\nConfirming it will cancel the on-going session and start a new session from now.</string>
-    <string name="site_to_load">http://192.168.1.145:12913</string>
+    <string name="site_to_load">http://192.168.219.102:12913</string>
 </resources>
