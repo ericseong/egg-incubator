@@ -3,6 +3,7 @@ W.r.t. the original code, some changes made are:
 * correction on duplicated variable declaration
 * add free() to buf malloc
 * clean-up on the slots / fds
+* Corrected. CR/LF were not properly counted when httpd.cpp parses http get/post header/body. 
 
 See the commits for the details.
 
