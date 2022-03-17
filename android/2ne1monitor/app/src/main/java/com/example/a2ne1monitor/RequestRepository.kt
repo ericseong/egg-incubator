@@ -7,31 +7,21 @@ import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
 
-
-sealed class Result<out R> {
-    data class Success<out T>(val data: T) : Result<T>()
-    data class Error(val exception: Exception) : Result<Nothing>()
-
-    // has toString()
-}
-
 data class HttpResponse(
     var responseCode: Int,
     var result: String
 )
 
-public class RequestRepository {
+class RequestRepository() {
+
+    // http post request
     suspend fun makePostRequest( myUrl: String, body: String ) : HttpResponse {
         return withContext( Dispatchers.IO ) {
             httpRequest( "POST", myUrl, body )
         }
     }
 
-    //private fun convertInputStreamToString(input: InputStream): String {
-    //    val inputAsString = input.bufferedReader().use { it.readText() }
-    //    return inputAsString
-    //}
-
+    // http get request
     private fun httpRequest(method: String, myUrl: String, body: String ): HttpResponse {
         var inputStream: java.io.InputStream
         var outputStream: java.io.OutputStream
@@ -43,15 +33,26 @@ public class RequestRepository {
         conn.setConnectTimeout(1000) // one second
         conn.setReadTimeout(1000)
         conn.setRequestProperty("User-Agent", "Android/2ne1 monitor")
-        conn.setRequestProperty("Content-Type", "application/json") // The format of the content we're sending to the server
-        conn.setRequestProperty("Accept", "application/json")
+        conn.setRequestProperty("Accept", "text/html")
+        conn.setRequestProperty("Accept-Language", "ko-KR")
+        when(method) {
+            "GET"-> {
+                conn.setRequestProperty("Content-Type", "text/html") // The format of the content we're sending to the server
+            }
+            "POST" -> {
+                conn.setRequestProperty("Content-Type", "application/json") // The format of the content we're sending to the server
+            }
+            else -> {
+                Log.d("2NE1", "httpRequest(): Unknown method!")
+            }
+        }
+
         conn.doInput = true
         conn.doOutput = true
 
         // send / receive data
-        if (BuildConfig.DEBUG) {
-            TrafficStats.setThreadStatsTag(Thread.currentThread().id.toInt()) // to avoid strict mode violation
-        }
+        //if (BuildConfig.DEBUG)
+        //    TrafficStats.setThreadStatsTag(Thread.currentThread().id.toInt()) // to avoid strict mode violation
         try {
             conn.connect()
 

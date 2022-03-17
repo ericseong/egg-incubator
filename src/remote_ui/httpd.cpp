@@ -14,7 +14,7 @@
 #include "gen_html.h"
 #include "process_httppost.h"
 
-#define CONNMAX 10
+#define CONNMAX 5 
 
 // Client request
 

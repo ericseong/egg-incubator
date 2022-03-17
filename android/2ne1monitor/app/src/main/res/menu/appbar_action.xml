@@ -4,6 +4,9 @@
     <item android:id="@+id/action_new_session"
           android:title="@string/new_session"
           app:showAsAction="never"/>
+    <item android:id="@+id/action_url"
+          android:title="@string/url"
+          app:showAsAction="never"/>
     <item android:id="@+id/action_about"
           android:title="@string/about"
           app:showAsAction="never"/>
