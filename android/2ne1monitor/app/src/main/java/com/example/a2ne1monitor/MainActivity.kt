@@ -105,8 +105,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         val webView = binding.webView
         super.onResume()
-        webView.onResume()
-        webView.resumeTimers()
+        //webView.onResume()
+        //webView.resumeTimers()
         Log.d( "2NE1", "onResume().." )
     }
 
@@ -114,8 +114,8 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         val webView = findViewById<WebView>(R.id.webView)
         super.onPause()
-        webView.onPause()
-        webView.pauseTimers()
+        //webView.onPause()
+        //webView.pauseTimers()
         Log.d( "2NE1", "onPause().." )
     }
 

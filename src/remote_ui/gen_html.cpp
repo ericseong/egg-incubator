@@ -146,7 +146,7 @@ static char* gen_body( unsigned days, unsigned hours, float temp, float temp_hig
 		"	<button id=\'hidden_button\' onclick=\'make_some_sound()\' hidden></button> \
 			<script type=\'text/javascript\'> \
 				function make_some_sound() { make_no_sound(); } \
-			:/script>"
+			</script>"
 	);
 
 	i += sprintf( body+i, "%s",
