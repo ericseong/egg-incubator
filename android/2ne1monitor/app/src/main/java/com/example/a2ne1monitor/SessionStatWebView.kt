@@ -1,18 +1,19 @@
 package com.example.a2ne1monitor
 
 import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.example.a2ne1monitor.databinding.ActivityMainBinding
+import android.net.Uri
 
 class SessionStatWebView( binding: ActivityMainBinding ) : Activity() {
 
     private val webView = binding.webView
     private var isWebViewClientInitialized: Boolean = false
-    private var currentUrl: String = ""
 
     fun loadURL( url: String ): WebView
     {
@@ -54,19 +55,17 @@ class SessionStatWebView( binding: ActivityMainBinding ) : Activity() {
                     error: WebResourceError?
                 ) {
                     super.onReceivedError(view, request, error)
-                    // view?.reload()
-                    view?.loadUrl( currentUrl )
+                    if (request != null) {
+                        //view?.loadUrl( request.url.toString() )
+                        view?.reload()
+                    }
                     Log.d("2NE1", "onReceivedError().. reload()..")
                 }
-                //override fun shouldOverrideUrlLoading(view: WebView?, url: String): Boolean {
-                //    return false
-                //}
             }
         }
 
         // 3. load a page onto a web view
         webView.loadUrl( url )
-        currentUrl = url
         Log.d("2NE1", "loadUrl() with " + url )
 
         return webView

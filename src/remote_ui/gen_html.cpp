@@ -53,7 +53,7 @@ static const char* header =
 			oscillator.start(audioCtx.currentTime); \
 			oscillator.stop(audioCtx.currentTime + ((duration || 500) / 1000)); \
 		}; \
-		function make_no_sound() {;}; \
+		function make_no_sound() {audioCtx.suspend();}; \
 		function make_sound( key ) { \
 			audioCtx.resume(); \
 			cnt = 0; \
@@ -93,17 +93,18 @@ static char* gen_body( unsigned days, unsigned hours, float temp, float temp_hig
 #endif
 
 	/* days passed */
-	i += sprintf( body+i, "%s%2d%s%d%s%s", 
-		"<div class=mid>경과한 날: ",
+	i += sprintf( body+i, "%s%2d%s%d%s%s%s", 
+		"<div class=mid>",
 		days,
 		"일 ",
 		hours,
 		"시간",
+		" 경과",
 		"</div><hr><br>"
 	);
 
 	/* temperature */
-	i += sprintf( body+i, "%s%s%.2f%s%s",
+	i += sprintf( body+i, "%s%s%.1f%s%s",
 		( temp < temp_low ? "<div class=large_blue>" : temp > temp_high ? "<div class=large_red>" : "<div class=large>" ),
 		"온도 ",
 		temp,
@@ -112,7 +113,7 @@ static char* gen_body( unsigned days, unsigned hours, float temp, float temp_hig
 	);
 
 	/* humidity */
-	i += sprintf( body+i, "%s%s%.2f%s%s",
+	i += sprintf( body+i, "%s%s%.1f%s%s",
 		( humid < humid_low ? "<div class=large_blue>" : humid > humid_high ? "<div class=large_red>" : "<div class=large>" ),
 		"습도 ",
 		humid,
@@ -145,7 +146,7 @@ static char* gen_body( unsigned days, unsigned hours, float temp, float temp_hig
 		"	<button id=\'hidden_button\' onclick=\'make_some_sound()\' hidden></button> \
 			<script type=\'text/javascript\'> \
 				function make_some_sound() { make_no_sound(); } \
-			</script>"
+			:/script>"
 	);
 
 	i += sprintf( body+i, "%s",
@@ -186,9 +187,11 @@ char* gen_html_from_stat_file() {
 	}
 
   /*
+	175205 2022-03-17 23:44 37.29 37.7 37.5 43.77 57.0 48.0 124 false
   format string for 10 items, or 11 space separated fields (space is there between date and time)
     elapsed_tick,
-    date/time,
+    date,
+		time,
     temp,
     temp_high,
     temp_low,
