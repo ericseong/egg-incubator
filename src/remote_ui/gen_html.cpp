@@ -86,7 +86,7 @@ static char* gen_body( unsigned days, unsigned hours, float temp, float temp_hig
 	);
 #else
 	i  = sprintf( body, "%s", 
-		( !is_phl ? "<body style=\'background-image: linear-gradient(to bottom, #808080, #c0c0c0);\'>" :
+		( !is_phl ? "<body style=\'background-image: linear-gradient(to bottom, #505050, #a0a0a0);\'>" :
 			"<body style=\'background-color:#202020;\'>"
 		)
 	);
