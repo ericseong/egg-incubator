@@ -438,8 +438,8 @@ void Incubator::updateSessionLog() const {
 	stringstream ss;
 	ss << setfill(' ') << setw(10) << _runCount 
 		<< setfill(' ') << setw(20) << dt.c_str() 
-		<< setfill(' ') << setw(8) << setprecision(2) << temp
-		<< setfill(' ') << setw(8) << setprecision(2) << humid
+		<< setfill(' ') << setw(8) << setprecision(4) << temp
+		<< setfill(' ') << setw(8) << setprecision(4) << humid
 		<< setfill(' ') << setw(5) << _pRollerActuator->getCount();
 	msg = ss.str();
 
