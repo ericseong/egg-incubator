@@ -18,11 +18,11 @@ void DisplayClient::sendMsg( string& msg ) const {
 	/* fd for the socket */
 	int fd = guard( socket(AF_INET, /* versus AF_LOCAL */
 		SOCK_STREAM, /* reliable, bidirectional */
-		0), "could not create TCP listening socket" ); /* system picks protocol (TCP) */ 
+		0), (char*)"could not create TCP listening socket" ); /* system picks protocol (TCP) */ 
 
 #ifdef DENABLE_NONBLOCKING_CLIENT_SOCKET 
-	int flags = guard( fcntl( fd, F_GETFL ), "could not get flags on TCP listening socket" );
-	guard( fcntl( fd, F_SETFL, flags | O_NONBLOCK ), "could not set TCP listening socket to be non-blocking" );
+	int flags = guard( fcntl( fd, F_GETFL ), (char*)"could not get flags on TCP listening socket" );
+	guard( fcntl( fd, F_SETFL, flags | O_NONBLOCK ), (char*)"could not set TCP listening socket to be non-blocking" );
 #endif
 	
 	/* get the address of the host */
