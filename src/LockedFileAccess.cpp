@@ -30,19 +30,32 @@ int LockedFileAccess::writeFile( std::string& line ) const {
 		perror( "fcntl failed to get lock." );
 		close( fd );
 		return -1;
-	} else {
-		write( fd, line.c_str(), line.length() );
-		//write( fd, line.c_str(), strlen(line.c_str()) );
-	} 
+	}
+
+	if( write( fd, line.c_str(), line.length() ) < 0 ){
+		perror("write");
+		return -1;
+	}
+
+	if( fsync( fd ) ) {
+			perror("write");
+			return -1;
+	}
 
 	lock.l_type = F_UNLCK;
 	if( fcntl( fd, F_SETLK, &lock ) < 0 ) {
 		perror( "Unlock failed." );
-		close( fd );
-		return -1;
+		if( close(fd) ) {
+      perror("close");
+			return -1;
+		}
 	}
 	
-	close( fd );
+	if( close( fd ) ) {
+    perror("close");
+		return -1;
+	}
+
 	return 0;
 }
 
@@ -81,7 +94,7 @@ int LockedFileAccess::readFile( std::string& line ) const {
 	if( read( fd, str, READ_BUF_SIZE ) ) {
 		line = str;
 	} else {
-		std::cout << "Unexpected! EOF found." << std::endl;
+		std::cerr << "Unexpected! EOF found." << std::endl;
 		close( fd );
 		return -1;
 	}
