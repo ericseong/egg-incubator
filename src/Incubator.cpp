@@ -421,7 +421,8 @@ void Incubator::updateSessionLog() const {
 
 	string dt, msg; // date/time, message
 
-	dt = Util::dateTime2Str();
+	//dt = IncUtil::dateTime2Str();
+	dt = dateTime2Str();
 
   float temp;
   if( _pTempSensor->getCache( temp ) )
@@ -431,8 +432,16 @@ void Incubator::updateSessionLog() const {
   if( _pHumidSensor->getCache( humid ) )
     humid = 100.00;
 
-	// format string
-	msg = Util::strFormat( "%10d %20s %8.2f %8.2f %5d", _runCount, dt.str(), temp, humid, _pRollerActuator->getCount() );	
+	// format string, strFormat() does not work using gcc on rpi although it worked on my macbook.
+	//msg = IncUtil::strFormat( "%10d %20s %8.2f %8.2f %5d", _runCount, dt.c_str(), temp, humid, _pRollerActuator->getCount() );	
+	//msg = strFormat( "%10d %20s %8.2f %8.2f %5d", _runCount, dt.c_str(), temp, humid, _pRollerActuator->getCount() );	
+	stringstream ss;
+	ss << setfill(' ') << setw(10) << _runCount 
+		<< setfill(' ') << setw(20) << dt.c_str() 
+		<< setfill(' ') << setw(8) << setprecision(2) << temp
+		<< setfill(' ') << setw(8) << setprecision(2) << humid
+		<< setfill(' ') << setw(5) << _pRollerActuator->getCount();
+	msg = ss.str();
 
 	// send string to session logger 
 	_pSLC->sendMsg( msg );

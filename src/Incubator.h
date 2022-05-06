@@ -18,6 +18,30 @@
 //#include "HeatActuator.h"
 //#include "RollerActuator.h"
 #include "TempAlgo.h"
+#include "SessionLoggerClient.h"
+#include "IncUtil.h"
+
+/*
+class Incubator : public Singleton<Incubator> {
+	bool _initialized;
+	unsigned _runCount;
+	Signal *_pSig;
+	Env *_pEnv;
+	SessionTime *_pSTime;
+	DisplayClient *_pDC;
+	SessionLoggerClient *_pSLC;
+	Sensor *_pTempSensor;
+	Sensor *_pHumidSensor;
+	Actuator *_pAirFlowActuator;
+	Actuator *_pDehumidActuator;
+	Actuator *_pHeatActuator;
+	Actuator *_pHeatFlowActuator;
+	Actuator *_pRollerActuator;
+	Actuator *_pHumidActuator;
+	TempAlgo *_pTempAlgo;
+	void _run() const;
+	void _run4Roller() const;
+*/
 
 class Incubator : public Singleton<Incubator> {
 	bool _initialized;

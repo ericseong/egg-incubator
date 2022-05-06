@@ -3,6 +3,8 @@
 #include <iostream>
 #include "DisplayClient.h"
 
+#if 0
+
 using namespace std;
 
 const unsigned BufSize = 1024;
@@ -64,6 +66,8 @@ void DisplayClient::sendMsg( string& msg ) const {
 
 	return;
 }
+
+#endif
 
 #if 0 // for test
 const char* message = "What is the youth.. Impetuous fire.. What is a maid.. Ice and desire.. The world wags on..";
