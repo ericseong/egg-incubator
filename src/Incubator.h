@@ -17,7 +17,7 @@
 //#include "DehumidActuator.h"
 //#include "HeatActuator.h"
 //#include "RollerActuator.h"
-
+#include "TempAlgo.h"
 
 class Incubator : public Singleton<Incubator> {
 	bool _initialized;

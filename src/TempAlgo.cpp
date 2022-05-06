@@ -9,7 +9,7 @@ void TempAlgo::_kickIn( time_t tick, float temp ) {
 	e.tick = tick;
 	e.temp = temp;
 	if( _record.empty() )
-		for( int i=0 ; i < NumRecords ; i++ )
+		for( int i=0 ; i < (int)NumRecords ; i++ )
 			_record.push_back( e ); 
 	else {
 		_record.erase( _record.begin() ); // pop front!
@@ -42,10 +42,10 @@ pair<float, float> TempAlgo::getPair( float t1, float t2 ) const {
 	pair<float, float> tp;
 	float arr[1024];
 
-	for( int i=0 ; i< NumRecords ; i++ )
+	for( int i=0 ; i< (int)NumRecords ; i++ )
 		arr[i] = _record[i].temp; 
 	//for( int i=0 ; i< 3 ; i++ )
-	//	arr[i] = _record[NumRecords/2-1+i].temp; 
+	//	arr[i] = _record[(int)NumRecords/2-1+i].temp; 
 	//float med = _getMedian( arr, 3 ); // to suppress some possible noisy values
 	float med = _getMedian( arr, NumRecords ); // to suppress some possible noisy values
 	float gap = t2-t1;

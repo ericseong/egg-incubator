@@ -39,7 +39,7 @@ public:
 	void tryGoOnRec( time_t tick, float temp ); 
 	void printRecord() { // debug
 		cout << "---------------------" << endl;
-		for( int i = 0 ; i < NumRecords ; i++ ) {
+		for( int i = 0 ; i < (int)NumRecords ; i++ ) {
 			cout << "[" << i << "] " << _record[i].tick << ", " << _record[i].temp << endl;
 		}
 		cout << "---------------------" << endl;
