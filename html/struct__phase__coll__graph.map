@@ -1,8 +1,8 @@
 <map id="_phase" name="_phase">
-<area shape="rect" id="node1" title=" " alt="" coords="201,329,267,407"/>
-<area shape="rect" id="node2" href="$struct__fomula.html" title=" " alt="" coords="141,189,210,267"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,5,52,83"/>
-<area shape="rect" id="node4" title=" " alt="" coords="196,5,272,83"/>
-<area shape="rect" id="node5" href="$struct__phase__header.html" title=" " alt="" coords="235,189,350,267"/>
-<area shape="rect" id="node6" title=" " alt="" coords="359,5,413,83"/>
+<area shape="rect" id="node1" title=" " alt="" coords="122,329,186,407"/>
+<area shape="rect" id="node2" href="$struct__phase__header.html" title=" " alt="" coords="43,189,153,267"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,5,60,83"/>
+<area shape="rect" id="node4" title=" " alt="" coords="125,5,199,83"/>
+<area shape="rect" id="node5" href="$struct__fomula.html" title=" " alt="" coords="177,189,245,267"/>
+<area shape="rect" id="node6" title=" " alt="" coords="295,5,341,83"/>
 </map>

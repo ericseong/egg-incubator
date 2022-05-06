@@ -1,7 +1,11 @@
 <map id="Gpio::deinit" name="Gpio::deinit">
-<area shape="rect" id="node1" title=" " alt="" coords="217,81,307,108"/>
-<area shape="rect" id="node2" href="$class_air_flow_actuator.html#a1256f7df2b79633cd395920795a1b5f5" title=" " alt="" coords="9,5,165,32"/>
-<area shape="rect" id="node3" href="$class_dehumid_actuator.html#a7517ddfacd5178a573bb4a5258e4d294" title=" " alt="" coords="5,56,169,83"/>
-<area shape="rect" id="node4" href="$class_heat_actuator.html#a91e5ca9580dd31673b6020355ef6035c" title=" " alt="" coords="18,107,157,133"/>
-<area shape="rect" id="node5" href="$class_roller_actuator.html#aca0b6c94f85817eb0c60a34ddfda4634" title=" " alt="" coords="15,157,160,184"/>
+<area shape="rect" id="node1" title=" " alt="" coords="228,183,316,209"/>
+<area shape="rect" id="node2" href="$class_air_flow_actuator.html#a1256f7df2b79633cd395920795a1b5f5" title=" " alt="" coords="15,5,170,32"/>
+<area shape="rect" id="node3" href="$class_dehumid_actuator.html#a7517ddfacd5178a573bb4a5258e4d294" title=" " alt="" coords="11,56,174,83"/>
+<area shape="rect" id="node4" href="$class_dht22_humid_sensor.html#a156040f01ad5bf41646420e942ef5f02" title=" " alt="" coords="5,107,180,133"/>
+<area shape="rect" id="node5" href="$class_dht22_temp_sensor.html#a116cd310062753f8d8b19a2e8cf7256c" title=" " alt="" coords="8,157,177,184"/>
+<area shape="rect" id="node6" href="$class_heat_actuator.html#a91e5ca9580dd31673b6020355ef6035c" title=" " alt="" coords="23,208,162,235"/>
+<area shape="rect" id="node7" href="$class_heat_flow_actuator.html#a8fbdd72eff236ab117c5415fd9df59fe" title=" " alt="" coords="9,259,176,285"/>
+<area shape="rect" id="node8" href="$class_humid_actuator.html#a1e6912685f19a2a24748c6d9921c87b0" title=" " alt="" coords="19,309,167,336"/>
+<area shape="rect" id="node9" href="$class_roller_actuator.html#aca0b6c94f85817eb0c60a34ddfda4634" title=" " alt="" coords="21,360,165,387"/>
 </map>

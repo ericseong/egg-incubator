@@ -1,5 +1,5 @@
 <map id="RollerActuator::init" name="RollerActuator::init">
 <area shape="rect" id="node1" title=" " alt="" coords="5,42,136,69"/>
-<area shape="rect" id="node2" href="$class_singleton.html#a8ec70839501fe76ec61195233d8fdb62" title=" " alt="" coords="184,5,320,47"/>
-<area shape="rect" id="node3" href="$class_gpio.html#ad5006f04eb912df7556ee05a7045d7e2" title=" " alt="" coords="215,71,289,98"/>
+<area shape="rect" id="node2" href="$class_singleton.html#a4aec04ab40783981bc6314c390206a68" title=" " alt="" coords="184,5,319,47"/>
+<area shape="rect" id="node3" href="$class_gpio.html#ad5006f04eb912df7556ee05a7045d7e2" title=" " alt="" coords="214,71,289,98"/>
 </map>

@@ -3,6 +3,7 @@
 #ifndef __INCUBATOR_H__
 #define __INCUBATOR_H__
 
+#include <vector>
 #include "Signal.h"
 #include "Env.h"
 #include "SessionTime.h"
@@ -16,6 +17,7 @@
 //#include "DehumidActuator.h"
 //#include "HeatActuator.h"
 //#include "RollerActuator.h"
+
 
 class Incubator : public Singleton<Incubator> {
 	bool _initialized;
@@ -32,6 +34,7 @@ class Incubator : public Singleton<Incubator> {
 	Actuator *_pHeatFlowActuator;
 	Actuator *_pRollerActuator;
 	Actuator *_pHumidActuator;
+	TempAlgo *_pTempAlgo;
 	void _run() const;
 	void _run4Roller() const;
 public:

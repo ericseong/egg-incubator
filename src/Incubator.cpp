@@ -20,6 +20,7 @@
 #include "HeatFlowActuator.h"
 #include "RollerActuator.h"
 #include "HumidActuator.h"
+#include "TempAlgo.h" // added for slow temp. ramp-up
 
 using namespace std;
 
@@ -75,6 +76,9 @@ void Incubator::init() {
 
 	// Instantiate Signal 
 	_pSig = new Signal();
+
+	// Instantiate TempAlgo
+	_pTempAlgo = new TempAlgo();
 
 	clog << "Incubator initialized.\n";
 	_initialized = true;
@@ -149,6 +153,11 @@ void Incubator::deinit() {
 		clog << "_pSig is deinitialized.\n";
 	}
 
+	if( _pTempAlgo ) {
+		delete _pTempAlgo;
+		clog << "_pTempAlgo is deinitialized.\n";
+	}
+
 	clog << "Incubator deinitialized.\n";
 	_initialized = false;
 
@@ -179,7 +188,8 @@ void Incubator::_run() const {
 	 return;
 	} 
 	
-	// temperature control 
+	// temperature control
+
 	float tm;
 	bool airFlowOverridden4TempControl = false;
 	if( !_pTempSensor->get( tm ) ) {
@@ -201,37 +211,44 @@ void Incubator::_run() const {
 		}
 
 		// normal temperature control
-		if( tm > f.tempHigherLimit ) {
+		///////// note that this part is rewritten to behavior like pi controller
+		_pTempAlgo->tryGoOnRec( _pSTime->getElapsed(), tm );
+		pair<float,float> tempPair = _pTempAlgo->getPair( f.tempLowerLimit, f.tempHigherLimit );
+		float tempLowerLimit = tempPair.first;
+		float tempHigherLimit = tempPair.second;
+
+		if( tm > tempHigherLimit ) {
 			_pHeatActuator->off();
 			clog << "heat actuator OFF." << '\n';
 			_pHeatFlowActuator->on();
 			clog << "heatflow actuator ON." << '\n';
 		}
-		else if( tm > ( f.tempHigherLimit + f.tempLowerLimit ) / 2. ) {
+		else if( tm > ( tempHigherLimit + tempLowerLimit ) / 2. ) {
 			_pHeatFlowActuator->on();
 			clog << "heatflow actuator ON." << '\n';
 		}
-		else if( tm > f.tempLowerLimit && tm < ( f.tempHigherLimit + f.tempLowerLimit ) / 2. ) {
+		else if( tm > tempLowerLimit && tm < ( tempHigherLimit + tempLowerLimit ) / 2. ) {
 			if( _pHeatActuator->get() != LEVEL_ON ) {
 				_pHeatFlowActuator->off();
 				clog << "heatflow actuator OFF." << '\n';
 			}
 		}
-		else if( tm < f.tempLowerLimit ) {
+		else if( tm < tempLowerLimit ) {
 			_pHeatActuator->on();
 			clog << "heat actuator ON." << '\n';
 			_pHeatFlowActuator->on();
 			clog << "heatflow actuator ON." << '\n';
 		}
+		/////////
 
 	} else { // can't get the value from temperature sensor
 		++tempSensorFailureCount;
 		if( tempSensorFailureCount >= 3 ) { // consecutive failures for more than three times
 			_pHeatActuator->off(); // prevent over-heating
-			//_pAirFlowActuator->start( LEVEL_ON );
-			//airFlowOverridden4TempControl = true;	
 		}
 	}
+
+	// humidity control
 
 	float th;
 	if( !_pHumidSensor->get( th ) ) {

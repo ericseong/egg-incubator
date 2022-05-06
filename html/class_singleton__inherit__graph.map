@@ -1,11 +1,11 @@
 <map id="Singleton&lt; T &gt;" name="Singleton&lt; T &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="287,5,397,127"/>
-<area shape="rect" id="node2" href="$class_singleton.html" title=" " alt="" coords="5,189,135,311"/>
-<area shape="rect" id="node4" href="$class_singleton.html" title=" " alt="" coords="159,189,336,311"/>
-<area shape="rect" id="node6" href="$class_singleton.html" title=" " alt="" coords="360,189,516,311"/>
-<area shape="rect" id="node8" href="$class_singleton.html" title=" " alt="" coords="545,189,669,311"/>
-<area shape="rect" id="node3" href="$class_gpio.html" title=" " alt="" coords="24,477,116,599"/>
-<area shape="rect" id="node5" href="$class_session_time.html" title=" " alt="" coords="184,419,311,657"/>
-<area shape="rect" id="node7" href="$class_incubator.html" title=" " alt="" coords="361,360,509,716"/>
-<area shape="rect" id="node9" href="$class_env.html" title=" " alt="" coords="533,389,687,687"/>
+<area shape="rect" id="node1" title=" " alt="" coords="237,5,348,127"/>
+<area shape="rect" id="node2" href="$class_singleton.html" title=" " alt="" coords="19,189,142,311"/>
+<area shape="rect" id="node4" href="$class_singleton.html" title=" " alt="" coords="167,189,293,311"/>
+<area shape="rect" id="node6" href="$class_singleton.html" title=" " alt="" coords="318,189,473,311"/>
+<area shape="rect" id="node8" href="$class_singleton.html" title=" " alt="" coords="497,189,673,311"/>
+<area shape="rect" id="node3" href="$class_env.html" title=" " alt="" coords="5,411,156,709"/>
+<area shape="rect" id="node5" href="$class_gpio.html" title=" " alt="" coords="185,499,275,621"/>
+<area shape="rect" id="node7" href="$class_incubator.html" title=" " alt="" coords="321,360,470,760"/>
+<area shape="rect" id="node9" href="$class_session_time.html" title=" " alt="" coords="521,441,648,679"/>
 </map>
