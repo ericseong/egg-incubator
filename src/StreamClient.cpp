@@ -1,7 +1,7 @@
-// DisplayClient.cpp
+// StreamClient.cpp
 
 #include <iostream>
-#include "DisplayClient.h"
+#include "StreamClient.h"
 
 using namespace std;
 
@@ -9,7 +9,11 @@ const unsigned BufSize = 1024;
 //#static int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
 static int guard(int n, char * err) { if (n == -1) { perror(err); } return n; }
 
-void DisplayClient::sendMsg( string& msg ) const {
+#if 1 // for test
+const char* message = "What is the youth.. Impetuous fire.. What is a maid.. Ice and desire.. The world wags on..";
+#endif
+
+void StreamClient::sendMsg( string& msg ) const {
 
 	/* fd for the socket */
 	int fd = guard( socket(AF_INET, /* versus AF_LOCAL */
@@ -58,7 +62,7 @@ void DisplayClient::sendMsg( string& msg ) const {
 	}	
 
 	write( fd, msg.c_str(), msg.size() );
-	fprintf(stdout, "From display client, writing %s\n", msg.c_str()); 
+	fprintf(stdout, "From client, writing %s\n", msg.c_str()); 
 
 	close( fd ); /* close the connection */ 
 
@@ -66,14 +70,13 @@ void DisplayClient::sendMsg( string& msg ) const {
 }
 
 #if 0 // for test
-const char* message = "What is the youth.. Impetuous fire.. What is a maid.. Ice and desire.. The world wags on..";
 int main() {
 
 	string host("127.0.0.1");
-	DisplayClient dc( host, 48557 ); 
+	StreamClient sc( host, 48557 ); 
 
-	string text(message);
-	dc.sendMsg( text );
+	string text("message");
+	sc.sendMsg( text );
 
 	return 0;
 }
