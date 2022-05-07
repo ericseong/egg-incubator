@@ -62,6 +62,7 @@ class Incubator : public Singleton<Incubator> {
 	TempAlgo *_pTempAlgo;
 	void _run() const;
 	void _run4Roller() const;
+	bool _isOon( unsigned margin ) const;
 public:
 	Incubator() : _initialized(false), _runCount(0) {}
 	virtual ~Incubator() {}

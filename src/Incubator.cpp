@@ -175,7 +175,7 @@ void Incubator::newSession() {
 	if( !_initialized )
 		return;
 
-	_pSTime->	setStart();	
+	_pSTime->setStart();	
 	return;
 }
 
@@ -218,8 +218,8 @@ void Incubator::_run() const {
 		}
 
 		// normal temperature control
-		///////// note that this part is rewritten to behavior like pi controller
-		_pTempAlgo->tryGoOnRec( _pSTime->getElapsed(), tm );
+		///////// note that this part is rewritten for the behavior like pi controller
+		//_pTempAlgo->tryGoOnRec( _pSTime->getElapsed(), tm );
 		pair<float,float> tempPair = _pTempAlgo->getPair( f.tempLowerLimit, f.tempHigherLimit );
 		float tempLowerLimit = tempPair.first;
 		float tempHigherLimit = tempPair.second;
@@ -336,6 +336,30 @@ void Incubator::_run4Roller() const {
 	}
 
 	return;
+}
+
+// see if it's during out-of-nest period 
+// zero margin is for control the incubator and non-zero margin is for some other purposes
+bool Incubator::_isOon( unsigned margin ) const {
+	unsigned daysPassed = _pSTime->daysPassed();
+	unsigned maxDay;
+	
+	_pEnv->getMaxDay( maxDay );
+  if( daysPassed < maxDay ) {
+		formula_t f;
+		if( !_pEnv->getFormula( daysPassed, f ) ) {
+			if( f.outOfNest != 0 ) {
+				daysPassed += 1;
+				time_t elapsed = _pSTime->getElapsed();
+				time_t oonFrom = 86400*daysPassed - f.outOfNest; // out-of-nest is taken at the end of the day 
+				time_t oonTo = 86400*daysPassed + margin;
+				if( elapsed > oonFrom && elapsed < oonTo )
+					return true;
+			}
+		}	
+	}
+	
+	return false;
 }
 
 // show stats on lcd by sending message to display server
@@ -465,27 +489,12 @@ void Incubator::runLoop() {
 			clog << "Incubator got SIGUSR1 and session time is reinitialized.\n";
 		}
 
+		// we don't want to control any actuator if session is expired
 		unsigned daysPassed = _pSTime->daysPassed();
 		unsigned maxDay;
+
 		_pEnv->getMaxDay( maxDay );
-		if( daysPassed < maxDay ) { // active session is on-going
-			_runCount++;
-			clog << "\n[" << _runCount << "] " << _pSTime->daysPassed() << " days passed or " << _pSTime->getElapsed() << " ticks elapsed.\n";
-
-			_run();
-			_run4Roller();
-
-			updatePanel();
-
-			// update session log once in every 1 minute.
-			time_t now;
-			time( &now );
-			if( now - sessionLogStamp >= 60 ) {
-				updateSessionLog();
-				time( &sessionLogStamp );	
-			}
-		}
-		else { // session has been completed.
+		if( daysPassed >= maxDay ) {
 			clog << "Max day passed: " << "maxDay: " << maxDay << ", " << "daysPassed: " << daysPassed << endl;
 			clog << "All actuators is off if not." << endl;
 
@@ -502,8 +511,57 @@ void Incubator::runLoop() {
 			if( _pHumidActuator->get() != LEVEL_OFF ) 
 				_pHumidActuator->off();
 
-			//this_thread::sleep_for( std::chrono::milliseconds(1000) );
-			//return;
+			this_thread::sleep_for( std::chrono::milliseconds(1000) );
+			return;
+		}
+
+		_runCount++;
+		clog << "\n[" << _runCount << "] " << _pSTime->daysPassed() << " days passed or " << _pSTime->getElapsed() << " ticks elapsed.\n";
+
+		///////// note that this part is rewritten for the behavior like pi controller. tryGoOnRec() should come first before _run() which tries to control the temperature based on the record.
+		float tm; 
+		if( !_pTempSensor->get( tm ) ) {
+			//clog << "before tryGoOnRec()." << endl;
+			_pTempAlgo->tryGoOnRec( _pSTime->getElapsed(), tm );
+			//clog << "after tryGoOnRec()." << endl;
+		}
+
+		// we don't want to control any actuator if it's during out-of-nest period
+		if( !_isOon(0) ) {
+			_run();
+		}
+		else { // simulate out-of-nest env. 
+			clog << "It's out-of-nest time!" << endl;
+			if( _pAirFlowActuator->get() != LEVEL_OFF ) 
+				_pAirFlowActuator->off();	
+			if( _pDehumidActuator->get() != LEVEL_OFF ) 
+				_pDehumidActuator->off();
+			if( _pHeatActuator->get() != LEVEL_OFF ) 
+				_pHeatActuator->off();
+			if( _pHeatFlowActuator->get() != LEVEL_OFF ) 
+				_pHeatFlowActuator->off();
+			//if( _pRollerActuator->get() != LEVEL_OFF ) 
+			//	_pRollerActuator->off();
+			if( _pHumidActuator->get() != LEVEL_OFF ) 
+				_pHumidActuator->off();
+
+			// let temp/humid level be updated. note that temp/humid level is updated via cache.
+			float tm;
+			_pTempSensor->get( tm );
+			float th;
+			_pHumidSensor->get( th );
+		}
+
+		_run4Roller();
+
+		updatePanel();
+
+		// update session log once in every 1 minute.
+		time_t now;
+		time( &now );
+		if( now - sessionLogStamp >= 60 ) {
+			updateSessionLog();
+			time( &sessionLogStamp );
 		}
 
 		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.

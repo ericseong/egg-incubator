@@ -69,6 +69,7 @@ void Env::_obj2Phase( const Json::Value& objPhase, phase_t& ph ) const {
 	ph.body.humidHigherLimit = objPhase["h2"].asFloat();
 	ph.body.airFlowLevel = objPhase["af"].asUInt();
 	ph.body.rollInterval = objPhase["ro"].asUInt();
+	ph.body.outOfNest = objPhase["oon"].asUInt();
 
 	return;
 }
@@ -144,6 +145,7 @@ int Env::_readConfig( const string& cfgFile ) {
 		clog << "HH: " << _formulas[d].humidHigherLimit << ", "; 
 		clog << "AF: " << _formulas[d].airFlowLevel << ", "; 
 		clog << "RI: " << _formulas[d].rollInterval << endl; 
+		clog << "OON: " << _formulas[d].outOfNest << endl; 
 	}
 
 	return 0;

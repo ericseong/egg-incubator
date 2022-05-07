@@ -28,7 +28,8 @@ class TempAlgo {
 	float _getMedian( float *arr, unsigned size ) const;
 
 public:
-	TempAlgo() : NumRecords(61), RecInterval(10), TempIncrement(0.5) {} // change TempIncrement to modify temp curve. less value will increse the time required to warm-up.
+	TempAlgo() : NumRecords(31), RecInterval(10), TempIncrement(0.5) {} // change TempIncrement to modify temp curve. less value will increse the time required to warm-up.
+//	TempAlgo() : NumRecords(61), RecInterval(10), TempIncrement(0.5) {}
 //	TempAlgo() : NumRecords(7), RecInterval(600), TempIncrement(3.0) {} // debug
 //	TempAlgo() : NumRecords(7), RecInterval(6), TempIncrement(3.0) {} // debug
 	virtual ~TempAlgo() { 

@@ -8,9 +8,11 @@ void TempAlgo::_kickIn( time_t tick, float temp ) {
 	element e;	
 	e.tick = tick;
 	e.temp = temp;
-	if( _record.empty() )
+	if( _record.empty() ) {
 		for( int i=0 ; i < (int)NumRecords ; i++ )
 			_record.push_back( e ); 
+		clog << "In TempAlgo::_kickIn(), record is stuffed with initial value: " << e.tick << ", " << e.temp << endl; 
+	}
 	else {
 		_record.erase( _record.begin() ); // pop front!
 		_record.push_back( e ); 
@@ -25,6 +27,10 @@ void TempAlgo::tryGoOnRec( time_t tick, float temp ) {
 		_kickIn( tick, temp );
 		lastTick = tick;
 	}	
+	else if( _record.empty() ) {
+		_kickIn( tick, temp );
+		lastTick = tick;
+	}
 
 	return;
 }
@@ -42,8 +48,17 @@ pair<float, float> TempAlgo::getPair( float t1, float t2 ) const {
 	pair<float, float> tp;
 	float arr[1024];
 
-	for( int i=0 ; i< (int)NumRecords ; i++ )
+	// just in case
+	if( _record.empty() ) {
+		tp = { t1, t2 };
+		return tp;	
+	}
+
+	//clog << "In TempAlgo::getPair():" << endl;
+	for( int i=0 ; i< (int)NumRecords ; i++ ) {
+		//clog << _record[i].temp << endl;
 		arr[i] = _record[i].temp; 
+	}
 	//for( int i=0 ; i< 3 ; i++ )
 	//	arr[i] = _record[(int)NumRecords/2-1+i].temp; 
 	//float med = _getMedian( arr, 3 ); // to suppress some possible noisy values

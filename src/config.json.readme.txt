@@ -6,3 +6,4 @@ h1: humidity low limit in %
 h2: humidity high limit
 af: air flow in %
 ro: rolling interval in sececonds
+oon: daily off-control period (ticks in seconds) to mimic hen leaves the nest to feed herself
