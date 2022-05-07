@@ -1,0 +1,16 @@
+[Unit]
+Description=2ne1 remote ui server for egg incubator
+After=network.target
+Requires=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/hobby/egg-incubator/src
+#ExecStartPre=/bin/sleep 10
+ExecStart=/home/pi/hobby/egg-incubator/src/remote_ui/build/pico_http_server
+Environment=LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
+Restart=on-abort
+
+[Install]
+WantedBy=default.target
