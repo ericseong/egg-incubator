@@ -325,6 +325,7 @@ bool Incubator::_isOon( unsigned margin ) const {
 		formula_t f;
 		if( !_pEnv->getFormula( daysPassed, f ) {
 			if( f.outOfNest != 0 ) {
+				daysPassed += 1;
 				time_t elapsed = _pSTime->getElapsed();
 				time_t oonFrom = 86400*daysPassed - f.outOfNest; // out-of-nest is taken at the end of the day 
 				time_t oonTo = 86400*daysPassed + margin;
