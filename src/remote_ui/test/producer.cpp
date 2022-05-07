@@ -87,8 +87,10 @@ int main() {
 		oss.str("");
 
 		// write it into file
-		lfa.writeFile( line ); 
+		if( lfa.writeFile( line ) )
+			std::cerr << "lfa.writeFile() failed." << std::endl;
 
+		std::cerr << "lfa.writeFile() succeeded." << std::endl;
 		std::this_thread::sleep_for(std::chrono::seconds(3));
 	}
 
