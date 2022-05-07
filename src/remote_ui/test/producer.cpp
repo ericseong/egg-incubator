@@ -1,5 +1,6 @@
 // producer.cpp
 // produces stat file with random values. this is to test remote_ui.
+#include <cstring>
 
 // stat file format shall be..
 /*
