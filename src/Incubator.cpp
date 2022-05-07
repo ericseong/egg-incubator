@@ -445,20 +445,16 @@ void Incubator::updateSessionLog() const {
 
 	string dt, msg; // date/time, message
 
-	//dt = IncUtil::dateTime2Str();
 	dt = dateTime2Str();
 
   float temp;
   if( _pTempSensor->getCache( temp ) )
     temp = 100.00;
-	
+
 	float humid;
   if( _pHumidSensor->getCache( humid ) )
     humid = 100.00;
 
-	// format string, strFormat() does not work using gcc on rpi although it worked on my macbook.
-	//msg = IncUtil::strFormat( "%10d %20s %8.2f %8.2f %5d", _runCount, dt.c_str(), temp, humid, _pRollerActuator->getCount() );	
-	//msg = strFormat( "%10d %20s %8.2f %8.2f %5d", _runCount, dt.c_str(), temp, humid, _pRollerActuator->getCount() );	
 	stringstream ss;
 	ss << setfill(' ') << setw(10) << _runCount 
 		<< setfill(' ') << setw(20) << dt.c_str() 
@@ -469,7 +465,72 @@ void Incubator::updateSessionLog() const {
 
 	// send string to session logger 
 	_pSLC->sendMsg( msg );
+
+	return;
+}
+
+void Incubator::update4RemoteUI() const {
+  string dt, msg; // date/time, message
+
+  dt = dateTime2Str();
+
+  float temp;
+  if( _pTempSensor->getCache( temp ) )
+    temp = 100.00;
 	
+	float humid;
+  if( _pHumidSensor->getCache( humid ) )
+    humid = 100.00;
+
+	formula_t f;
+	if( _pEnv->getFormula( _pSTime->daysPassed(), f ) ) {
+   cerr << "Can't get formula.\n";
+	}
+
+	/*
+	format string for 10 items, or 11 space separated fields (space is there between date and time)
+		elapsed_tick, 
+		date/time, 
+		temp, 
+		temp_high, 
+		temp_low, 
+		humid, 
+		humid_high, 
+		humid_low, 
+		roller_count,
+		bool(periodic_hen_leaving) 
+	// the following Util function does not work on rpi unfortunately.
+  msg = strFormat( "%10d %20s %.2f %.2f %.2f %.2f %.2f %.2f %5d %s", 
+		_pSTime->getElapsed(),
+		dt.str(),
+		temp,
+		f.tempHigherLimit,
+		f.humidLowerLimit,
+		humid,
+		f.humidHigherLimit,
+		f.humidLowerLimit,
+		_pRollerActuator->getCount(),
+		( _isOon(3600) ? "true" : "false" ) 
+	);
+**/
+	stringstream ss;
+	ss << setfill(' ') << setw(10) << _pSTime->getElapsed()
+		<< setfill(' ') << setw(20) << dt.c_str()
+		<< setfill(' ') << setw(8) << setprecision(4) << temp
+		<< setfill(' ') << setw(8) << setprecision(4) << f.tempHigherLimit
+		<< setfill(' ') << setw(8) << setprecision(4) << f.tempLowerLimit
+		<< setfill(' ') << setw(8) << setprecision(4) << humid
+		<< setfill(' ') << setw(8) << setprecision(4) << f.humidHigherLimit
+		<< setfill(' ') << setw(8) << setprecision(4) << f.humidLowerLimit
+		<< setfill(' ') << setw(5) << _pRollerActuator->getCount()
+		<< setfill(' ') << setw(7) << (_isOon(3600)?"true":"false");
+
+  // store it to file 
+	LockedFileAccess lfa( CUR_SESSION_STAT_FILE_NAME );
+	if( lfa.writeFile( msg ) ) {
+		cerr << "lfa.writeFile() failed." << std::endl;
+	}
+
 	return;
 }
 
@@ -563,6 +624,7 @@ void Incubator::runLoop() {
 			updateSessionLog();
 			time( &sessionLogStamp );
 		}
+		update4RemoteUI();
 
 		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.
 		this_thread::sleep_for( std::chrono::milliseconds(3000) );

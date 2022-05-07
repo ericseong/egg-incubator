@@ -1,9 +1,10 @@
-check if target's systemd service file is the same as the one in rpi dir.
-check if session_start.txt is correctly located both for SessionTime and SessionLogger.
+1 check if target's systemd service file is the same as the one in rpi dir.
+2 check if session_start.txt is correctly located both for SessionTime and SessionLogger.
 order or merge:
 1. merge with slow_heating
 2. merge with periodic_hen_leaving
 3. merge with session_logging 
+4. merge with http_server4remote_ui 
 
 fyi, how to merge feature branch into master?
 $ git checkout master
