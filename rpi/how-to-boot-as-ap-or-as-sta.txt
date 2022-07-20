@@ -1,0 +1,1 @@
+see rpi/boot_as_ap.sh and rpi/boot_as_sta.sh
