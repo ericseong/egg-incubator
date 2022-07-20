@@ -1,6 +1,0 @@
-<map id="DehumidActuator" name="DehumidActuator">
-<area shape="rect" id="node1" title=" " alt="" coords="77,248,227,443"/>
-<area shape="rect" id="node2" href="$struct_actuator.html" title=" " alt="" coords="5,5,104,185"/>
-<area shape="rect" id="node3" title=" " alt="" coords="129,57,175,134"/>
-<area shape="rect" id="node4" title=" " alt="" coords="215,57,289,134"/>
-</map>
