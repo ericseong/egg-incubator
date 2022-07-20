@@ -1,11 +1,11 @@
 #!/bin/bash
 # this needs to be run as a root or via sudo
 
-sudo systemctl stop dnsmasq.service
-sudo systemctl disable dnsmasq.service
-sudo systemctl stop hostapd.service
-sudo systemctl disable hostapd.service
-sudo cp -f /etc/dhcpcd.conf.sta /etc/dhcpcd.conf
+systemctl stop dnsmasq.service
+systemctl disable dnsmasq.service
+systemctl stop hostapd.service
+systemctl disable hostapd.service
+cp -f /etc/dhcpcd.conf.sta /etc/dhcpcd.conf
 
 echo "Reboot..."
 reboot
