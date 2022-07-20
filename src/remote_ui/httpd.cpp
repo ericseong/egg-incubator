@@ -54,7 +54,7 @@ void serve_forever(const char *PORT)
 		
 		int slot=0;
 		
-		printf(
+		fprintf(stderr,
 						"Server started %shttp://127.0.0.1:%s%s\n",
 						"\033[92m",PORT,"\033[0m"
 						);
