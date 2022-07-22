@@ -14,6 +14,7 @@ systemctl stop dhcpcd && systemctl disable dhcpcd
 ifconfig wlan0 down
 
 cp -f /etc/dhcpcd.conf.sta /etc/dhcpcd.conf
+systemctl daemon_reload
 
 ifconfig wlan0 up
 systemctl enable dhcpcd && systemctl start dhcpcd
