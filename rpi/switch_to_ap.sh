@@ -20,7 +20,6 @@ systemctl enable dhcpcd && systemctl start dhcpcd
 systemctl enable wpa_supplicant && systemctl start wpa_supplicant
 systemctl enable dnsmasq && systemctl start dnsmasq
 systemctl enable hostapd && systemctl start hostapd 
-systemctl daemon-reload
 
 exit 0
 

@@ -16,10 +16,8 @@ ifconfig wlan0 down
 cp -f /etc/dhcpcd.conf.sta /etc/dhcpcd.conf
 
 ifconfig wlan0 up
-systemctl daemon-reload
 systemctl enable dhcpcd && systemctl start dhcpcd
 systemctl enable wpa_supplicant && systemctl start wpa_supplicant
-systemctl daemon-reload
  
 exit 0
 
