@@ -21,7 +21,7 @@ interface wlan0
 sudo vi /etc/sysctl.conf // uncomment the following line.
 net.ipv4.ip_forward=1
 
-sudo iptables -t nat -A POSTROUTING -o usb0 -j MASQUERADE // routing usb0 as origin
+sudo iptables -t nat -A POSTROUTING -o usb0 -j MASQUERADE // routing usb0 as origin. replace usb0 with eth0 where ethernet port is available.
 // how to delete postrouting rule? see 
 https://www.cyberciti.biz/faq/how-to-iptables-delete-postrouting-rule/
 
