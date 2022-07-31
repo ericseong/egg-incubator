@@ -1,3 +1,4 @@
 // make sure you properly created /etc/dhcpcd.conf.sta and /etc/dhcpcd.conf.ap
 see rpi/switch_to_ap.sh and rpi/switch_to_sta.sh
-// once we run the script above, we actually need to reboot for rpi zw as we don't want to up/down usb0 interface being used for ssh. 
+// once we run the script above, we actually need to reboot for rpi zw as we don't want to up/down usb0 interface being used for ssh. when tested, sta -> ap switching needed reboot but ap -> sta just worked without reboot. 
+
