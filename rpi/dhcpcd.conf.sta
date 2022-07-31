@@ -57,10 +57,4 @@ slaac private
 # fallback to static profile on eth0
 #interface eth0
 #fallback static_eth0
-
-# eric.. the following config. is not required as it's for station rather than for ap. 
-#interface wlan0
-#	static ip_address=10.20.1.1/24
-#	nohook wpa_supplicant
 # eof
-

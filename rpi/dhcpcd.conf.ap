@@ -60,7 +60,6 @@ slaac private
 
 # eric.. the wireless router ip address is static
 interface wlan0
-	static ip_address=10.20.1.1/24
-	nohook wpa_supplicant
+  static ip_address=10.20.1.1/24
+  nohook wpa_supplicant
 # eof
-
