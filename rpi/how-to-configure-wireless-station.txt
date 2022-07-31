@@ -1,0 +1,12 @@
+// /etc/wpa_supplicant/wpa_supplicant.conf
+
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+p2p_disabled=1
+country=GB
+
+network={
+	ssid="Pixel_3870"
+	scan_ssid=1
+	psk="gear4141"
+}

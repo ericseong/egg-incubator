@@ -1,6 +1,0 @@
-<map id="DehumidActuator::deinit" name="DehumidActuator::deinit">
-<area shape="rect" id="node1" title=" " alt="" coords="5,64,168,91"/>
-<area shape="rect" id="node2" href="$class_gpio.html#a7b51caf5fd923221806206f1d28736ee" title=" " alt="" coords="245,5,333,32"/>
-<area shape="rect" id="node3" href="$class_singleton.html#a4aec04ab40783981bc6314c390206a68" title=" " alt="" coords="222,57,357,98"/>
-<area shape="rect" id="node4" href="$class_dehumid_actuator.html#a7aa8e9783d9926f7883154730af0c20c" title=" " alt="" coords="216,123,363,149"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="AirFlowActuator::init" name="AirFlowActuator::init">
-<area shape="rect" id="node1" title=" " alt="" coords="5,42,145,69"/>
-<area shape="rect" id="node2" href="$class_singleton.html#a4aec04ab40783981bc6314c390206a68" title=" " alt="" coords="193,5,328,47"/>
-<area shape="rect" id="node3" href="$class_gpio.html#ad5006f04eb912df7556ee05a7045d7e2" title=" " alt="" coords="223,71,298,98"/>
-</map>

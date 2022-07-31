@@ -1,6 +1,0 @@
-<map id="RollerActuator::deinit" name="RollerActuator::deinit">
-<area shape="rect" id="node1" title=" " alt="" coords="5,64,149,91"/>
-<area shape="rect" id="node2" href="$class_gpio.html#a7b51caf5fd923221806206f1d28736ee" title=" " alt="" coords="221,5,309,32"/>
-<area shape="rect" id="node3" href="$class_singleton.html#a4aec04ab40783981bc6314c390206a68" title=" " alt="" coords="197,57,332,98"/>
-<area shape="rect" id="node4" href="$class_roller_actuator.html#ae15f34d73d01350a7ee553ab026cc25f" title=" " alt="" coords="201,123,329,149"/>
-</map>

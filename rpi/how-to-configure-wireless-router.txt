@@ -1,0 +1,66 @@
+// get the device up-to-date, get some required packages installed, and stop the running services if there're
+sudo apt update
+sudo apt upgrade // this may require reboot especially in case kernel is upgraded.
+sudo apt autoremove
+sudo apt install iptables
+sudo apt install bridge-utils // this is to delete bridge if there is.
+sudo systemctl stop hostapd // just in case hostapd is already up and running
+sudo systemctl stop dnsmasq // just in case dnsmasq is already up and running
+sudo apt install hostapd // wireless ap daemon
+sudo systemctl unmask hostapd.service
+sudo systemctl enable hostapd
+sudo apt install dnsmasq // for dhcp/dns server instead of client
+
+# the wireless router ip address is static and can be found by this configuration, see /etc/dnsmasq.conf for configuring domain name resolution
+sudo vi /etc/dhcpcd.conf // content below
+interface wlan0
+    static ip_address=10.20.1.1/24
+    nohook wpa_supplicant
+
+# router configuration
+sudo vi /etc/sysctl.conf // uncomment the following line.
+net.ipv4.ip_forward=1
+
+sudo iptables -t nat -A POSTROUTING -o usb0 -j MASQUERADE // routing usb0 as origin. replace usb0 with eth0 where ethernet port is available.
+// how to delete postrouting rule? see 
+https://www.cyberciti.biz/faq/how-to-iptables-delete-postrouting-rule/
+
+sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
+sudo vi /etc/rc.local // To load the rule on boot, we need to edit the file /etc/rc.local and add the following line just above the line exit 0:
+iptables-restore < /etc/iptables.ipv4.nat
+
+sudo rm /etc/dnsmasq.conf
+sudo touch /etc/dnsmasq.conf
+
+sudo vi /etc/dnsmasq.conf
+interface=wlan0
+dhcp-range=10.20.1.10,10.20.1.100,255.255.255.0,72h // range of the local subnet addresses which dhcp server can allocate, network mask, and how long the dhcp address will be remained valid (ex, 72h, 365d)
+domain=local
+address=/raspberrypiap.local/10.20.1.1
+
+# wlan0 configuration for host ap
+sudo touch /etc/hostapd/hostapd.conf
+sudo vi /etc/hostapd/hostapd.conf // content below
+country_code=GB // should be consistent with raspi-config
+interface=wlan0
+ssid=2ne1ap
+hw_mode=a // 5Ghz, higher bandwidth than 2.4Ghz which can be set by hw_mode=g
+channel=36 // 7 in case hw_mode=g (2.4Ghz)
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase=gear4141
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+
+# delete bridge configuration and bridge itself if exists
+sudo vi /etc/network/interfaces
+// delete everything else except for the default configuration. default config will look like:
+source /etc/network/interfaces.d/*
+
+sudo ifconfig br0 down // down br0 bridge before delete
+sudo brctl delbr br0 // delete br0 bridge
+
+sudo reboot

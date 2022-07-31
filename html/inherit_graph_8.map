@@ -1,6 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$struct_sensor.html" title=" " alt="" coords="5,56,69,83"/>
-<area shape="rect" id="node2" href="$class_dht22_humid_sensor.html" title=" " alt="" coords="121,5,259,32"/>
-<area shape="rect" id="node3" href="$class_dht22_temp_sensor.html" title=" " alt="" coords="124,56,256,83"/>
-<area shape="rect" id="node4" href="$class_tmp117_temp_sensor.html" title=" " alt="" coords="117,107,263,133"/>
-</map>
