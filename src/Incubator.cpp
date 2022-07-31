@@ -525,6 +525,8 @@ void Incubator::update4RemoteUI() const {
 		<< setfill(' ') << setw(5) << _pRollerActuator->getCount()
 		<< setfill(' ') << setw(7) << (_isOon(3600)?"true":"false");
 
+	msg = ss.str();
+
   // store it to file 
 	LockedFileAccess lfa( CUR_SESSION_STAT_FILE_NAME );
 	if( lfa.writeFile( msg ) ) {
@@ -624,6 +626,7 @@ void Incubator::runLoop() {
 			updateSessionLog();
 			time( &sessionLogStamp );
 		}
+
 		update4RemoteUI();
 
 		// some sensors has a limitation on the consecutive reading. dht22 allows to read next at least after two seconds later.
